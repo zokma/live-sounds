@@ -23,4 +23,26 @@
     <ProjectReference Include="..\Zokma.Libs\Zokma.Libs.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TestData\AudioFiles\GitExclude\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="TestData\AudioFiles\AudioFiles.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\AudioFiles\GitExclude\Test01.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\AudioFiles\GitExclude\Test02.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\AudioFiles\InvalidAudio00.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\AudioFiles\InvalidAudio01.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
