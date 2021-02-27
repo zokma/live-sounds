@@ -77,7 +77,12 @@ namespace Zokma.Libs.Audio
         /// <summary>
         /// Device Guid. Unique id for the device.
         /// </summary>
-        public Guid Guid { get; private set; }
+        public Guid Guid { get; private set; } = Guid.Empty;
+
+        /// <summary>
+        /// Device Number.
+        /// </summary>
+        public int Number { get; private set; }
 
         /// <summary>
         /// Device
@@ -105,18 +110,12 @@ namespace Zokma.Libs.Audio
             var device = new AudioDevice
             {
                 Id           = mmDevice.ID,
-                Guid         = Guid.Empty,
                 DataFlow     = dataFlow,
                 DeviceType   = AudioDeviceType.WASAPI,
                 Name         = mmDevice.DeviceFriendlyName,
                 FriendlyName = mmDevice.FriendlyName,
                 MMDevice     = mmDevice,
             };
-
-            if (Guid.TryParse(device.Id, out var guid))
-            {
-                device.Guid = guid;
-            }
 
             return device;
         }
@@ -134,10 +133,10 @@ namespace Zokma.Libs.Audio
             var mmde = new MMDeviceEnumerator();
             var role = deviceRole switch
             {
-                AudioDeviceRole.Console => Role.Console,
-                AudioDeviceRole.Multimedia => Role.Multimedia,
+                AudioDeviceRole.Console        => Role.Console,
+                AudioDeviceRole.Multimedia     => Role.Multimedia,
                 AudioDeviceRole.Communications => Role.Communications,
-                _ => Role.Multimedia,
+                _                              => Role.Multimedia,
             };
 
             if (dataFlow.HasFlag(AudioDataFlow.Render))
@@ -176,11 +175,12 @@ namespace Zokma.Libs.Audio
                     devices.Add(
                         new AudioDevice
                         {
-                            Id = i.ToString(),
-                            Guid = caps.ProductGuid,
-                            DataFlow = AudioDataFlow.Render,
-                            DeviceType = AudioDeviceType.Wave,
-                            Name = caps.ProductName,
+                            Id           = Convert.ToBase64String(Encoding.UTF8.GetBytes(String.Format("{0}.{1}", i, caps.ProductName)), Base64FormattingOptions.None).TrimEnd('='),
+                            Guid         = caps.ProductGuid,
+                            Number       = i,
+                            DataFlow     = AudioDataFlow.Render,
+                            DeviceType   = AudioDeviceType.Wave,
+                            Name         = caps.ProductName,
                             FriendlyName = caps.ProductName,
                         }
                         );
@@ -206,11 +206,11 @@ namespace Zokma.Libs.Audio
                     devices.Add(
                         new AudioDevice
                         {
-                            Id = item.Guid.ToString(),
-                            Guid = item.Guid,
-                            DataFlow = AudioDataFlow.Render,
-                            DeviceType = AudioDeviceType.DirectSound,
-                            Name = item.ModuleName,
+                            Id           = item.Guid.ToString(),
+                            Guid         = item.Guid,
+                            DataFlow     = AudioDataFlow.Render,
+                            DeviceType   = AudioDeviceType.DirectSound,
+                            Name         = item.ModuleName,
                             FriendlyName = item.Description,
                         }
                         );
@@ -236,11 +236,10 @@ namespace Zokma.Libs.Audio
                     devices.Add(
                         new AudioDevice
                         {
-                            Id = item,
-                            Guid = Guid.Empty,
-                            DataFlow = AudioDataFlow.Render,
-                            DeviceType = AudioDeviceType.ASIO,
-                            Name = item,
+                            Id           = item,
+                            DataFlow     = AudioDataFlow.Render,
+                            DeviceType   = AudioDeviceType.ASIO,
+                            Name         = item,
                             FriendlyName = item,
                         }
                         );
@@ -294,6 +293,26 @@ namespace Zokma.Libs.Audio
         public static AudioDevice[] GetAudioRenderDevices(AudioDeviceType deviceType = AudioDeviceType.WASAPI, AudioDeviceRole deviceRole = AudioDeviceRole.Multimedia)
         {
             return GetAudioDevices(AudioDataFlow.Render, deviceType, deviceRole);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return (obj is AudioDevice && this == (AudioDevice)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return String.Format("{0}.{1}", this.DeviceType, this.Id).GetHashCode();
+        }
+
+        public static bool operator ==(AudioDevice a, AudioDevice b)
+        {
+            return (a.DeviceType == b.DeviceType && a.Id == b.Id);
+        }
+
+        public static bool operator !=(AudioDevice a, AudioDevice b)
+        {
+            return !(a == b);
         }
     }
 }

@@ -62,7 +62,7 @@ namespace Zokma.Libs.Audio
         /// <returns>Audio data.</returns>
         public static AudioData LoadAudio(string filePath, bool isCached = true, float volume = 1.0f)
         {
-            // Instanciate once to check format even if the audio data will not be cached.
+            // Instantiate once to check format even if the audio data will not be cached.
             using var reader = new AudioFileReader(filePath);
 
             var audioData = new AudioData()

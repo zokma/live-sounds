@@ -18,8 +18,8 @@ namespace Zokma.Libs.Tests
         }
 
         [Theory]
-        [InlineData("TestData/AudioFiles/GitExclude/Test01.mp3", true,  1.0f)]
-        [InlineData("TestData/AudioFiles/GitExclude/Test01.mp3", true,  0.5f)]
+        [InlineData("TestData/AudioFiles/GitExclude/Test01.mp3", true, 1.0f)]
+        [InlineData("TestData/AudioFiles/GitExclude/Test01.mp3", true, 0.5f)]
         [InlineData("TestData/AudioFiles/GitExclude/Test01.mp3", false, 1.0f)]
         [InlineData("TestData/AudioFiles/GitExclude/Test01.mp3", false, 0.5f)]
         public void TestLoadAudioFiles(string path, bool isCached, float volume)
@@ -27,29 +27,29 @@ namespace Zokma.Libs.Tests
             var data = AudioData.LoadAudio(Pathfinder.FindPathName(path), isCached, volume);
 
             Assert.Equal(isCached, data.IsCached);
-            Assert.Equal(volume,   data.Volume);
+            Assert.Equal(volume, data.Volume);
 
             Assert.NotNull(data.WaveFormat);
 
             output.WriteLine("AverageBytesPerSecond: {0}", data.WaveFormat.AverageBytesPerSecond);
-            output.WriteLine("BitsPerSample: {0}",         data.WaveFormat.BitsPerSample);
-            output.WriteLine("BlockAlign: {0}",            data.WaveFormat.BlockAlign);
-            output.WriteLine("Channels: {0}",              data.WaveFormat.Channels);
-            output.WriteLine("Encoding: {0}",              data.WaveFormat.Encoding);
-            output.WriteLine("ExtraSize: {0}",             data.WaveFormat.ExtraSize);
-            output.WriteLine("SampleRate: {0}",            data.WaveFormat.SampleRate);
+            output.WriteLine("BitsPerSample: {0}", data.WaveFormat.BitsPerSample);
+            output.WriteLine("BlockAlign: {0}", data.WaveFormat.BlockAlign);
+            output.WriteLine("Channels: {0}", data.WaveFormat.Channels);
+            output.WriteLine("Encoding: {0}", data.WaveFormat.Encoding);
+            output.WriteLine("ExtraSize: {0}", data.WaveFormat.ExtraSize);
+            output.WriteLine("SampleRate: {0}", data.WaveFormat.SampleRate);
         }
 
         [Theory]
-        [InlineData("TestData/AudioFiles/GitExclude/Test01.mp3", true,  100.0f, 1.0f)]
+        [InlineData("TestData/AudioFiles/GitExclude/Test01.mp3", true, 100.0f, 1.0f)]
         [InlineData("TestData/AudioFiles/GitExclude/Test01.mp3", false, 100.0f, 1.0f)]
-        [InlineData("TestData/AudioFiles/GitExclude/Test01.mp3", true,  -10.0f, 0.0f)]
+        [InlineData("TestData/AudioFiles/GitExclude/Test01.mp3", true, -10.0f, 0.0f)]
         [InlineData("TestData/AudioFiles/GitExclude/Test01.mp3", false, -10.0f, 0.0f)]
         public void TestLoadAudioFilesVol(string path, bool isCached, float volume, float expectedVol)
         {
             var data = AudioData.LoadAudio(Pathfinder.FindPathName(path), isCached, volume);
 
-            Assert.Equal(isCached,    data.IsCached);
+            Assert.Equal(isCached, data.IsCached);
             Assert.Equal(expectedVol, data.Volume);
 
             Assert.NotNull(data.WaveFormat);
@@ -57,7 +57,7 @@ namespace Zokma.Libs.Tests
         }
 
         [Theory]
-        [InlineData("TestData/AudioFiles/InvalidAudio00.mp3", true,  1.0f)]
+        [InlineData("TestData/AudioFiles/InvalidAudio00.mp3", true, 1.0f)]
         [InlineData("TestData/AudioFiles/InvalidAudio00.mp3", false, 1.0f)]
         public void TestLoadInvalidAudioFiles(string path, bool isCached, float volume)
         {
@@ -81,7 +81,7 @@ namespace Zokma.Libs.Tests
         }
 
         [Theory]
-        [InlineData("TestData/AudioFiles/NotFound.mp3", true,  1.0f)]
+        [InlineData("TestData/AudioFiles/NotFound.mp3", true, 1.0f)]
         [InlineData("TestData/AudioFiles/NotFound.mp3", false, 1.0f)]
         public void TestLoadAudioFilesNotFound(string path, bool isCached, float volume)
         {
@@ -113,18 +113,42 @@ namespace Zokma.Libs.Tests
                 Assert.NotNull(item.Name);
                 Assert.NotNull(item.FriendlyName);
 
-                output.WriteLine("Id: {0}",           item.Id);
-                output.WriteLine("Guid: {0}",         item.Guid);
-                output.WriteLine("DeviceType: {0}",   item.DeviceType);
-                output.WriteLine("DataFlow: {0}",     item.DataFlow);
-                output.WriteLine("Name: {0}",         item.Name);
+                output.WriteLine("Id: {0}", item.Id);
+                output.WriteLine("Guid: {0}", item.Guid);
+                output.WriteLine("Number: {0}", item.Number);
+                output.WriteLine("DeviceType: {0}", item.DeviceType);
+                output.WriteLine("DataFlow: {0}", item.DataFlow);
+                output.WriteLine("Name: {0}", item.Name);
                 output.WriteLine("FriendlyName: {0}", item.FriendlyName);
-                output.WriteLine("MMDevice: {0}",     (item.MMDevice != null));
+                output.WriteLine("MMDevice: {0}", (item.MMDevice != null));
                 output.WriteLine("----");
             }
         }
 
+        [Theory]
+        [InlineData(AudioDeviceType.WASAPI)]
+        [InlineData(AudioDeviceType.Wave)]
+        [InlineData(AudioDeviceType.DirectSound)]
+        [InlineData(AudioDeviceType.ASIO)]
+        public void TestAudioDevicesOperator(AudioDeviceType deviceType)
+        {
+            var devices1 = AudioDevice.GetAudioDevices(AudioDataFlow.Render, deviceType);
+            var devices2 = AudioDevice.GetAudioDevices(AudioDataFlow.Render, deviceType);
 
+            for (int i = 0; i < devices1.Length; i++)
+            {
+                Assert.False(Object.ReferenceEquals(devices1[i], devices2[i]));
+                Assert.True( devices1[i] == devices2[i]);
+                Assert.False(devices1[i] != devices2[i]);
+                Assert.True( devices1[i].GetHashCode() == devices2[i].GetHashCode());
 
+                if (i >= 1)
+                {
+                    Assert.False(devices1[i] == devices2[i - 1]);
+                    Assert.True( devices1[i] != devices2[i - 1]);
+                    Assert.False(devices1[i].GetHashCode() == devices2[i - 1].GetHashCode());
+                }
+            }
+        }
     }
 }
