@@ -52,17 +52,17 @@ namespace Zokma.Libs.Tests
             Assert.NotNull(data.WaveFormat);
 
             output.WriteLine("AverageBytesPerSecond: {0}", data.WaveFormat.AverageBytesPerSecond);
-            output.WriteLine("BitsPerSample: {0}", data.WaveFormat.BitsPerSample);
-            output.WriteLine("BlockAlign: {0}", data.WaveFormat.BlockAlign);
-            output.WriteLine("Channels: {0}", data.WaveFormat.Channels);
-            output.WriteLine("SampleRate: {0}", data.WaveFormat.SampleRate);
+            output.WriteLine("BitsPerSample: {0}",         data.WaveFormat.BitsPerSample);
+            output.WriteLine("BlockAlign: {0}",            data.WaveFormat.BlockAlign);
+            output.WriteLine("Channels: {0}",              data.WaveFormat.Channels);
+            output.WriteLine("SampleRate: {0}",            data.WaveFormat.SampleRate);
         }
 
 
         [Theory]
-        [InlineData("TestData/AudioFiles/GitExclude/Test01.mp3", true, 100.0f, 1.0f)]
+        [InlineData("TestData/AudioFiles/GitExclude/Test01.mp3", true,  100.0f, 1.0f)]
         [InlineData("TestData/AudioFiles/GitExclude/Test01.mp3", false, 100.0f, 1.0f)]
-        [InlineData("TestData/AudioFiles/GitExclude/Test01.mp3", true, -10.0f, 0.0f)]
+        [InlineData("TestData/AudioFiles/GitExclude/Test01.mp3", true,  -10.0f, 0.0f)]
         [InlineData("TestData/AudioFiles/GitExclude/Test01.mp3", false, -10.0f, 0.0f)]
         public void TestLoadAudioFilesVol(string path, bool isCached, float volume, float expectedVol)
         {
@@ -76,7 +76,7 @@ namespace Zokma.Libs.Tests
         }
 
         [Theory]
-        [InlineData("TestData/AudioFiles/InvalidAudio00.mp3", true, 1.0f)]
+        [InlineData("TestData/AudioFiles/InvalidAudio00.mp3", true,  1.0f)]
         [InlineData("TestData/AudioFiles/InvalidAudio00.mp3", false, 1.0f)]
         public void TestLoadInvalidAudioFiles(string path, bool isCached, float volume)
         {
@@ -88,7 +88,7 @@ namespace Zokma.Libs.Tests
         }
 
         [Theory]
-        [InlineData("TestData/AudioFiles/InvalidAudio01.txt", true, 1.0f)]
+        [InlineData("TestData/AudioFiles/InvalidAudio01.txt", true,  1.0f)]
         [InlineData("TestData/AudioFiles/InvalidAudio01.txt", false, 1.0f)]
         public void TestLoadAudioFilesUnsupportedExt(string path, bool isCached, float volume)
         {
@@ -100,7 +100,7 @@ namespace Zokma.Libs.Tests
         }
 
         [Theory]
-        [InlineData("TestData/AudioFiles/NotFound.mp3", true, 1.0f)]
+        [InlineData("TestData/AudioFiles/NotFound.mp3", true,  1.0f)]
         [InlineData("TestData/AudioFiles/NotFound.mp3", false, 1.0f)]
         public void TestLoadAudioFilesNotFound(string path, bool isCached, float volume)
         {

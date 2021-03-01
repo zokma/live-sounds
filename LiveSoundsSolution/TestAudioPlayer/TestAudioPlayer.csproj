@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Authors>Zok MADAO</Authors>
+    <Company>ZOKMA LABS.</Company>
+    <Version>0.4.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Zokma.Libs\Zokma.Libs.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="TestData\GitExclude\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="TestData\GitExclude\Test01.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\GitExclude\Test02.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

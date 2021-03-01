@@ -10,17 +10,17 @@ namespace Zokma.Libs.Audio
     /// <summary>
     /// Audio data.
     /// </summary>
-    public class AudioData
+    public class AudioData : IDisposable
     {
         /// <summary>
         /// Min volume.
         /// </summary>
-        private const float MIN_VOLUME = 0.0f;
+        private const float MIN_VOLUME = AudioPlayer.MIN_VOLUME;
 
         /// <summary>
         /// Max volume.
         /// </summary>
-        private const float MAX_VOLUME = 1.0f;
+        private const float MAX_VOLUME = AudioPlayer.MAX_VOLUME;
 
         /// <summary>
         /// Min resampling quality.
@@ -31,6 +31,7 @@ namespace Zokma.Libs.Audio
         /// Max resampling quality.
         /// </summary>
         private const int MAX_RESAMPLING_QUALITY = 60;
+        private bool disposedValue;
 
 
         /// <summary>
@@ -70,6 +71,13 @@ namespace Zokma.Libs.Audio
         public float Volume { get; private set; }
 
         /// <summary>
+        /// Constructor is private.
+        /// </summary>
+        private AudioData()
+        {
+        }
+
+        /// <summary>
         /// Creates resampler.
         /// </summary>
         /// <param name="reader">Audio file reader.</param>
@@ -81,9 +89,10 @@ namespace Zokma.Libs.Audio
             if(reader.WaveFormat.SampleRate != targetFormat.SampleRate)
             {
                 var format    = NAudio.Wave.WaveFormat.CreateIeeeFloatWaveFormat(targetFormat.SampleRate, targetFormat.Channels);
-                var resampler = new MediaFoundationResampler(reader, format);
-
-                resampler.ResamplerQuality = resamplingQuality;
+                var resampler = new MediaFoundationResampler(reader, format)
+                {
+                    ResamplerQuality = resamplingQuality
+                };
 
                 return resampler;
             }
@@ -164,6 +173,36 @@ namespace Zokma.Libs.Audio
         public static AudioData LoadAudio(string filePath)
         {
             return LoadAudio(filePath, null);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                this.Data     = null;
+                disposedValue = true;
+            }
+        }
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~AudioData()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

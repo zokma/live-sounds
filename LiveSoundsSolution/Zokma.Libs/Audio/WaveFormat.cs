@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Zokma.Libs.Audio
 {
+    /// <summary>
+    /// Wave format.
+    /// </summary>
     public class WaveFormat
     {
         /// <summary>
@@ -48,10 +51,13 @@ namespace Zokma.Libs.Audio
             this.NAudioWaveFormat = NAudio.Wave.WaveFormat.CreateIeeeFloatWaveFormat(sampleRate, channels);
         }
 
+        /// <summary>
+        /// Creats a new Wave format.
+        /// </summary>
+        /// <param name="naudioWaveFormat">NAudio <see cref="NAudio.Wave.WaveFormat"/>.</param>
         internal WaveFormat(NAudio.Wave.WaveFormat naudioWaveFormat)
             : this(naudioWaveFormat.SampleRate, naudioWaveFormat.Channels)
         {
         }
-
     }
 }

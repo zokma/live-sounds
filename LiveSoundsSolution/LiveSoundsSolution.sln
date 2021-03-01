@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31019.35
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zokma.Libs", "Zokma.Libs\Zokma.Libs.csproj", "{DC8C46E6-5725-41F5-A6CE-48D321E6455A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zokma.Libs", "Zokma.Libs\Zokma.Libs.csproj", "{DC8C46E6-5725-41F5-A6CE-48D321E6455A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zokma.Libs.Tests", "Zokma.Libs.Tests\Zokma.Libs.Tests.csproj", "{C62E7F0E-CCD7-4028-94D3-F02900B51C15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zokma.Libs.Tests", "Zokma.Libs.Tests\Zokma.Libs.Tests.csproj", "{C62E7F0E-CCD7-4028-94D3-F02900B51C15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestAudioPlayer", "TestAudioPlayer\TestAudioPlayer.csproj", "{1C03CDF7-B6A2-4D7C-8317-5E92DC7E75CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{C62E7F0E-CCD7-4028-94D3-F02900B51C15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C62E7F0E-CCD7-4028-94D3-F02900B51C15}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C62E7F0E-CCD7-4028-94D3-F02900B51C15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C03CDF7-B6A2-4D7C-8317-5E92DC7E75CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C03CDF7-B6A2-4D7C-8317-5E92DC7E75CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C03CDF7-B6A2-4D7C-8317-5E92DC7E75CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C03CDF7-B6A2-4D7C-8317-5E92DC7E75CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

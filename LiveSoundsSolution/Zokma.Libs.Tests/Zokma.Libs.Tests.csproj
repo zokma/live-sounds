@@ -4,6 +4,12 @@
     <TargetFramework>net5.0-windows</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <Authors>Zok MADAO</Authors>
+
+    <Company>ZOKMA LABS.</Company>
+
+    <Version>0.4.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

@@ -297,7 +297,7 @@ namespace Zokma.Libs.Audio
 
         public override bool Equals(object obj)
         {
-            return (obj is AudioDevice && this == (AudioDevice)obj);
+            return (obj is AudioDevice device && this == device);
         }
 
         public override int GetHashCode()

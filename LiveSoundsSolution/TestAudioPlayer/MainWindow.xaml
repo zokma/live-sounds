@@ -1,0 +1,27 @@
+﻿<Window x:Class="TestAudioPlayer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TestAudioPlayer"
+        mc:Ignorable="d"
+        Title="Test Audio Player" Height="450" Width="800" Loaded="Window_Loaded" Closing="Window_Closing">
+    <Grid>
+        <ComboBox x:Name="AudioDeviceTypeSelect" HorizontalAlignment="Left" Margin="164,38,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0" SelectionChanged="AudioDeviceType_SelectionChanged">
+            <ListBoxItem Content="WASAPI"/>
+            <ListBoxItem Content="Wave"/>
+            <ListBoxItem Content="DirectSound"/>
+            <ListBoxItem Content="ASIO"/>
+        </ComboBox>
+        <Label Content="Select Audio Device:" HorizontalAlignment="Left" Margin="42,36,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.049,-0.138"/>
+        <ComboBox x:Name="AudioDeviceSelect" HorizontalAlignment="Left" Margin="308,38,0,0" VerticalAlignment="Top" Width="252"/>
+        <Button x:Name="InitButton" Content="Init Player" HorizontalAlignment="Left" Margin="42,83,0,0" VerticalAlignment="Top" Width="117" Click="InitButton_Click"/>
+        <Slider x:Name="MasterVolume" HorizontalAlignment="Left" Margin="134,244,0,0" VerticalAlignment="Top" Width="120" Maximum="100" SmallChange="1" Value="101" ValueChanged="MasterVolume_ValueChanged"/>
+        <Label Content="Master Volume:" HorizontalAlignment="Left" Margin="36,240,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="LoopAudio" Content="Loop Audio" HorizontalAlignment="Left" Margin="42,141,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="StopButton" Content="Stop Player" HorizontalAlignment="Left" Margin="183,83,0,0" VerticalAlignment="Top" Width="117" Click="StopButton_Click"/>
+        <Button x:Name="Play1Button" Content="Play Audio 1" HorizontalAlignment="Left" Margin="36,170,0,0" VerticalAlignment="Top" Width="148" Click="PlayButton_Click"/>
+        <Button x:Name="Play2Button" Content="Play Audio 2" HorizontalAlignment="Left" Margin="36,0,0,0" VerticalAlignment="Center" Width="148" Click="PlayButton_Click"/>
+
+    </Grid>
+</Window>
