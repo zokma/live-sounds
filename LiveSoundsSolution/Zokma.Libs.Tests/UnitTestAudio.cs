@@ -22,7 +22,7 @@ namespace Zokma.Libs.Tests
         [InlineData("TestData/AudioFiles/GitExclude/Test01.mp3", false, 1.0f, 48000)]
         public void TestLoadAudioFilesResampling(string path, bool isCached, float volume, int sampleRate)
         {
-            var data = AudioData.LoadAudio(Pathfinder.FindPathName(path), new WaveFormat(sampleRate, 2), isCached, volume);
+            var data = AudioData.LoadAudio(Pathfinder.ApplicationRoot.FindPathName(path), new WaveFormat(sampleRate, 2), isCached, volume);
 
             Assert.Equal(isCached, data.IsCached);
             Assert.Equal(volume, data.Volume);
@@ -44,7 +44,7 @@ namespace Zokma.Libs.Tests
         [InlineData("TestData/AudioFiles/GitExclude/Test01.mp3", false, 0.5f)]
         public void TestLoadAudioFiles(string path, bool isCached, float volume)
         {
-            var data = AudioData.LoadAudio(Pathfinder.FindPathName(path), isCached, volume);
+            var data = AudioData.LoadAudio(Pathfinder.ApplicationRoot.FindPathName(path), isCached, volume);
 
             Assert.Equal(isCached, data.IsCached);
             Assert.Equal(volume, data.Volume);
@@ -66,7 +66,7 @@ namespace Zokma.Libs.Tests
         [InlineData("TestData/AudioFiles/GitExclude/Test01.mp3", false, -10.0f, 0.0f)]
         public void TestLoadAudioFilesVol(string path, bool isCached, float volume, float expectedVol)
         {
-            var data = AudioData.LoadAudio(Pathfinder.FindPathName(path), isCached, volume);
+            var data = AudioData.LoadAudio(Pathfinder.ApplicationRoot.FindPathName(path), isCached, volume);
 
             Assert.Equal(isCached, data.IsCached);
             Assert.Equal(expectedVol, data.Volume);
@@ -83,7 +83,7 @@ namespace Zokma.Libs.Tests
             Assert.Throws<InvalidDataException>(
                 () =>
                 {
-                    var data = AudioData.LoadAudio(Pathfinder.FindPathName(path), isCached, volume);
+                    var data = AudioData.LoadAudio(Pathfinder.ApplicationRoot.FindPathName(path), isCached, volume);
                 });
         }
 
@@ -95,7 +95,7 @@ namespace Zokma.Libs.Tests
             Assert.Throws<COMException>(
                 () =>
                 {
-                    var data = AudioData.LoadAudio(Pathfinder.FindPathName(path), isCached, volume);
+                    var data = AudioData.LoadAudio(Pathfinder.ApplicationRoot.FindPathName(path), isCached, volume);
                 });
         }
 
@@ -107,7 +107,7 @@ namespace Zokma.Libs.Tests
             Assert.Throws<FileNotFoundException>(
                 () =>
                 {
-                    var data = AudioData.LoadAudio(Pathfinder.FindPathName(path), isCached, volume);
+                    var data = AudioData.LoadAudio(Pathfinder.ApplicationRoot.FindPathName(path), isCached, volume);
                 });
         }
 

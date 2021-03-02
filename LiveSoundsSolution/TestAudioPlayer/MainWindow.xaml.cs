@@ -77,8 +77,8 @@ namespace TestAudioPlayer
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this.audioData1 = AudioData.LoadAudio(Pathfinder.FindPathName("TestData/GitExclude/Test01.mp3"), AudioPlayer.DefaultWaveFormat);
-            this.audioData2 = AudioData.LoadAudio(Pathfinder.FindPathName("TestData/GitExclude/Test02.mp3"), AudioPlayer.DefaultWaveFormat);
+            this.audioData1 = AudioData.LoadAudio(Pathfinder.ApplicationRoot.FindPathName("TestData/GitExclude/Test01.mp3"), AudioPlayer.DefaultWaveFormat);
+            this.audioData2 = AudioData.LoadAudio(Pathfinder.ApplicationRoot.FindPathName("TestData/GitExclude/Test02.mp3"), AudioPlayer.DefaultWaveFormat);
             SetAudioDevices();
         }
 

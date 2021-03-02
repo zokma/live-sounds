@@ -29,45 +29,54 @@ namespace Zokma.Libs.Tests
         [Fact]
         public void TestPathfinderFind()
         {
-            var info1 = Pathfinder.FindPathInfo("sub/test.dat");
-            var info2 = Pathfinder.FindPathInfo("sub\\test.dat");
+            var info1 = Pathfinder.ApplicationRoot.FindPathInfo("sub/test.dat");
+            var info2 = Pathfinder.ApplicationRoot.FindPathInfo("sub\\test.dat");
 
-            var name1 = Pathfinder.FindPathName("sub/test.dat");
-            var name2 = Pathfinder.FindPathName("sub\\test.dat");
+            var name1 = Pathfinder.ApplicationRoot.FindPathName("sub/test.dat");
+            var name2 = Pathfinder.ApplicationRoot.FindPathName("sub\\test.dat");
+
+            var pf = new Pathfinder("sub");
+
+            var info3 = pf.FindPathInfo("test.dat");
+            var name3 = pf.FindPathName("test.dat");
 
             output.WriteLine("Path1: {0}", info1.FullName);
             output.WriteLine("Path2: {0}", info2.FullName);
-            output.WriteLine("Path3: {0}", name1);
-            output.WriteLine("Path4: {0}", name2);
+            output.WriteLine("Path3: {0}", info3.FullName);
+            output.WriteLine("Path1: {0}", name1);
+            output.WriteLine("Path2: {0}", name2);
+            output.WriteLine("Path3: {0}", name2);
 
             Assert.Equal(info1.FullName, info2.FullName);
             Assert.Equal(name1, name2);
             Assert.Equal(info1.FullName, name1);
             Assert.Equal(info2.FullName, name2);
+            Assert.Equal(info1.FullName, info3.FullName);
+            Assert.Equal(name1, name3);
 
             Assert.StartsWith(Pathfinder.ApplicationDirectory, info1.FullName);
         }
 
         [Theory]
-        [InlineData("./data/test.dat")]
         [InlineData("../data/test.dat")]
         [InlineData("/data/test.dat")]
         [InlineData("\\data\\test.dat")]
         [InlineData("C:\\data\\test.dat")]
-        [InlineData("")]
+        [InlineData("data/../../test.dat")]
+        [InlineData("\\data\\..\\..\\test.dat")]
         [InlineData(null)]
         public void TestPathfinderFindException(string path)
         {
             Assert.Throws<ArgumentException>(
                 () =>
                 {
-                    var info = Pathfinder.FindPathInfo(path);
+                    var info = Pathfinder.ApplicationRoot.FindPathInfo(path);
                 });
 
             Assert.Throws<ArgumentException>(
                 () =>
                 {
-                    var info = Pathfinder.FindPathName(path);
+                    var info = Pathfinder.ApplicationRoot.FindPathName(path);
                 });
         }
     }
