@@ -10,37 +10,12 @@ namespace Zokma.Libs.Audio
     /// <summary>
     /// Sample provider for cached AudioData.
     /// </summary>
-    internal class CachedAudioDataSampleProvider : ISampleProvider
+    internal class CachedAudioDataSampleProvider : AudioDataSampleProvider
     {
-        /// <summary>
-        /// Audio data.
-        /// </summary>
-        private readonly AudioData audioData;
-
-        /// <summary>
-        /// Playback token.
-        /// </summary>
-        private readonly PlaybackToken playbackToken;
-
-        /// <summary>
-        /// Master volume provider;
-        /// </summary>
-        private readonly IMasterVolumeProvider masterVolumeProvider;
-
-        /// <summary>
-        /// Whether use parallel or not.
-        /// </summary>
-        private readonly bool useParallel;
-
         /// <summary>
         /// Play back position.
         /// </summary>
         private long position;
-
-        /// <summary>
-        /// Wave format.
-        /// </summary>
-        public NAudio.Wave.WaveFormat WaveFormat => this.audioData.WaveFormat.NAudioWaveFormat;
 
         /// <summary>
         /// Creates Sample provider for cached AudioData.
@@ -50,16 +25,12 @@ namespace Zokma.Libs.Audio
         /// <param name="masterVolumeProvider">Master volume provider.</param>
         /// <param name="useParallel">true if use parallel.</param>
         public CachedAudioDataSampleProvider(AudioData audioData, PlaybackToken playbackToken, IMasterVolumeProvider masterVolumeProvider, bool useParallel = false)
+            : base(audioData, playbackToken, masterVolumeProvider, useParallel)
         {
-            this.audioData            = audioData;
-            this.playbackToken        = playbackToken;
-            this.masterVolumeProvider = masterVolumeProvider;
-            this.useParallel          = useParallel;
-
             this.position = 0L;
         }
 
-        public int Read(float[] buffer, int offset, int count)
+        public override int Read(float[] buffer, int offset, int count)
         {
             var playbackState = this.playbackToken.State;
 
@@ -113,6 +84,7 @@ namespace Zokma.Libs.Audio
                 if(position >= source.Length)
                 {
                     position = 0;
+                    this.playbackToken.IncrementLoopCount();
                 }
 
                 int toBeFilled = (int)(count - samplesToCopy);
