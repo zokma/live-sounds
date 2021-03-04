@@ -335,9 +335,9 @@ namespace Zokma.Libs.Audio
 
             using (this.rockLock.EnterReadLock())
             {
-                if(this.State != AudioEngineState.Started && this.State != AudioEngineState.Paused)
+                if (this.State == AudioEngineState.Created)
                 {
-                    throw new InvalidAudioEngineStateException("The Audio Engine is not started or paused.");
+                    throw new InvalidAudioEngineStateException("The Audio Engine is not initialized.");
                 }
 
                 var token = new PlaybackToken(mode == PlaybackMode.Loop);
