@@ -36,6 +36,10 @@ namespace TestAudioPlayer
 
         private AudioData audioData1;
         private AudioData audioData2;
+        private AudioData audioData3;
+        private AudioData audioData4;
+
+        private Stack<PlaybackToken> nowPlayings;
 
 
         public MainWindow()
@@ -45,7 +49,7 @@ namespace TestAudioPlayer
 
         private void SetAudioDevices()
         {
-            if(this.AudioDeviceSelect == null)
+            if (this.AudioDeviceSelect == null)
             {
                 return;
             }
@@ -75,10 +79,20 @@ namespace TestAudioPlayer
             SetAudioDevices();
         }
 
+        private void LoadAudioFiles()
+        {
+            this.audioData1 = AudioData.LoadAudio(Pathfinder.ApplicationRoot.FindPathName(this.Audio1.Text), AudioPlayer.DefaultWaveFormat);
+            this.audioData2 = AudioData.LoadAudio(Pathfinder.ApplicationRoot.FindPathName(this.Audio2.Text), AudioPlayer.DefaultWaveFormat);
+
+            this.audioData3 = AudioData.LoadAudio(Pathfinder.ApplicationRoot.FindPathName(this.Audio1.Text), AudioPlayer.DefaultWaveFormat, false);
+            this.audioData4 = AudioData.LoadAudio(Pathfinder.ApplicationRoot.FindPathName(this.Audio2.Text), AudioPlayer.DefaultWaveFormat, false);
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this.audioData1 = AudioData.LoadAudio(Pathfinder.ApplicationRoot.FindPathName("TestData/GitExclude/Test01.mp3"), AudioPlayer.DefaultWaveFormat);
-            this.audioData2 = AudioData.LoadAudio(Pathfinder.ApplicationRoot.FindPathName("TestData/GitExclude/Test02.mp3"), AudioPlayer.DefaultWaveFormat);
+            this.nowPlayings = new Stack<PlaybackToken>();
+
+            LoadAudioFiles();
             SetAudioDevices();
         }
 
@@ -95,28 +109,42 @@ namespace TestAudioPlayer
             this.player?.Dispose();
         }
 
-
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            if(this.player == null)
+            if (this.player == null)
             {
                 return;
             }
 
-            AudioData data;
+            AudioData data = null;
 
             if (sender == this.Play1Button)
             {
                 data = this.audioData1;
             }
-            else
+            else if (sender == this.Play2Button)
             {
                 data = this.audioData2;
+            }
+            else if (sender == this.Play3Button)
+            {
+                data = this.audioData3;
+            }
+            else if (sender == this.Play4Button)
+            {
+                data = this.audioData4;
+            }
+
+            if (data == null)
+            {
+                return;
             }
 
             var mode = this.LoopAudio.IsChecked.Value ? PlaybackMode.Loop : PlaybackMode.Once;
 
-            this.player?.Play(data, mode);
+            var token = this.player?.Play(data, mode);
+
+            this.nowPlayings.Push(token);
         }
 
         private void InitButton_Click(object sender, RoutedEventArgs e)
@@ -125,12 +153,39 @@ namespace TestAudioPlayer
 
             this.player = new AudioPlayer((this.AudioDeviceSelect.SelectedItem as AudioDeviceItem).AudioDevice);
             this.player.MasterVolume = (float)(this.MasterVolume.Value / 100.0f);
-            this.player.Start();
+
+            this.player.Init();
+        }
+
+        private void StartButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.player?.Start();
+        }
+
+        private void PauseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.player?.Pause();
         }
 
         private void StopButton_Click(object sender, RoutedEventArgs e)
         {
             this.player?.Stop();
+        }
+
+        private void StopLastButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(this.nowPlayings.TryPop(out var token))
+            {
+                if(token.State != PlaybackState.Stopped)
+                {
+                    token.Stop();
+                }
+            }
+        }
+
+        private void ReloadFilesButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.LoadAudioFiles();
         }
     }
 }

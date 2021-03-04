@@ -7,21 +7,32 @@
         mc:Ignorable="d"
         Title="Test Audio Player" Height="450" Width="800" Loaded="Window_Loaded" Closing="Window_Closing">
     <Grid>
-        <ComboBox x:Name="AudioDeviceTypeSelect" HorizontalAlignment="Left" Margin="164,38,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0" SelectionChanged="AudioDeviceType_SelectionChanged">
+        <ComboBox x:Name="AudioDeviceTypeSelect" HorizontalAlignment="Left" Margin="143,66,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0" SelectionChanged="AudioDeviceType_SelectionChanged">
             <ListBoxItem Content="WASAPI"/>
             <ListBoxItem Content="Wave"/>
             <ListBoxItem Content="DirectSound"/>
             <ListBoxItem Content="ASIO"/>
         </ComboBox>
-        <Label Content="Select Audio Device:" HorizontalAlignment="Left" Margin="42,36,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.049,-0.138"/>
-        <ComboBox x:Name="AudioDeviceSelect" HorizontalAlignment="Left" Margin="308,38,0,0" VerticalAlignment="Top" Width="252"/>
-        <Button x:Name="InitButton" Content="Init Player" HorizontalAlignment="Left" Margin="42,83,0,0" VerticalAlignment="Top" Width="117" Click="InitButton_Click"/>
-        <Slider x:Name="MasterVolume" HorizontalAlignment="Left" Margin="134,244,0,0" VerticalAlignment="Top" Width="120" Maximum="100" SmallChange="1" Value="101" ValueChanged="MasterVolume_ValueChanged"/>
-        <Label Content="Master Volume:" HorizontalAlignment="Left" Margin="36,240,0,0" VerticalAlignment="Top"/>
-        <CheckBox x:Name="LoopAudio" Content="Loop Audio" HorizontalAlignment="Left" Margin="42,141,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="StopButton" Content="Stop Player" HorizontalAlignment="Left" Margin="183,83,0,0" VerticalAlignment="Top" Width="117" Click="StopButton_Click"/>
-        <Button x:Name="Play1Button" Content="Play Audio 1" HorizontalAlignment="Left" Margin="36,170,0,0" VerticalAlignment="Top" Width="148" Click="PlayButton_Click"/>
-        <Button x:Name="Play2Button" Content="Play Audio 2" HorizontalAlignment="Left" Margin="36,0,0,0" VerticalAlignment="Center" Width="148" Click="PlayButton_Click"/>
+        <Label Content="Select Audio Device:" HorizontalAlignment="Left" Margin="21,64,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.049,-0.138"/>
+        <ComboBox x:Name="AudioDeviceSelect" HorizontalAlignment="Left" Margin="287,66,0,0" VerticalAlignment="Top" Width="252"/>
+        <Button x:Name="InitButton" Content="Init Player" HorizontalAlignment="Left" Margin="21,111,0,0" VerticalAlignment="Top" Width="117" Click="InitButton_Click"/>
+        <Slider x:Name="MasterVolume" HorizontalAlignment="Left" Margin="315,157,0,0" VerticalAlignment="Top" Width="120" Maximum="100" SmallChange="1" Value="101" ValueChanged="MasterVolume_ValueChanged"/>
+        <Label Content="Master Volume:" HorizontalAlignment="Left" Margin="203,150,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="LoopAudio" Content="Loop Audio" HorizontalAlignment="Left" Margin="21,160,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="Play1Button" Content="Play Cahced Audio" HorizontalAlignment="Left" Margin="287,191,0,0" VerticalAlignment="Top" Width="148" Click="PlayButton_Click"/>
+        <Button x:Name="Play2Button" Content="Play Cached Audio" HorizontalAlignment="Left" Margin="287,227,0,0" VerticalAlignment="Top" Width="148" Click="PlayButton_Click"/>
+        <TextBox x:Name="Audio1" HorizontalAlignment="Left" Margin="21,191,0,0" Text="TestData/GitExclude/Test01.mp3" TextWrapping="Wrap" VerticalAlignment="Top" Width="242" RenderTransformOrigin="0.241,0.488"/>
+        <TextBox x:Name="Audio2" HorizontalAlignment="Left" Margin="21,227,0,0" Text="TestData/GitExclude/Test02.mp3" TextWrapping="Wrap" VerticalAlignment="Top" Width="242" RenderTransformOrigin="0.241,0.488"/>
+        <Button x:Name="Play3Button" Content="Play Non-Cahced Audio" HorizontalAlignment="Left" Margin="287,266,0,0" VerticalAlignment="Top" Width="148" Click="PlayButton_Click"/>
+        <Button x:Name="Play4Button" Content="Play Non-Cached Audio" HorizontalAlignment="Left" Margin="287,302,0,0" VerticalAlignment="Top" Width="148" Click="PlayButton_Click"/>
+        <TextBox x:Name="Audio3" HorizontalAlignment="Left" Margin="21,266,0,0" Text="TestData/GitExclude/Test01.mp3" TextWrapping="Wrap" VerticalAlignment="Top" Width="242" RenderTransformOrigin="0.241,0.488"/>
+        <TextBox x:Name="Audio4" HorizontalAlignment="Left" Margin="21,302,0,0" Text="TestData/GitExclude/Test02.mp3" TextWrapping="Wrap" VerticalAlignment="Top" Width="242" RenderTransformOrigin="0.241,0.488"/>
+        <Button x:Name="StopButton" Content="Stop Player" HorizontalAlignment="Left" Margin="287,111,0,0" VerticalAlignment="Top" Width="117" Click="StopButton_Click"/>
+        <Button x:Name="StartButton" Content="Start Player" HorizontalAlignment="Left" Margin="146,111,0,0" VerticalAlignment="Top" Width="117" Click="StartButton_Click"/>
+        <Button x:Name="PauseButton" Content="Pause Player" HorizontalAlignment="Left" Margin="422,111,0,0" VerticalAlignment="Top" Width="117" Click="PauseButton_Click"/>
+        <Button x:Name="StopLastButton" Content="Stop Last" HorizontalAlignment="Left" Margin="287,339,0,0" VerticalAlignment="Top" Width="148" Click="StopLastButton_Click"/>
+        <Button x:Name="ReloadFilesButton" Content="Reload Files" HorizontalAlignment="Left" Margin="21,339,0,0" VerticalAlignment="Top" Width="148" Click="ReloadFilesButton_Click"/>
+        <Label Content="The purpose of this application is simple test for Zokma.Libs.Audio." HorizontalAlignment="Left" Margin="23,10,0,0" VerticalAlignment="Top" Height="32" FontWeight="Bold" FontStyle="Normal" Background="#FFFF6969" Width="516" FontSize="14"/>
 
     </Grid>
 </Window>
