@@ -92,6 +92,11 @@ namespace Zokma.Libs.Audio
         /// </summary>
         private readonly MixingSampleProvider mixer;
 
+        /// <summary>
+        /// RockLock to lock operations.
+        /// </summary>
+        private readonly RockLock rockLock;
+
         private bool disposedValue;
 
 
@@ -117,7 +122,8 @@ namespace Zokma.Libs.Audio
                 ReadFully = true
             };
 
-            this.State = AudioEngineState.Created;
+            this.rockLock = new RockLock();
+            this.State    = AudioEngineState.Created;
         }
 
         /// <summary>
@@ -177,56 +183,59 @@ namespace Zokma.Libs.Audio
         {
             CheckDisposed();
 
-            if (this.State == AudioEngineState.Created)
+            using (this.rockLock.EnterWriteLock())
             {
-                IWavePlayer player;
-
-                var deviceType = this.device.DeviceType;
-
-                if (deviceType == AudioDeviceType.WASAPI)
+                if (this.State == AudioEngineState.Created)
                 {
-                    var shareMode = AudioClientShareMode.Shared;
+                    IWavePlayer player;
 
-                    if (this.shareMode == AudioEngineShareMode.Exclusive)
+                    var deviceType = this.device.DeviceType;
+
+                    if (deviceType == AudioDeviceType.WASAPI)
                     {
-                        shareMode = AudioClientShareMode.Exclusive;
+                        var shareMode = AudioClientShareMode.Shared;
+
+                        if (this.shareMode == AudioEngineShareMode.Exclusive)
+                        {
+                            shareMode = AudioClientShareMode.Exclusive;
+                        }
+
+                        player = new WasapiOut(this.device.MMDevice, shareMode, true, this.latency);
+                    }
+                    else if (deviceType == AudioDeviceType.Wave)
+                    {
+                        player = new WaveOutEvent()
+                        {
+                            DeviceNumber   = this.device.Number,
+                            DesiredLatency = this.latency,
+                        };
+                    }
+                    else if (deviceType == AudioDeviceType.DirectSound)
+                    {
+                        player = new DirectSoundOut(this.device.Guid, this.latency);
+                    }
+                    else if (deviceType == AudioDeviceType.ASIO)
+                    {
+                        player = new AsioOut(this.device.Name);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException("Unknown device type.");
                     }
 
-                    player = new WasapiOut(this.device.MMDevice, shareMode, true, this.latency);
-                }
-                else if (deviceType == AudioDeviceType.Wave)
-                {
-                    player = new WaveOutEvent()
+                    try
                     {
-                        DeviceNumber   = this.device.Number,
-                        DesiredLatency = this.latency,
-                    };
-                }
-                else if (deviceType == AudioDeviceType.DirectSound)
-                {
-                    player = new DirectSoundOut(this.device.Guid, this.latency);
-                }
-                else if (deviceType == AudioDeviceType.ASIO)
-                {
-                    player = new AsioOut(this.device.Name);
-                }
-                else
-                {
-                    throw new InvalidOperationException("Unknown device type.");
-                }
+                        player.Init(this.mixer);
 
-                try
-                {
-                    player.Init(this.mixer);
+                        this.player = player;
+                        this.State  = AudioEngineState.Initialized;
+                    }
+                    catch (Exception)
+                    {
+                        player?.Dispose();
 
-                    this.player = player;
-                    this.State  = AudioEngineState.Initialized;
-                }
-                catch (Exception)
-                {
-                    player?.Dispose();
-
-                    throw;
+                        throw;
+                    }
                 }
             }
         }
@@ -243,10 +252,13 @@ namespace Zokma.Libs.Audio
                 Init();
             }
 
-            if (this.State != AudioEngineState.Started)
+            using (this.rockLock.EnterWriteLock())
             {
-                this.player.Play();
-                this.State = AudioEngineState.Started;
+                if (this.State == AudioEngineState.Initialized || this.State == AudioEngineState.Stopped || this.State == AudioEngineState.Paused)
+                {
+                    this.player.Play();
+                    this.State = AudioEngineState.Started;
+                }
             }
         }
 
@@ -257,10 +269,13 @@ namespace Zokma.Libs.Audio
         {
             CheckDisposed();
 
-            if (this.State == AudioEngineState.Started || this.State == AudioEngineState.Paused)
+            using (this.rockLock.EnterWriteLock())
             {
-                this.player.Stop();
-                this.State = AudioEngineState.Stopped;
+                if (this.State == AudioEngineState.Started || this.State == AudioEngineState.Paused)
+                {
+                    this.player.Stop();
+                    this.State = AudioEngineState.Stopped;
+                }
             }
         }
 
@@ -271,10 +286,13 @@ namespace Zokma.Libs.Audio
         {
             CheckDisposed();
 
-            if (this.State == AudioEngineState.Started)
+            using (this.rockLock.EnterWriteLock())
             {
-                this.player.Pause();
-                this.State = AudioEngineState.Paused;
+                if (this.State == AudioEngineState.Started)
+                {
+                    this.player.Pause();
+                    this.State = AudioEngineState.Paused;
+                }
             }
         }
 
@@ -308,11 +326,29 @@ namespace Zokma.Libs.Audio
 
         public PlaybackToken Play(AudioData audioData, PlaybackMode mode = PlaybackMode.Once)
         {
-            var token = new PlaybackToken(mode == PlaybackMode.Loop);
+            CheckDisposed();
 
-            AddMixerInput(new CachedAudioDataSampleProvider(audioData, token, this, this.useParallel));
+            if (audioData.WaveFormat.SampleRate != this.WaveFormat.SampleRate)
+            {
+                throw new InvalidOperationException("The sample rate of audio data does not much the sample rate of this player.");
+            }
 
-            return token;
+            using (this.rockLock.EnterReadLock())
+            {
+                if(this.State != AudioEngineState.Started && this.State != AudioEngineState.Paused)
+                {
+                    throw new InvalidAudioEngineStateException("The Audio Engine is not started or paused.");
+                }
+
+                var token = new PlaybackToken(mode == PlaybackMode.Loop);
+
+                if (audioData.IsCached)
+                {
+                    AddMixerInput(new CachedAudioDataSampleProvider(audioData, token, this, this.useParallel));
+                }
+
+                return token;
+            }
         }
 
         protected virtual void Dispose(bool disposing)
