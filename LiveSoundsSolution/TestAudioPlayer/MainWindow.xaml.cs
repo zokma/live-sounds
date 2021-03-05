@@ -56,9 +56,7 @@ namespace TestAudioPlayer
 
             var selected = this.AudioDeviceTypeSelect.SelectedValue as ListBoxItem;
 
-            AudioDeviceType type;
-
-            if (!Enum.TryParse(selected.Content as string, true, out type))
+            if (!Enum.TryParse(selected.Content as string, true, out AudioDeviceType type))
             {
                 type = Zokma.Libs.Audio.AudioDeviceType.WASAPI;
             }
@@ -151,8 +149,10 @@ namespace TestAudioPlayer
         {
             this.player?.Dispose();
 
-            this.player = new AudioPlayer((this.AudioDeviceSelect.SelectedItem as AudioDeviceItem).AudioDevice);
-            this.player.MasterVolume = (float)(this.MasterVolume.Value / 100.0f);
+            this.player = new AudioPlayer((this.AudioDeviceSelect.SelectedItem as AudioDeviceItem).AudioDevice)
+            {
+                MasterVolume = (float)(this.MasterVolume.Value / 100.0f)
+            };
 
             this.player.Init();
         }

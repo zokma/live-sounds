@@ -84,7 +84,7 @@ namespace Zokma.Libs.Audio
         /// <param name="targetFormat">Target Wave format.</param>
         /// <param name="resamplingQuality">Resampling quality from min(1) to max(60).</param>
         /// <returns>Resampler.</returns>
-        private static MediaFoundationResampler CreateResampler(AudioFileReader reader, WaveFormat targetFormat, int resamplingQuality)
+        internal static MediaFoundationResampler CreateResampler(AudioFileReader reader, WaveFormat targetFormat, int resamplingQuality)
         {
             if(reader.WaveFormat.SampleRate != targetFormat.SampleRate)
             {
@@ -133,7 +133,8 @@ namespace Zokma.Libs.Audio
 
                 if(resampler != null)
                 {
-                    stream = WaveExtensionMethods.ToSampleProvider(resampler);
+                    //stream = WaveExtensionMethods.ToSampleProvider(resampler);
+                    stream = resampler.ToSampleProvider();
                 }
                 else
                 {
@@ -187,6 +188,7 @@ namespace Zokma.Libs.Audio
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null
                 this.Data     = null;
+                this.FilePath = null;
                 disposedValue = true;
             }
         }

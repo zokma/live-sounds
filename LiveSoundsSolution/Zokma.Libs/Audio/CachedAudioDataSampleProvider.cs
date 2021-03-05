@@ -44,7 +44,7 @@ namespace Zokma.Libs.Audio
             float volume = this.masterVolumeProvider.MasterVolume * this.audioData.Volume;
 
             long availableSamples = this.audioData.Data.Length - position;
-            long samplesToCopy = Math.Min(availableSamples, count);
+            long samplesToCopy    = Math.Min(availableSamples, count);
 
             var source = this.audioData.Data;
 

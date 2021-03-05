@@ -346,6 +346,10 @@ namespace Zokma.Libs.Audio
                 {
                     AddMixerInput(new CachedAudioDataSampleProvider(audioData, token, this, this.useParallel));
                 }
+                else
+                {
+                    AddMixerInput(new AudioDataFileSampleProvider(audioData, token, this, this.useParallel));
+                }
 
                 return token;
             }
