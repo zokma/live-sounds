@@ -324,7 +324,14 @@ namespace Zokma.Libs.Audio
             this.mixer.AddMixerInput(ConvertToRightChannelCount(input));
         }
 
-        public PlaybackToken Play(AudioData audioData, PlaybackMode mode = PlaybackMode.Once)
+        /// <summary>
+        /// Plays Audio data.
+        /// </summary>
+        /// <param name="audioData">Audio data to be played.</param>
+        /// <param name="mode">Audio playback mode.</param>
+        /// <param name="volume">Audio playback volume.</param>
+        /// <returns>Audio playback token to get state or control the audio.</returns>
+        public PlaybackToken Play(AudioData audioData, PlaybackMode mode = PlaybackMode.Once, float volume = 1.0f)
         {
             CheckDisposed();
 
@@ -344,11 +351,11 @@ namespace Zokma.Libs.Audio
 
                 if (audioData.IsCached)
                 {
-                    AddMixerInput(new CachedAudioDataSampleProvider(audioData, token, this, this.useParallel));
+                    AddMixerInput(new CachedAudioDataSampleProvider(audioData, token, this, volume, this.useParallel));
                 }
                 else
                 {
-                    AddMixerInput(new AudioDataFileSampleProvider(audioData, token, this, this.useParallel));
+                    AddMixerInput(new AudioDataFileSampleProvider(audioData, token, this, volume, this.useParallel));
                 }
 
                 return token;

@@ -23,9 +23,10 @@ namespace Zokma.Libs.Audio
         /// <param name="audioData">Audio data.</param>
         /// <param name="playbackToken">Playback token.</param>
         /// <param name="masterVolumeProvider">Master volume provider.</param>
+        /// <param name="volume">Volume for audio playback.</param>
         /// <param name="useParallel">true if use parallel.</param>
-        public CachedAudioDataSampleProvider(AudioData audioData, PlaybackToken playbackToken, IMasterVolumeProvider masterVolumeProvider, bool useParallel = false)
-            : base(audioData, playbackToken, masterVolumeProvider, useParallel)
+        public CachedAudioDataSampleProvider(AudioData audioData, PlaybackToken playbackToken, IMasterVolumeProvider masterVolumeProvider, float volume = 1.0f, bool useParallel = false)
+            : base(audioData, playbackToken, masterVolumeProvider, volume, useParallel)
         {
             this.position = 0L;
         }
@@ -41,7 +42,7 @@ namespace Zokma.Libs.Audio
                 return 0;
             }
 
-            float volume = this.masterVolumeProvider.MasterVolume * this.audioData.Volume;
+            float volume = this.audioData.Volume * this.volume * this.masterVolumeProvider.MasterVolume;
 
             long availableSamples = this.audioData.Data.Length - position;
             long samplesToCopy    = Math.Min(availableSamples, count);

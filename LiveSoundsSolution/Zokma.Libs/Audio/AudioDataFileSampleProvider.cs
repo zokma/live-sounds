@@ -39,9 +39,10 @@ namespace Zokma.Libs.Audio
         /// <param name="audioData">Audio data.</param>
         /// <param name="playbackToken">Playback token.</param>
         /// <param name="masterVolumeProvider">Master volume provider.</param>
+        /// <param name="volume">Volume for audio playback.</param>
         /// <param name="useParallel">true if use parallel.</param>
-        public AudioDataFileSampleProvider(AudioData audioData, PlaybackToken playbackToken, IMasterVolumeProvider masterVolumeProvider, bool useParallel = false)
-            : base(audioData, playbackToken, masterVolumeProvider, useParallel)
+        public AudioDataFileSampleProvider(AudioData audioData, PlaybackToken playbackToken, IMasterVolumeProvider masterVolumeProvider, float volume = 1.0f, bool useParallel = false)
+            : base(audioData, playbackToken, masterVolumeProvider, volume, useParallel)
         {
             this.reader = new AudioFileReader(audioData.FilePath);
             this.isAudioFileReaderDisposed = false;
@@ -69,7 +70,7 @@ namespace Zokma.Libs.Audio
                 return 0;
             }
 
-            float volume = this.masterVolumeProvider.MasterVolume * this.audioData.Volume;
+            float volume = this.audioData.Volume * this.volume * this.masterVolumeProvider.MasterVolume;
 
             int read = this.stream.Read(buffer, offset, count);
 

@@ -28,6 +28,11 @@ namespace Zokma.Libs.Audio
         protected readonly IMasterVolumeProvider masterVolumeProvider;
 
         /// <summary>
+        /// Volume for audio playback.
+        /// </summary>
+        protected readonly float volume;
+
+        /// <summary>
         /// Whether use parallel or not.
         /// </summary>
         protected readonly bool useParallel;
@@ -43,12 +48,14 @@ namespace Zokma.Libs.Audio
         /// <param name="audioData">Audio data.</param>
         /// <param name="playbackToken">Playback token.</param>
         /// <param name="masterVolumeProvider">Master volume provider.</param>
+        /// <param name="volume">Volume for audio playback.</param>
         /// <param name="useParallel">true if use parallel.</param>
-        public AudioDataSampleProvider(AudioData audioData, PlaybackToken playbackToken, IMasterVolumeProvider masterVolumeProvider, bool useParallel = false)
+        public AudioDataSampleProvider(AudioData audioData, PlaybackToken playbackToken, IMasterVolumeProvider masterVolumeProvider, float volume = 1.0f, bool useParallel = false)
         {
             this.audioData            = audioData;
             this.playbackToken        = playbackToken;
             this.masterVolumeProvider = masterVolumeProvider;
+            this.volume               = volume;
             this.useParallel          = useParallel;
         }
 
