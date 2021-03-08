@@ -83,7 +83,7 @@ namespace Zokma.Libs
     /// <summary>
     /// Lock that should be used with using statement.
     /// </summary>
-    public sealed class RockLock : IDisposable
+    public sealed class RockLock
     {
         /// <summary>
         /// Reader Writer lock.
@@ -134,7 +134,10 @@ namespace Zokma.Libs
             return this.writeLock;
         }
 
-        public void Dispose()
+        /// <summary>
+        /// <see cref="ReaderWriterLockSlim"/> will be disposed on destructor.
+        /// </summary>
+        ~RockLock()
         {
             this.rwLock?.Dispose();
         }

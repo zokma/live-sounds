@@ -370,8 +370,6 @@ namespace Zokma.Libs.Audio
                 {
                     this.player?.Dispose();
                     this.State = AudioEngineState.Disposed;
-
-                    this.rockLock?.Dispose();
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
