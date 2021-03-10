@@ -65,6 +65,10 @@ namespace Zokma.Libs.Logging
         /// </summary>
         private static readonly Serilog.Core.LoggingLevelSwitch levelSwitch = new Serilog.Core.LoggingLevelSwitch(Serilog.Events.LogEventLevel.Information);
 
+        /// <summary>
+        /// Whether the logger ignores exception or not.
+        /// </summary>
+        private static bool isExceptionIgnored = true;
 
         /// <summary>
         /// Log Level to be output.
@@ -78,8 +82,8 @@ namespace Zokma.Libs.Logging
 
             set
             {
-                level = value;
                 levelSwitch.MinimumLevel = GetLogEventLevel(value);
+                level = value;
             }
         }
 
@@ -111,30 +115,44 @@ namespace Zokma.Libs.Logging
         /// <param name="logLevel">Initila log level.</param>
         /// <param name="fileSizeBytesLimit">Log file size limit in bytes.</param>
         /// <param name="fileCountLimit">Log file count limit(rolling).</param>
-        public static void Init(string path, LogLevel logLevel = LogLevel.Information, long fileSizeBytesLimit = DEFAULT_FILE_SIZE, int fileCountLimit = DEFAULT_FILE_COUNT)
+        /// <param name="isBuffered">Whether the logger output is buffered or not.</param>
+        /// <param name="isExceptionIgnored">Whether the logger ignores exception or not.</param>
+        public static void Init(string path, LogLevel logLevel = LogLevel.Information, long fileSizeBytesLimit = DEFAULT_FILE_SIZE, int fileCountLimit = DEFAULT_FILE_COUNT, bool isBuffered = false, bool isExceptionIgnored = true)
         {
-            var former = logger as IDisposable;
-
-            logger = DefaultLogger;
-            Serilog.Log.Logger = DefaultLogger;
-
-            fileSizeBytesLimit = Math.Max(Math.Min(fileSizeBytesLimit, MAX_FILE_SIZE ), MIN_FILE_SIZE);
-            fileCountLimit     = Math.Max(Math.Min(fileCountLimit,     MAX_FILE_COUNT), MIN_FILE_COUNT);
-
-            if (former != DefaultLogger)
+            try
             {
-                former?.Dispose();
+                Log.isExceptionIgnored = isExceptionIgnored;
+
+                var former = Log.logger as IDisposable;
+
+                Log.logger         = DefaultLogger;
+                Serilog.Log.Logger = DefaultLogger;
+
+                fileSizeBytesLimit = Math.Max(Math.Min(fileSizeBytesLimit, MAX_FILE_SIZE), MIN_FILE_SIZE);
+                fileCountLimit     = Math.Max(Math.Min(fileCountLimit, MAX_FILE_COUNT),    MIN_FILE_COUNT);
+
+                if (former != DefaultLogger)
+                {
+                    former?.Dispose();
+                }
+
+                var log = new LoggerConfiguration()
+                    .WriteTo.File(path, fileSizeLimitBytes: fileSizeBytesLimit, retainedFileCountLimit: fileCountLimit, rollOnFileSizeLimit: true, buffered: isBuffered, encoding: new UTF8Encoding(false))
+                    .MinimumLevel.ControlledBy(levelSwitch)
+                    .CreateLogger();
+
+                Log.LogLevel = logLevel;
+
+                Log.logger         = log;
+                Serilog.Log.Logger = log;
             }
-
-            var log = new LoggerConfiguration()
-                .WriteTo.File(path, fileSizeLimitBytes: fileSizeBytesLimit, retainedFileCountLimit: fileCountLimit, rollOnFileSizeLimit: true, encoding: new UTF8Encoding(false))
-                .MinimumLevel.ControlledBy(levelSwitch)
-                .CreateLogger();
-
-            LogLevel = logLevel;
-
-            logger = log;
-            Serilog.Log.Logger = log;
+            catch(Exception)
+            {
+                if (!isExceptionIgnored)
+                {
+                    throw;
+                }
+            }
         }
 
         /// <summary>
@@ -142,14 +160,24 @@ namespace Zokma.Libs.Logging
         /// </summary>
         public static void Close()
         {
-            var former = logger as IDisposable;
-
-            logger = DefaultLogger;
-            Serilog.Log.Logger = DefaultLogger;
-
-            if (former != DefaultLogger)
+            try
             {
-                former?.Dispose();
+                var former = logger as IDisposable;
+
+                logger = DefaultLogger;
+                Serilog.Log.Logger = DefaultLogger;
+
+                if (former != DefaultLogger)
+                {
+                    former?.Dispose();
+                }
+            }
+            catch(Exception)
+            {
+                if (!isExceptionIgnored)
+                {
+                    throw;
+                }
             }
         }
 
@@ -174,6 +202,229 @@ namespace Zokma.Libs.Logging
             return result;
         }
 
+        #region WriteLog
+
+        /// <summary>
+        /// Writes a specified level log.
+        /// </summary>
+        /// <param name="level">Log level.</param>
+        /// <param name="message">Log message.</param>
+        private static void Write(Serilog.Events.LogEventLevel level, string message)
+        {
+            try
+            {
+                logger.Write(level, message);
+            }
+            catch (Exception)
+            {
+                if (!isExceptionIgnored)
+                {
+                    throw;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Writes a specified level log.
+        /// </summary>
+        /// <param name="level">Log level.</param>
+        /// <param name="messageTemplate">Log message.</param>
+        /// <param name="propertyValue">The property value for the message template.</param>
+        private static void Write<T>(Serilog.Events.LogEventLevel level, string messageTemplate, T propertyValue)
+        {
+            try
+            {
+                logger.Write(level, messageTemplate, propertyValue);
+            }
+            catch (Exception)
+            {
+                if (!isExceptionIgnored)
+                {
+                    throw;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Writes a specified level log.
+        /// </summary>
+        /// <param name="level">Log level.</param>
+        /// <param name="messageTemplate">Log message.</param>
+        /// <param name="propertyValue0">The property value for the message template.</param>
+        /// <param name="propertyValue1">The property value for the message template.</param>
+        private static void Write<T0, T1>(Serilog.Events.LogEventLevel level, string messageTemplate, T0 propertyValue0, T1 propertyValue1)
+        {
+            try
+            {
+                logger.Write(level, messageTemplate, propertyValue0, propertyValue1);
+            }
+            catch (Exception)
+            {
+                if (!isExceptionIgnored)
+                {
+                    throw;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Writes a specified level log.
+        /// </summary>
+        /// <param name="level">Log level.</param>
+        /// <param name="messageTemplate">Log message.</param>
+        /// <param name="propertyValue0">The property value for the message template.</param>
+        /// <param name="propertyValue1">The property value for the message template.</param>
+        /// <param name="propertyValue2">The property value for the message template.</param>
+        private static void Write<T0, T1, T2>(Serilog.Events.LogEventLevel level, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
+        {
+            try
+            {
+                logger.Write(level, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
+            }
+            catch (Exception)
+            {
+                if (!isExceptionIgnored)
+                {
+                    throw;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Writes a specified level log.
+        /// </summary>
+        /// <param name="level">Log level.</param>
+        /// <param name="messageTemplate">Log message.</param>
+        /// <param name="propertyValues">The property values for the message template.</param>
+        private static void Write(Serilog.Events.LogEventLevel level, string messageTemplate, params object[] propertyValues)
+        {
+            try
+            {
+                logger.Write(level, messageTemplate, propertyValues);
+            }
+            catch (Exception)
+            {
+                if (!isExceptionIgnored)
+                {
+                    throw;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Writes a specified level log.
+        /// </summary>
+        /// <param name="level">Log level.</param>
+        /// <param name="exception">Exception related with this log message.</param>
+        /// <param name="message">Log message.</param>
+        private static void Write(Serilog.Events.LogEventLevel level, Exception exception, string message)
+        {
+            try
+            {
+                logger.Write(level, exception, message);
+            }
+            catch (Exception)
+            {
+                if (!isExceptionIgnored)
+                {
+                    throw;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Writes a specified level log.
+        /// </summary>
+        /// <param name="level">Log level.</param>
+        /// <param name="exception">Exception related with this log message.</param>
+        /// <param name="messageTemplate">Log message.</param>
+        /// <param name="propertyValue">The property value for the message template.</param>
+        private static void Write<T>(Serilog.Events.LogEventLevel level, Exception exception, string messageTemplate, T propertyValue)
+        {
+            try
+            {
+                logger.Write(level, exception, messageTemplate, propertyValue);
+            }
+            catch (Exception)
+            {
+                if (!isExceptionIgnored)
+                {
+                    throw;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Writes a specified level log.
+        /// </summary>
+        /// <param name="level">Log level.</param>
+        /// <param name="exception">Exception related with this log message.</param>
+        /// <param name="messageTemplate">Log message.</param>
+        /// <param name="propertyValue0">The property value for the message template.</param>
+        /// <param name="propertyValue1">The property value for the message template.</param>
+        private static void Write<T0, T1>(Serilog.Events.LogEventLevel level, Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1)
+        {
+            try
+            {
+                logger.Write(level, exception, messageTemplate, propertyValue0, propertyValue1);
+            }
+            catch (Exception)
+            {
+                if (!isExceptionIgnored)
+                {
+                    throw;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Writes a specified level log.
+        /// </summary>
+        /// <param name="level">Log level.</param>
+        /// <param name="exception">Exception related with this log message.</param>
+        /// <param name="messageTemplate">Log message.</param>
+        /// <param name="propertyValue0">The property value for the message template.</param>
+        /// <param name="propertyValue1">The property value for the message template.</param>
+        /// <param name="propertyValue2">The property value for the message template.</param>
+        private static void Write<T0, T1, T2>(Serilog.Events.LogEventLevel level, Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
+        {
+            try
+            {
+                logger.Write(level, exception, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
+            }
+            catch (Exception)
+            {
+                if (!isExceptionIgnored)
+                {
+                    throw;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Writes a specified level log.
+        /// </summary>
+        /// <param name="level">Log level.</param>
+        /// <param name="exception">Exception related with this log message.</param>
+        /// <param name="messageTemplate">Log message.</param>
+        /// <param name="propertyValues">The property values for the message template.</param>
+        private static void Write(Serilog.Events.LogEventLevel level, Exception exception, string messageTemplate, params object[] propertyValues)
+        {
+            try
+            {
+                logger.Write(level, exception, messageTemplate, propertyValues);
+            }
+            catch (Exception)
+            {
+                if (!isExceptionIgnored)
+                {
+                    throw;
+                }
+            }
+        }
+
+        #endregion
+
         #region WriteVerbose
 
         /// <summary>
@@ -182,7 +433,7 @@ namespace Zokma.Libs.Logging
         /// <param name="message">Log message.</param>
         public static void Verbose(string message)
         {
-            logger.Verbose(message);
+            Write(Serilog.Events.LogEventLevel.Verbose, message);
         }
 
         /// <summary>
@@ -192,7 +443,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue">The property value for the message template.</param>
         public static void Verbose<T>(string messageTemplate, T propertyValue)
         {
-            logger.Verbose(messageTemplate, propertyValue);
+            Write(Serilog.Events.LogEventLevel.Verbose, messageTemplate, propertyValue);
         }
 
         /// <summary>
@@ -203,7 +454,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue1">The property value for the message template.</param>
         public static void Verbose<T0, T1>(string messageTemplate, T0 propertyValue0, T1 propertyValue1)
         {
-            logger.Verbose(messageTemplate, propertyValue0, propertyValue1);
+            Write(Serilog.Events.LogEventLevel.Verbose, messageTemplate, propertyValue0, propertyValue1);
         }
 
         /// <summary>
@@ -215,7 +466,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue2">The property value for the message template.</param>
         public static void Verbose<T0, T1, T2>(string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
         {
-            logger.Verbose(messageTemplate, propertyValue0, propertyValue1, propertyValue2);
+            Write(Serilog.Events.LogEventLevel.Verbose, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
         }
 
         /// <summary>
@@ -225,7 +476,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValues">The property values for the message template.</param>
         public static void Verbose(string messageTemplate, params object[] propertyValues)
         {
-            logger.Verbose(messageTemplate, propertyValues);
+            Write(Serilog.Events.LogEventLevel.Verbose, messageTemplate, propertyValues);
         }
 
         /// <summary>
@@ -235,7 +486,7 @@ namespace Zokma.Libs.Logging
         /// <param name="message">Log message.</param>
         public static void Verbose(Exception exception, string message)
         {
-            logger.Verbose(exception, message);
+            Write(Serilog.Events.LogEventLevel.Verbose, exception, message);
         }
 
         /// <summary>
@@ -246,7 +497,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue">The property value for the message template.</param>
         public static void Verbose<T>(Exception exception, string messageTemplate, T propertyValue)
         {
-            logger.Verbose(exception, messageTemplate, propertyValue);
+            Write(Serilog.Events.LogEventLevel.Verbose, exception, messageTemplate, propertyValue);
         }
 
         /// <summary>
@@ -258,7 +509,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue1">The property value for the message template.</param>
         public static void Verbose<T0, T1>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1)
         {
-            logger.Verbose(exception, messageTemplate, propertyValue0, propertyValue1);
+            Write(Serilog.Events.LogEventLevel.Verbose, exception, messageTemplate, propertyValue0, propertyValue1);
         }
 
         /// <summary>
@@ -271,7 +522,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue2">The property value for the message template.</param>
         public static void Verbose<T0, T1, T2>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
         {
-            logger.Verbose(exception, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
+            Write(Serilog.Events.LogEventLevel.Verbose, exception, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
         }
 
         /// <summary>
@@ -282,7 +533,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValues">The property values for the message template.</param>
         public static void Verbose(Exception exception, string messageTemplate, params object[] propertyValues)
         {
-            logger.Verbose(exception, messageTemplate, propertyValues);
+            Write(Serilog.Events.LogEventLevel.Verbose, exception, messageTemplate, propertyValues);
         }
 
         #endregion
@@ -295,7 +546,7 @@ namespace Zokma.Libs.Logging
         /// <param name="message">Log message.</param>
         public static void Debug(string message)
         {
-            logger.Debug(message);
+            Write(Serilog.Events.LogEventLevel.Debug, message);
         }
 
         /// <summary>
@@ -305,7 +556,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue">The property value for the message template.</param>
         public static void Debug<T>(string messageTemplate, T propertyValue)
         {
-            logger.Debug(messageTemplate, propertyValue);
+            Write(Serilog.Events.LogEventLevel.Debug, messageTemplate, propertyValue);
         }
 
         /// <summary>
@@ -316,7 +567,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue1">The property value for the message template.</param>
         public static void Debug<T0, T1>(string messageTemplate, T0 propertyValue0, T1 propertyValue1)
         {
-            logger.Debug(messageTemplate, propertyValue0, propertyValue1);
+            Write(Serilog.Events.LogEventLevel.Debug, messageTemplate, propertyValue0, propertyValue1);
         }
 
         /// <summary>
@@ -328,7 +579,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue2">The property value for the message template.</param>
         public static void Debug<T0, T1, T2>(string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
         {
-            logger.Debug(messageTemplate, propertyValue0, propertyValue1, propertyValue2);
+            Write(Serilog.Events.LogEventLevel.Debug, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
         }
 
         /// <summary>
@@ -338,7 +589,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValues">The property values for the message template.</param>
         public static void Debug(string messageTemplate, params object[] propertyValues)
         {
-            logger.Debug(messageTemplate, propertyValues);
+            Write(Serilog.Events.LogEventLevel.Debug, messageTemplate, propertyValues);
         }
 
         /// <summary>
@@ -348,7 +599,7 @@ namespace Zokma.Libs.Logging
         /// <param name="message">Log message.</param>
         public static void Debug(Exception exception, string message)
         {
-            logger.Debug(exception, message);
+            Write(Serilog.Events.LogEventLevel.Debug, exception, message);
         }
 
         /// <summary>
@@ -359,7 +610,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue">The property value for the message template.</param>
         public static void Debug<T>(Exception exception, string messageTemplate, T propertyValue)
         {
-            logger.Debug(exception, messageTemplate, propertyValue);
+            Write(Serilog.Events.LogEventLevel.Debug, exception, messageTemplate, propertyValue);
         }
 
         /// <summary>
@@ -371,7 +622,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue1">The property value for the message template.</param>
         public static void Debug<T0, T1>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1)
         {
-            logger.Debug(exception, messageTemplate, propertyValue0, propertyValue1);
+            Write(Serilog.Events.LogEventLevel.Debug, exception, messageTemplate, propertyValue0, propertyValue1);
         }
 
         /// <summary>
@@ -384,7 +635,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue2">The property value for the message template.</param>
         public static void Debug<T0, T1, T2>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
         {
-            logger.Debug(exception, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
+            Write(Serilog.Events.LogEventLevel.Debug, exception, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
         }
 
         /// <summary>
@@ -395,7 +646,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValues">The property values for the message template.</param>
         public static void Debug(Exception exception, string messageTemplate, params object[] propertyValues)
         {
-            logger.Debug(exception, messageTemplate, propertyValues);
+            Write(Serilog.Events.LogEventLevel.Debug, exception, messageTemplate, propertyValues);
         }
 
         #endregion
@@ -408,7 +659,7 @@ namespace Zokma.Libs.Logging
         /// <param name="message">Log message.</param>
         public static void Information(string message)
         {
-            logger.Information(message);
+            Write(Serilog.Events.LogEventLevel.Information, message);
         }
 
         /// <summary>
@@ -418,7 +669,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue">The property value for the message template.</param>
         public static void Information<T>(string messageTemplate, T propertyValue)
         {
-            logger.Information(messageTemplate, propertyValue);
+            Write(Serilog.Events.LogEventLevel.Information, messageTemplate, propertyValue);
         }
 
         /// <summary>
@@ -429,7 +680,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue1">The property value for the message template.</param>
         public static void Information<T0, T1>(string messageTemplate, T0 propertyValue0, T1 propertyValue1)
         {
-            logger.Information(messageTemplate, propertyValue0, propertyValue1);
+            Write(Serilog.Events.LogEventLevel.Information, messageTemplate, propertyValue0, propertyValue1);
         }
 
         /// <summary>
@@ -441,7 +692,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue2">The property value for the message template.</param>
         public static void Information<T0, T1, T2>(string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
         {
-            logger.Information(messageTemplate, propertyValue0, propertyValue1, propertyValue2);
+            Write(Serilog.Events.LogEventLevel.Information, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
         }
 
         /// <summary>
@@ -451,7 +702,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValues">The property values for the message template.</param>
         public static void Information(string messageTemplate, params object[] propertyValues)
         {
-            logger.Information(messageTemplate, propertyValues);
+            Write(Serilog.Events.LogEventLevel.Information, messageTemplate, propertyValues);
         }
 
         /// <summary>
@@ -461,7 +712,7 @@ namespace Zokma.Libs.Logging
         /// <param name="message">Log message.</param>
         public static void Information(Exception exception, string message)
         {
-            logger.Information(exception, message);
+            Write(Serilog.Events.LogEventLevel.Information, exception, message);
         }
 
         /// <summary>
@@ -472,7 +723,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue">The property value for the message template.</param>
         public static void Information<T>(Exception exception, string messageTemplate, T propertyValue)
         {
-            logger.Information(exception, messageTemplate, propertyValue);
+            Write(Serilog.Events.LogEventLevel.Information, exception, messageTemplate, propertyValue);
         }
 
         /// <summary>
@@ -484,7 +735,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue1">The property value for the message template.</param>
         public static void Information<T0, T1>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1)
         {
-            logger.Information(exception, messageTemplate, propertyValue0, propertyValue1);
+            Write(Serilog.Events.LogEventLevel.Information, exception, messageTemplate, propertyValue0, propertyValue1);
         }
 
         /// <summary>
@@ -497,7 +748,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue2">The property value for the message template.</param>
         public static void Information<T0, T1, T2>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
         {
-            logger.Information(exception, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
+            Write(Serilog.Events.LogEventLevel.Information, exception, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
         }
 
         /// <summary>
@@ -508,7 +759,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValues">The property values for the message template.</param>
         public static void Information(Exception exception, string messageTemplate, params object[] propertyValues)
         {
-            logger.Information(exception, messageTemplate, propertyValues);
+            Write(Serilog.Events.LogEventLevel.Information, exception, messageTemplate, propertyValues);
         }
 
         #endregion
@@ -521,7 +772,7 @@ namespace Zokma.Libs.Logging
         /// <param name="message">Log message.</param>
         public static void Warning(string message)
         {
-            logger.Warning(message);
+            Write(Serilog.Events.LogEventLevel.Warning, message);
         }
 
         /// <summary>
@@ -531,7 +782,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue">The property value for the message template.</param>
         public static void Warning<T>(string messageTemplate, T propertyValue)
         {
-            logger.Warning(messageTemplate, propertyValue);
+            Write(Serilog.Events.LogEventLevel.Warning, messageTemplate, propertyValue);
         }
 
         /// <summary>
@@ -542,7 +793,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue1">The property value for the message template.</param>
         public static void Warning<T0, T1>(string messageTemplate, T0 propertyValue0, T1 propertyValue1)
         {
-            logger.Warning(messageTemplate, propertyValue0, propertyValue1);
+            Write(Serilog.Events.LogEventLevel.Warning, messageTemplate, propertyValue0, propertyValue1);
         }
 
         /// <summary>
@@ -554,7 +805,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue2">The property value for the message template.</param>
         public static void Warning<T0, T1, T2>(string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
         {
-            logger.Warning(messageTemplate, propertyValue0, propertyValue1, propertyValue2);
+            Write(Serilog.Events.LogEventLevel.Warning, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
         }
 
         /// <summary>
@@ -564,7 +815,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValues">The property values for the message template.</param>
         public static void Warning(string messageTemplate, params object[] propertyValues)
         {
-            logger.Warning(messageTemplate, propertyValues);
+            Write(Serilog.Events.LogEventLevel.Warning, messageTemplate, propertyValues);
         }
 
         /// <summary>
@@ -574,7 +825,7 @@ namespace Zokma.Libs.Logging
         /// <param name="message">Log message.</param>
         public static void Warning(Exception exception, string message)
         {
-            logger.Warning(exception, message);
+            Write(Serilog.Events.LogEventLevel.Warning, exception, message);
         }
 
         /// <summary>
@@ -585,7 +836,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue">The property value for the message template.</param>
         public static void Warning<T>(Exception exception, string messageTemplate, T propertyValue)
         {
-            logger.Warning(exception, messageTemplate, propertyValue);
+            Write(Serilog.Events.LogEventLevel.Warning, exception, messageTemplate, propertyValue);
         }
 
         /// <summary>
@@ -597,7 +848,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue1">The property value for the message template.</param>
         public static void Warning<T0, T1>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1)
         {
-            logger.Warning(exception, messageTemplate, propertyValue0, propertyValue1);
+            Write(Serilog.Events.LogEventLevel.Warning, exception, messageTemplate, propertyValue0, propertyValue1);
         }
 
         /// <summary>
@@ -610,7 +861,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue2">The property value for the message template.</param>
         public static void Warning<T0, T1, T2>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
         {
-            logger.Warning(exception, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
+            Write(Serilog.Events.LogEventLevel.Warning, exception, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
         }
 
         /// <summary>
@@ -621,7 +872,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValues">The property values for the message template.</param>
         public static void Warning(Exception exception, string messageTemplate, params object[] propertyValues)
         {
-            logger.Warning(exception, messageTemplate, propertyValues);
+            Write(Serilog.Events.LogEventLevel.Warning, exception, messageTemplate, propertyValues);
         }
 
         #endregion
@@ -634,7 +885,7 @@ namespace Zokma.Libs.Logging
         /// <param name="message">Log message.</param>
         public static void Error(string message)
         {
-            logger.Error(message);
+            Write(Serilog.Events.LogEventLevel.Error, message);
         }
 
         /// <summary>
@@ -644,7 +895,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue">The property value for the message template.</param>
         public static void Error<T>(string messageTemplate, T propertyValue)
         {
-            logger.Error(messageTemplate, propertyValue);
+            Write(Serilog.Events.LogEventLevel.Error, messageTemplate, propertyValue);
         }
 
         /// <summary>
@@ -655,7 +906,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue1">The property value for the message template.</param>
         public static void Error<T0, T1>(string messageTemplate, T0 propertyValue0, T1 propertyValue1)
         {
-            logger.Error(messageTemplate, propertyValue0, propertyValue1);
+            Write(Serilog.Events.LogEventLevel.Error, messageTemplate, propertyValue0, propertyValue1);
         }
 
         /// <summary>
@@ -667,7 +918,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue2">The property value for the message template.</param>
         public static void Error<T0, T1, T2>(string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
         {
-            logger.Error(messageTemplate, propertyValue0, propertyValue1, propertyValue2);
+            Write(Serilog.Events.LogEventLevel.Error, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
         }
 
         /// <summary>
@@ -677,7 +928,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValues">The property values for the message template.</param>
         public static void Error(string messageTemplate, params object[] propertyValues)
         {
-            logger.Error(messageTemplate, propertyValues);
+            Write(Serilog.Events.LogEventLevel.Error, messageTemplate, propertyValues);
         }
 
         /// <summary>
@@ -687,7 +938,7 @@ namespace Zokma.Libs.Logging
         /// <param name="message">Log message.</param>
         public static void Error(Exception exception, string message)
         {
-            logger.Error(exception, message);
+            Write(Serilog.Events.LogEventLevel.Error, exception, message);
         }
 
         /// <summary>
@@ -698,7 +949,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue">The property value for the message template.</param>
         public static void Error<T>(Exception exception, string messageTemplate, T propertyValue)
         {
-            logger.Error(exception, messageTemplate, propertyValue);
+            Write(Serilog.Events.LogEventLevel.Error, exception, messageTemplate, propertyValue);
         }
 
         /// <summary>
@@ -710,7 +961,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue1">The property value for the message template.</param>
         public static void Error<T0, T1>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1)
         {
-            logger.Error(exception, messageTemplate, propertyValue0, propertyValue1);
+            Write(Serilog.Events.LogEventLevel.Error, exception, messageTemplate, propertyValue0, propertyValue1);
         }
 
         /// <summary>
@@ -723,7 +974,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue2">The property value for the message template.</param>
         public static void Error<T0, T1, T2>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
         {
-            logger.Error(exception, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
+            Write(Serilog.Events.LogEventLevel.Error, exception, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
         }
 
         /// <summary>
@@ -734,7 +985,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValues">The property values for the message template.</param>
         public static void Error(Exception exception, string messageTemplate, params object[] propertyValues)
         {
-            logger.Error(exception, messageTemplate, propertyValues);
+            Write(Serilog.Events.LogEventLevel.Error, exception, messageTemplate, propertyValues);
         }
 
         #endregion
@@ -747,7 +998,7 @@ namespace Zokma.Libs.Logging
         /// <param name="message">Log message.</param>
         public static void Fatal(string message)
         {
-            logger.Fatal(message);
+            Write(Serilog.Events.LogEventLevel.Fatal, message);
         }
 
         /// <summary>
@@ -757,7 +1008,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue">The property value for the message template.</param>
         public static void Fatal<T>(string messageTemplate, T propertyValue)
         {
-            logger.Fatal(messageTemplate, propertyValue);
+            Write(Serilog.Events.LogEventLevel.Fatal, messageTemplate, propertyValue);
         }
 
         /// <summary>
@@ -768,7 +1019,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue1">The property value for the message template.</param>
         public static void Fatal<T0, T1>(string messageTemplate, T0 propertyValue0, T1 propertyValue1)
         {
-            logger.Fatal(messageTemplate, propertyValue0, propertyValue1);
+            Write(Serilog.Events.LogEventLevel.Fatal, messageTemplate, propertyValue0, propertyValue1);
         }
 
         /// <summary>
@@ -780,7 +1031,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue2">The property value for the message template.</param>
         public static void Fatal<T0, T1, T2>(string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
         {
-            logger.Fatal(messageTemplate, propertyValue0, propertyValue1, propertyValue2);
+            Write(Serilog.Events.LogEventLevel.Fatal, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
         }
 
         /// <summary>
@@ -790,7 +1041,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValues">The property values for the message template.</param>
         public static void Fatal(string messageTemplate, params object[] propertyValues)
         {
-            logger.Fatal(messageTemplate, propertyValues);
+            Write(Serilog.Events.LogEventLevel.Fatal, messageTemplate, propertyValues);
         }
 
         /// <summary>
@@ -800,7 +1051,7 @@ namespace Zokma.Libs.Logging
         /// <param name="message">Log message.</param>
         public static void Fatal(Exception exception, string message)
         {
-            logger.Fatal(exception, message);
+            Write(Serilog.Events.LogEventLevel.Fatal, exception, message);
         }
 
         /// <summary>
@@ -811,7 +1062,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue">The property value for the message template.</param>
         public static void Fatal<T>(Exception exception, string messageTemplate, T propertyValue)
         {
-            logger.Fatal(exception, messageTemplate, propertyValue);
+            Write(Serilog.Events.LogEventLevel.Fatal, exception, messageTemplate, propertyValue);
         }
 
         /// <summary>
@@ -823,7 +1074,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue1">The property value for the message template.</param>
         public static void Fatal<T0, T1>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1)
         {
-            logger.Fatal(exception, messageTemplate, propertyValue0, propertyValue1);
+            Write(Serilog.Events.LogEventLevel.Fatal, exception, messageTemplate, propertyValue0, propertyValue1);
         }
 
         /// <summary>
@@ -836,7 +1087,7 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValue2">The property value for the message template.</param>
         public static void Fatal<T0, T1, T2>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
         {
-            logger.Fatal(exception, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
+            Write(Serilog.Events.LogEventLevel.Fatal, exception, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
         }
 
         /// <summary>
@@ -847,9 +1098,10 @@ namespace Zokma.Libs.Logging
         /// <param name="propertyValues">The property values for the message template.</param>
         public static void Fatal(Exception exception, string messageTemplate, params object[] propertyValues)
         {
-            logger.Fatal(exception, messageTemplate, propertyValues);
+            Write(Serilog.Events.LogEventLevel.Fatal, exception, messageTemplate, propertyValues);
         }
 
         #endregion
+
     }
 }
