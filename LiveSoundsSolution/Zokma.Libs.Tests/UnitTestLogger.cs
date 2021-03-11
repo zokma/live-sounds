@@ -212,6 +212,24 @@ namespace Zokma.Libs.Tests
             CheckLogLevel(LogLevel.Error);
             CheckLogLevel(LogLevel.Fatal);
 
+            Log.LogLevel = LogLevel.Verbose;
+            Log.Information("Logger will be closed.");
+
+            Log.Close();
+            Log.Verbose("This message will not be output.");
+            Log.Debug("This message will not be output.");
+            Log.Information("This message will not be output.");
+            Log.Warning("This message will not be output.");
+            Log.Error("This message will not be output.");
+            Log.Fatal("This message will not be output.");
+
+            Assert.False(Log.IsEnabled(LogLevel.Verbose));
+            Assert.False(Log.IsEnabled(LogLevel.Debug));
+            Assert.False(Log.IsEnabled(LogLevel.Information));
+            Assert.False(Log.IsEnabled(LogLevel.Warning));
+            Assert.False(Log.IsEnabled(LogLevel.Error));
+            Assert.False(Log.IsEnabled(LogLevel.Fatal));
+
             output.WriteLine("Please check log files at: {0}", logDir.FindPathName(String.Empty));
         }
     }

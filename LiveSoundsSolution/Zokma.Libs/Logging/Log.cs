@@ -46,9 +46,8 @@ namespace Zokma.Libs.Logging
 
         /// <summary>
         /// Default logger.
-        /// Expects SilentLogger(internal access), but may be updated somewhere.
         /// </summary>
-        private static readonly Serilog.ILogger DefaultLogger = Serilog.Log.Logger;
+        private static readonly Serilog.ILogger DefaultLogger = EmptyLogger.Instance;
 
         /// <summary>
         /// Internal logger.
@@ -69,6 +68,11 @@ namespace Zokma.Libs.Logging
         /// Whether the logger ignores exception or not.
         /// </summary>
         private static bool isExceptionIgnored = true;
+
+        /// <summary>
+        /// Whether the logger is closed after exception thrown.
+        /// </summary>
+        private static bool isClosedAfterException = true;
 
         /// <summary>
         /// Log Level to be output.
@@ -117,31 +121,38 @@ namespace Zokma.Libs.Logging
         /// <param name="fileCountLimit">Log file count limit(rolling).</param>
         /// <param name="isBuffered">Whether the logger output is buffered or not.</param>
         /// <param name="isExceptionIgnored">Whether the logger ignores exception or not.</param>
-        public static void Init(string path, LogLevel logLevel = LogLevel.Information, long fileSizeBytesLimit = DEFAULT_FILE_SIZE, int fileCountLimit = DEFAULT_FILE_COUNT, bool isBuffered = false, bool isExceptionIgnored = true)
+        /// <param name="isClosedAfterException">Whether the logger is closed after exception thrown.</param>
+        public static void Init(string path, LogLevel logLevel = LogLevel.Information, long fileSizeBytesLimit = DEFAULT_FILE_SIZE, int fileCountLimit = DEFAULT_FILE_COUNT, bool isBuffered = false, bool isExceptionIgnored = true, bool isClosedAfterException = true)
         {
             try
             {
-                Log.isExceptionIgnored = isExceptionIgnored;
+                Log.isExceptionIgnored     = isExceptionIgnored;
+                Log.isClosedAfterException = isClosedAfterException;
 
-                var former = Log.logger as IDisposable;
+                var former = Log.logger;
 
                 Log.logger         = DefaultLogger;
                 Serilog.Log.Logger = DefaultLogger;
 
-                fileSizeBytesLimit = Math.Max(Math.Min(fileSizeBytesLimit, MAX_FILE_SIZE), MIN_FILE_SIZE);
-                fileCountLimit     = Math.Max(Math.Min(fileCountLimit, MAX_FILE_COUNT),    MIN_FILE_COUNT);
+                Log.LogLevel = logLevel;
 
                 if (former != DefaultLogger)
                 {
-                    former?.Dispose();
+                    (former as IDisposable)?.Dispose();
                 }
+
+                if(fileSizeBytesLimit <= 0 || fileCountLimit <= 0)
+                {
+                    return;
+                }
+
+                fileSizeBytesLimit = Math.Max(Math.Min(fileSizeBytesLimit, MAX_FILE_SIZE), MIN_FILE_SIZE);
+                fileCountLimit     = Math.Max(Math.Min(fileCountLimit, MAX_FILE_COUNT), MIN_FILE_COUNT);
 
                 var log = new LoggerConfiguration()
                     .WriteTo.File(path, fileSizeLimitBytes: fileSizeBytesLimit, retainedFileCountLimit: fileCountLimit, rollOnFileSizeLimit: true, buffered: isBuffered, encoding: new UTF8Encoding(false))
                     .MinimumLevel.ControlledBy(levelSwitch)
                     .CreateLogger();
-
-                Log.LogLevel = logLevel;
 
                 Log.logger         = log;
                 Serilog.Log.Logger = log;
@@ -162,14 +173,14 @@ namespace Zokma.Libs.Logging
         {
             try
             {
-                var former = logger as IDisposable;
+                var former = logger;
 
                 logger = DefaultLogger;
                 Serilog.Log.Logger = DefaultLogger;
 
                 if (former != DefaultLogger)
                 {
-                    former?.Dispose();
+                    (former as IDisposable)?.Dispose();
                 }
             }
             catch(Exception)
@@ -217,6 +228,11 @@ namespace Zokma.Libs.Logging
             }
             catch (Exception)
             {
+                if(isClosedAfterException)
+                {
+                    Close();
+                }
+
                 if (!isExceptionIgnored)
                 {
                     throw;
@@ -238,6 +254,11 @@ namespace Zokma.Libs.Logging
             }
             catch (Exception)
             {
+                if (isClosedAfterException)
+                {
+                    Close();
+                }
+
                 if (!isExceptionIgnored)
                 {
                     throw;
@@ -260,6 +281,11 @@ namespace Zokma.Libs.Logging
             }
             catch (Exception)
             {
+                if (isClosedAfterException)
+                {
+                    Close();
+                }
+
                 if (!isExceptionIgnored)
                 {
                     throw;
@@ -283,6 +309,11 @@ namespace Zokma.Libs.Logging
             }
             catch (Exception)
             {
+                if (isClosedAfterException)
+                {
+                    Close();
+                }
+
                 if (!isExceptionIgnored)
                 {
                     throw;
@@ -304,6 +335,11 @@ namespace Zokma.Libs.Logging
             }
             catch (Exception)
             {
+                if (isClosedAfterException)
+                {
+                    Close();
+                }
+
                 if (!isExceptionIgnored)
                 {
                     throw;
@@ -325,6 +361,11 @@ namespace Zokma.Libs.Logging
             }
             catch (Exception)
             {
+                if (isClosedAfterException)
+                {
+                    Close();
+                }
+
                 if (!isExceptionIgnored)
                 {
                     throw;
@@ -347,6 +388,11 @@ namespace Zokma.Libs.Logging
             }
             catch (Exception)
             {
+                if (isClosedAfterException)
+                {
+                    Close();
+                }
+
                 if (!isExceptionIgnored)
                 {
                     throw;
@@ -370,6 +416,11 @@ namespace Zokma.Libs.Logging
             }
             catch (Exception)
             {
+                if (isClosedAfterException)
+                {
+                    Close();
+                }
+
                 if (!isExceptionIgnored)
                 {
                     throw;
@@ -394,6 +445,11 @@ namespace Zokma.Libs.Logging
             }
             catch (Exception)
             {
+                if (isClosedAfterException)
+                {
+                    Close();
+                }
+
                 if (!isExceptionIgnored)
                 {
                     throw;
@@ -416,6 +472,11 @@ namespace Zokma.Libs.Logging
             }
             catch (Exception)
             {
+                if (isClosedAfterException)
+                {
+                    Close();
+                }
+
                 if (!isExceptionIgnored)
                 {
                     throw;
