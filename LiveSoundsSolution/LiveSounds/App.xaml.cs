@@ -23,8 +23,7 @@ namespace LiveSounds
 
             this.instanceId = Guid.NewGuid();
 
-            var log = new Pathfinder("Logs");
-            Log.Init(log.FindPathName("LiveSounds.log"));
+            Log.Init(Pathfinder.ApplicationRoot.FindPathName("Logs", "LiveSounds.log"));
             Log.Information("OnStartup: InstanceId = {InstanceId}", instanceId.ToString());
         }
 
