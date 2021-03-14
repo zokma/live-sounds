@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Authors>Zok MADAO</Authors>
+    <Company>ZOKMA LABS.</Company>
+    <Product>Live Sounds</Product>
+    <Version>0.4.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Zokma.Libs\Zokma.Libs.csproj" />
+  </ItemGroup>
+
+</Project>
