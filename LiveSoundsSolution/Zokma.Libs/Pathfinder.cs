@@ -223,6 +223,18 @@ namespace Zokma.Libs
         /// <summary>
         /// Finds the full path info under the sub directory of the application.
         /// </summary>
+        /// <param name="baseDirectory">The base directory under sub dir of this application.</param>
+        /// <param name="paths">The paths from base directory.</param>
+        /// <returns>The full path info under the sub directory of the application.</returns>
+        /// <exception cref="ArgumentException">The path is invalid.</exception>
+        public FileInfo FindPathInfo(params string[] paths)
+        {
+            return FindPathInfo(this.BaseDirectory, paths);
+        }
+
+        /// <summary>
+        /// Finds the full path info under the sub directory of the application.
+        /// </summary>
         /// <param name="path">The path from app base directory.</param>
         /// <returns>The full path info under the sub directory of the application.</returns>
         /// <exception cref="ArgumentException">The path is invalid.</exception>
@@ -230,5 +242,17 @@ namespace Zokma.Libs
         {
             return FindPathInfo(path).FullName;
         }
+
+        /// <summary>
+        /// Finds the full path info under the sub directory of the application.
+        /// </summary>
+        /// <param name="paths">The paths from app base directory.</param>
+        /// <returns>The full path info under the sub directory of the application.</returns>
+        /// <exception cref="ArgumentException">The path is invalid.</exception>
+        public string FindPathName(params string[] paths)
+        {
+            return FindPathInfo(paths).FullName;
+        }
+
     }
 }

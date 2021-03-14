@@ -4,8 +4,6 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <Authors>Zok MADAO</Authors>
     <Company>ZOKMA LABS.</Company>
-    <AssemblyVersion>0.4.0.0</AssemblyVersion>
-    <FileVersion>0.4.0.0</FileVersion>
     <Version>0.4.0</Version>
   </PropertyGroup>
 
