@@ -2,8 +2,10 @@
 
 # Directory to exclude from Git.
 # Used to exclude testing data that cannot be pushed to GitHub because of copyrights.
-[Gg]it[Ee]xclude/
-[Gg]it[Ee]xcludes/
+**/[Gg]it[Ee]xclude/*
+**/[Gg]it[Ee]xcludes/*
+!**/[Gg]it[Ee]xclude/.gitkeep
+!**/[Gg]it[Ee]xcludes/.gitkeep
 
 
 ## Ignore Visual Studio temporary files, build results, and

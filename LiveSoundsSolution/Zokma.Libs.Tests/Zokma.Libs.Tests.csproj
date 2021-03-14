@@ -30,10 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="TestData\AudioFiles\GitExclude\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="TestData\AudioFiles\AudioFiles.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

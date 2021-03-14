@@ -14,10 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="TestData\GitExclude\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="TestData\GitExclude\Test01.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
