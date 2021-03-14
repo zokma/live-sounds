@@ -57,6 +57,26 @@ namespace Zokma.Libs.Tests
             Assert.StartsWith(Pathfinder.ApplicationDirectory, info1.FullName);
         }
 
+        [Fact]
+        public void TestPathfinderFindSubDir()
+        {
+            var pf1 = new Pathfinder("sub1", "sub2", "sub3");
+            var pf2 = new Pathfinder("sub1").GetSubPathfinder("sub2").GetSubPathfinder("sub3");
+            var pf3 = new Pathfinder("sub1").GetSubPathfinder("sub2", "sub3");
+
+            output.WriteLine("Base P1: {0}", pf1.BaseDirectory);
+            output.WriteLine("Base P2: {0}", pf2.BaseDirectory);
+            output.WriteLine("Base P3: {0}", pf3.BaseDirectory);
+
+            Assert.Equal(pf1.BaseDirectory, pf2.BaseDirectory);
+            Assert.Equal(pf2.BaseDirectory, pf3.BaseDirectory);
+
+            Assert.Equal(pf1.FindPathName("test.dat"), pf2.FindPathName("test.dat"));
+            Assert.Equal(pf2.FindPathName("test.dat"), pf3.FindPathName("test.dat"));
+
+            Assert.StartsWith(Pathfinder.ApplicationDirectory, pf1.BaseDirectory);
+        }
+
         [Theory]
         [InlineData("../data/test.dat")]
         [InlineData("/data/test.dat")]
