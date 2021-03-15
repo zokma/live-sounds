@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -31,15 +32,26 @@ namespace Zokma.Libs
 
         static Pathfinder()
         {
-            string entryPath = Assembly.GetEntryAssembly()?.Location;
+            string procPath = null;
 
-            if (!String.IsNullOrEmpty(entryPath))
+            try
             {
-                ApplicationDirectory = Path.GetDirectoryName(entryPath);
+                procPath = Process.GetCurrentProcess()?.MainModule?.FileName;
+            }
+            catch { }
+
+            if(String.IsNullOrEmpty(procPath))
+            {
+                procPath = Assembly.GetEntryAssembly()?.Location;
+            }
+
+            if (!String.IsNullOrEmpty(procPath))
+            {
+                ApplicationDirectory = Path.GetDirectoryName(procPath);
             }
             else
             {
-                ApplicationDirectory = "." + Path.PathSeparator;
+                ApplicationDirectory = "." + Path.DirectorySeparatorChar;
             }
 
             ApplicationRoot = new Pathfinder(String.Empty);
