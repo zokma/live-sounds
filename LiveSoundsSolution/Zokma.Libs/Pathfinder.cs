@@ -87,6 +87,28 @@ namespace Zokma.Libs
         /// <summary>
         /// Creates Pathfinder.
         /// </summary>
+        /// <param name="kind">The kind of the path.</param>
+        /// <param name="path">The path from app base directory.</param>
+        /// <exception cref="ArgumentException">The path is invalid.</exception>
+        public Pathfinder(PathKind kind, string path)
+            : this(GetBasePath(kind), path)
+        {
+        }
+
+        /// <summary>
+        /// Creates Pathfinder.
+        /// </summary>
+        /// <param name="kind">The kind of the path.</param>
+        /// <param name="paths">The paths from app base directory.</param>
+        /// <exception cref="ArgumentException">The path is invalid.</exception>
+        public Pathfinder(PathKind kind, params string[] paths)
+            : this(GetBasePath(kind), paths)
+        {
+        }
+
+        /// <summary>
+        /// Creates Pathfinder.
+        /// </summary>
         /// <param name="path">The path from app base directory.</param>
         /// <exception cref="ArgumentException">The path is invalid.</exception>
         public Pathfinder(string path)
@@ -105,14 +127,32 @@ namespace Zokma.Libs
         }
 
         /// <summary>
+        /// Gets base path.
+        /// </summary>
+        /// <param name="kind">The kind of the path.</param>
+        /// <returns>The path for the PathKind.</returns>
+        private static string GetBasePath(PathKind kind)
+        {
+            string result = kind switch
+            {
+                PathKind.ApplicationRoot      => ApplicationDirectory,
+                PathKind.ApplicationData      => Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                PathKind.LocalApplicationData => Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                PathKind.Personal             => Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                _                             => null,
+            };
+
+            return result;
+        }
+
+        /// <summary>
         /// Checks if the path is secure or not.
         /// </summary>
         /// <param name="info">FileInfo to be checked.</param>
         /// <returns>true if secure path.</returns>
-        private static bool CheckSecurePath(FileInfo info)
+        private static bool CheckSecurePath(FileInfo info, string baseDirectory)
         {
-            // TODO: More secure path support. ex) Application specific roaming path and so on.
-            return (info != null && info.FullName.StartsWith(ApplicationDirectory));
+            return (info != null && !String.IsNullOrWhiteSpace(baseDirectory) && info.FullName.StartsWith(baseDirectory));
         }
 
         /// <summary>
@@ -166,7 +206,7 @@ namespace Zokma.Libs
                 result = new FileInfo(Path.Combine(pathsToBeCombined));
             }
 
-            if (!CheckSecurePath(result))
+            if (!CheckSecurePath(result, baseDirectory))
             {
                 throw new ArgumentException($"Result path: {result?.FullName}");
             }
@@ -190,7 +230,7 @@ namespace Zokma.Libs
                 result = new FileInfo(Path.Combine(baseDirectory, path));
             }
 
-            if(!CheckSecurePath(result))
+            if(!CheckSecurePath(result, baseDirectory))
             {
                 throw new ArgumentException($"Result path: {result?.FullName}");
             }

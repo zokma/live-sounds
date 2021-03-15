@@ -77,6 +77,26 @@ namespace Zokma.Libs.Tests
             Assert.StartsWith(Pathfinder.ApplicationDirectory, pf1.BaseDirectory);
         }
 
+        [Fact]
+        public void TestPathfinderFindSpecialPath()
+        {
+            var info1 = new Pathfinder(PathKind.ApplicationRoot,      "sub1", "sub2");
+            var info2 = new Pathfinder(PathKind.ApplicationData,      "sub1", "sub2");
+            var info3 = new Pathfinder(PathKind.LocalApplicationData, "sub1", "sub2");
+            var info4 = new Pathfinder(PathKind.Personal,             "sub1", "sub2");
+
+            output.WriteLine("Path1: {0}", info1.FindPathName("test.data"));
+            output.WriteLine("Path2: {0}", info2.FindPathName("test.data"));
+            output.WriteLine("Path3: {0}", info3.FindPathName("test.data"));
+            output.WriteLine("Path4: {0}", info4.FindPathName("test.data"));
+
+            Assert.StartsWith(Pathfinder.ApplicationDirectory, info1.FindPathName("test.dat"));
+            Assert.StartsWith(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), info2.FindPathName("test.dat"));
+            Assert.StartsWith(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), info3.FindPathName("test.dat"));
+            Assert.StartsWith(Environment.GetFolderPath(Environment.SpecialFolder.Personal), info4.FindPathName("test.dat"));
+        }
+
+
         [Theory]
         [InlineData("../data/test.dat")]
         [InlineData("/data/test.dat")]
