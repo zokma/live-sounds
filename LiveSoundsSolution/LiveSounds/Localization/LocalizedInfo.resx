@@ -120,4 +120,19 @@
   <data name="ApplicationTitle" xml:space="preserve">
     <value>Live Sounds</value>
   </data>
+  <data name="UnexpectedErrorMessage" xml:space="preserve">
+    <value>Unexpected Error has occurred.
+If you observe this message over and over again, 
+please contact the developer.
+Do you want to continue this application?</value>
+  </data>
+  <data name="UnexpectedErrorStopMessage" xml:space="preserve">
+    <value>Unexpected Error has occurred.
+If you observe this message over and over again, 
+please contact the developer.
+This application will stop.</value>
+  </data>
+  <data name="UnexpectedErrorTitle" xml:space="preserve">
+    <value>Unexpected Error</value>
+  </data>
 </root>

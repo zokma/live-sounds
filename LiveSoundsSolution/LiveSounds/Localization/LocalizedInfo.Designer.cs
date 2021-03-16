@@ -68,5 +68,38 @@ namespace LiveSounds.Localization {
                 return ResourceManager.GetString("ApplicationTitle", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected Error has occurred.
+        ///If you observe this message over and over again, 
+        ///please contact the developer.
+        ///Do you want to continue this application?.
+        /// </summary>
+        public static string UnexpectedErrorMessage {
+            get {
+                return ResourceManager.GetString("UnexpectedErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected Error has occurred.
+        ///If you observe this message over and over again, 
+        ///please contact the developer.
+        ///This application will stop..
+        /// </summary>
+        public static string UnexpectedErrorStopMessage {
+            get {
+                return ResourceManager.GetString("UnexpectedErrorStopMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected Error.
+        /// </summary>
+        public static string UnexpectedErrorTitle {
+            get {
+                return ResourceManager.GetString("UnexpectedErrorTitle", resourceCulture);
+            }
+        }
     }
 }

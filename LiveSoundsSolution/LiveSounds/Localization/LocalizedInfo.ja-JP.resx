@@ -120,4 +120,19 @@
   <data name="ApplicationTitle" xml:space="preserve">
     <value>リモートからポン！</value>
   </data>
+  <data name="UnexpectedErrorMessage" xml:space="preserve">
+    <value>予期しないエラーが発生しました。
+このメッセージが何度も表示される場合は、
+開発者にお問い合わせください。
+アプリケーションの実行を続けますか？</value>
+  </data>
+  <data name="UnexpectedErrorStopMessage" xml:space="preserve">
+    <value>予期しないエラーが発生しました。
+このメッセージが何度も表示される場合は、
+開発者にお問い合わせください。
+アプリケーションを終了します。</value>
+  </data>
+  <data name="UnexpectedErrorTitle" xml:space="preserve">
+    <value>予期しないエラー</value>
+  </data>
 </root>
