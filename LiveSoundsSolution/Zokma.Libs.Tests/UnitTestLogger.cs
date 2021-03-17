@@ -55,6 +55,9 @@ namespace Zokma.Libs.Tests
                 Assert.True(Log.IsEnabled(LogLevel.Warning));
                 Assert.True(Log.IsEnabled(LogLevel.Error));
                 Assert.True(Log.IsEnabled(LogLevel.Fatal));
+
+                Assert.False(Log.IsEnabled(LogLevel.Silent));
+                Assert.False(Log.IsEnabled(LogLevel.None));
             }
             else if(level == LogLevel.Debug)
             {
@@ -64,6 +67,9 @@ namespace Zokma.Libs.Tests
                 Assert.True(Log.IsEnabled(LogLevel.Warning));
                 Assert.True(Log.IsEnabled(LogLevel.Error));
                 Assert.True(Log.IsEnabled(LogLevel.Fatal));
+
+                Assert.False(Log.IsEnabled(LogLevel.Silent));
+                Assert.False(Log.IsEnabled(LogLevel.None));
             }
             else if (level == LogLevel.Information)
             {
@@ -73,6 +79,9 @@ namespace Zokma.Libs.Tests
                 Assert.True(Log.IsEnabled(LogLevel.Warning));
                 Assert.True(Log.IsEnabled(LogLevel.Error));
                 Assert.True(Log.IsEnabled(LogLevel.Fatal));
+
+                Assert.False(Log.IsEnabled(LogLevel.Silent));
+                Assert.False(Log.IsEnabled(LogLevel.None));
             }
             else if (level == LogLevel.Warning)
             {
@@ -82,6 +91,9 @@ namespace Zokma.Libs.Tests
                 Assert.True(Log.IsEnabled(LogLevel.Warning));
                 Assert.True(Log.IsEnabled(LogLevel.Error));
                 Assert.True(Log.IsEnabled(LogLevel.Fatal));
+
+                Assert.False(Log.IsEnabled(LogLevel.Silent));
+                Assert.False(Log.IsEnabled(LogLevel.None));
             }
             else if (level == LogLevel.Error)
             {
@@ -91,6 +103,9 @@ namespace Zokma.Libs.Tests
                 Assert.False(Log.IsEnabled(LogLevel.Warning));
                 Assert.True(Log.IsEnabled(LogLevel.Error));
                 Assert.True(Log.IsEnabled(LogLevel.Fatal));
+
+                Assert.False(Log.IsEnabled(LogLevel.Silent));
+                Assert.False(Log.IsEnabled(LogLevel.None));
             }
             else if (level == LogLevel.Fatal)
             {
@@ -100,7 +115,36 @@ namespace Zokma.Libs.Tests
                 Assert.False(Log.IsEnabled(LogLevel.Warning));
                 Assert.False(Log.IsEnabled(LogLevel.Error));
                 Assert.True(Log.IsEnabled(LogLevel.Fatal));
+
+                Assert.False(Log.IsEnabled(LogLevel.Silent));
+                Assert.False(Log.IsEnabled(LogLevel.None));
             }
+            else if (level == LogLevel.Silent)
+            {
+                Assert.False(Log.IsEnabled(LogLevel.Verbose));
+                Assert.False(Log.IsEnabled(LogLevel.Debug));
+                Assert.False(Log.IsEnabled(LogLevel.Information));
+                Assert.False(Log.IsEnabled(LogLevel.Warning));
+                Assert.False(Log.IsEnabled(LogLevel.Error));
+                Assert.False(Log.IsEnabled(LogLevel.Fatal));
+
+                Assert.False(Log.IsEnabled(LogLevel.Silent));
+                Assert.False(Log.IsEnabled(LogLevel.None));
+            }
+            else if (level == LogLevel.None)
+            {
+                Assert.False(Log.IsEnabled(LogLevel.Verbose));
+                Assert.False(Log.IsEnabled(LogLevel.Debug));
+                Assert.False(Log.IsEnabled(LogLevel.Information));
+                Assert.False(Log.IsEnabled(LogLevel.Warning));
+                Assert.False(Log.IsEnabled(LogLevel.Error));
+                Assert.False(Log.IsEnabled(LogLevel.Fatal));
+
+                Assert.False(Log.IsEnabled(LogLevel.Silent));
+                Assert.False(Log.IsEnabled(LogLevel.None));
+            }
+
+
         }
 
         [Fact]
@@ -211,6 +255,8 @@ namespace Zokma.Libs.Tests
             CheckLogLevel(LogLevel.Warning);
             CheckLogLevel(LogLevel.Error);
             CheckLogLevel(LogLevel.Fatal);
+            CheckLogLevel(LogLevel.Silent);
+            CheckLogLevel(LogLevel.None);
 
             Log.LogLevel = LogLevel.Verbose;
             Log.Information("Logger will be closed.");
@@ -229,6 +275,8 @@ namespace Zokma.Libs.Tests
             Assert.False(Log.IsEnabled(LogLevel.Warning));
             Assert.False(Log.IsEnabled(LogLevel.Error));
             Assert.False(Log.IsEnabled(LogLevel.Fatal));
+            Assert.False(Log.IsEnabled(LogLevel.Silent));
+            Assert.False(Log.IsEnabled(LogLevel.None));
 
             output.WriteLine("Please check log files at: {0}", logDir.FindPathName(String.Empty));
         }

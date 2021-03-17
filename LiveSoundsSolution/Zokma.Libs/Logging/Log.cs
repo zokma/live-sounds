@@ -57,12 +57,12 @@ namespace Zokma.Libs.Logging
         /// <summary>
         /// Log level.
         /// </summary>
-        private static LogLevel level = LogLevel.Information;
+        private static LogLevel level = LogLevel.None;
 
         /// <summary>
         /// Log level switcher.
         /// </summary>
-        private static readonly Serilog.Core.LoggingLevelSwitch levelSwitch = new Serilog.Core.LoggingLevelSwitch(Serilog.Events.LogEventLevel.Information);
+        private static readonly Serilog.Core.LoggingLevelSwitch levelSwitch = new Serilog.Core.LoggingLevelSwitch(Serilog.Events.LogEventLevel.Warning);
 
         /// <summary>
         /// Whether the logger ignores exception or not.
@@ -106,7 +106,7 @@ namespace Zokma.Libs.Logging
                 LogLevel.Warning     => Serilog.Events.LogEventLevel.Warning,
                 LogLevel.Error       => Serilog.Events.LogEventLevel.Error,
                 LogLevel.Fatal       => Serilog.Events.LogEventLevel.Fatal,
-                _                    => Serilog.Events.LogEventLevel.Information,
+                _                    => Serilog.Events.LogEventLevel.Fatal,
             };
 
             return result;
@@ -122,7 +122,7 @@ namespace Zokma.Libs.Logging
         /// <param name="isBuffered">Whether the logger output is buffered or not.</param>
         /// <param name="isExceptionIgnored">Whether the logger ignores exception or not.</param>
         /// <param name="isClosedAfterException">Whether the logger is closed after exception thrown.</param>
-        public static void Init(string path, LogLevel logLevel = LogLevel.Information, long fileSizeBytesLimit = DEFAULT_FILE_SIZE, int fileCountLimit = DEFAULT_FILE_COUNT, bool isBuffered = false, bool isExceptionIgnored = true, bool isClosedAfterException = true)
+        public static void Init(string path, LogLevel logLevel = LogLevel.Warning, long fileSizeBytesLimit = DEFAULT_FILE_SIZE, int fileCountLimit = DEFAULT_FILE_COUNT, bool isBuffered = false, bool isExceptionIgnored = true, bool isClosedAfterException = true)
         {
             try
             {
@@ -141,7 +141,7 @@ namespace Zokma.Libs.Logging
                     (former as IDisposable)?.Dispose();
                 }
 
-                if(fileSizeBytesLimit <= 0 || fileCountLimit <= 0)
+                if(logLevel == LogLevel.None || fileSizeBytesLimit <= 0 || fileCountLimit <= 0)
                 {
                     return;
                 }
@@ -173,6 +173,8 @@ namespace Zokma.Libs.Logging
         {
             try
             {
+                LogLevel = LogLevel.None;
+
                 var former = logger;
 
                 logger = DefaultLogger;
@@ -199,18 +201,7 @@ namespace Zokma.Libs.Logging
         /// <returns>The log level is enabled.</returns>
         public static bool IsEnabled(LogLevel level)
         {
-            bool result = level switch
-            {
-                LogLevel.Verbose     => logger.IsEnabled(Serilog.Events.LogEventLevel.Verbose),
-                LogLevel.Debug       => logger.IsEnabled(Serilog.Events.LogEventLevel.Debug),
-                LogLevel.Information => logger.IsEnabled(Serilog.Events.LogEventLevel.Information),
-                LogLevel.Warning     => logger.IsEnabled(Serilog.Events.LogEventLevel.Warning),
-                LogLevel.Error       => logger.IsEnabled(Serilog.Events.LogEventLevel.Error),
-                LogLevel.Fatal       => logger.IsEnabled(Serilog.Events.LogEventLevel.Fatal),
-                _                    => false,
-            };
-
-            return result;
+            return ((level < LogLevel.Silent) && (level >= Log.level));
         }
 
         #region WriteLog
@@ -224,7 +215,10 @@ namespace Zokma.Libs.Logging
         {
             try
             {
-                logger.Write(level, message);
+                if (Log.level < LogLevel.Silent)
+                {
+                    logger.Write(level, message);
+                }
             }
             catch (Exception)
             {
@@ -250,7 +244,10 @@ namespace Zokma.Libs.Logging
         {
             try
             {
-                logger.Write(level, messageTemplate, propertyValue);
+                if (Log.level < LogLevel.Silent)
+                {
+                    logger.Write(level, messageTemplate, propertyValue);
+                }
             }
             catch (Exception)
             {
@@ -277,7 +274,10 @@ namespace Zokma.Libs.Logging
         {
             try
             {
-                logger.Write(level, messageTemplate, propertyValue0, propertyValue1);
+                if (Log.level < LogLevel.Silent)
+                {
+                    logger.Write(level, messageTemplate, propertyValue0, propertyValue1);
+                }
             }
             catch (Exception)
             {
@@ -305,7 +305,10 @@ namespace Zokma.Libs.Logging
         {
             try
             {
-                logger.Write(level, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
+                if (Log.level < LogLevel.Silent)
+                {
+                    logger.Write(level, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
+                }
             }
             catch (Exception)
             {
@@ -331,7 +334,10 @@ namespace Zokma.Libs.Logging
         {
             try
             {
-                logger.Write(level, messageTemplate, propertyValues);
+                if (Log.level < LogLevel.Silent)
+                {
+                    logger.Write(level, messageTemplate, propertyValues);
+                }
             }
             catch (Exception)
             {
@@ -357,7 +363,10 @@ namespace Zokma.Libs.Logging
         {
             try
             {
-                logger.Write(level, exception, message);
+                if (Log.level < LogLevel.Silent)
+                {
+                    logger.Write(level, exception, message);
+                }
             }
             catch (Exception)
             {
@@ -384,7 +393,10 @@ namespace Zokma.Libs.Logging
         {
             try
             {
-                logger.Write(level, exception, messageTemplate, propertyValue);
+                if (Log.level < LogLevel.Silent)
+                {
+                    logger.Write(level, exception, messageTemplate, propertyValue);
+                }
             }
             catch (Exception)
             {
@@ -412,7 +424,10 @@ namespace Zokma.Libs.Logging
         {
             try
             {
-                logger.Write(level, exception, messageTemplate, propertyValue0, propertyValue1);
+                if (Log.level < LogLevel.Silent)
+                {
+                    logger.Write(level, exception, messageTemplate, propertyValue0, propertyValue1);
+                }
             }
             catch (Exception)
             {
@@ -441,7 +456,10 @@ namespace Zokma.Libs.Logging
         {
             try
             {
-                logger.Write(level, exception, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
+                if (Log.level < LogLevel.Silent)
+                {
+                    logger.Write(level, exception, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
+                }
             }
             catch (Exception)
             {
@@ -468,7 +486,10 @@ namespace Zokma.Libs.Logging
         {
             try
             {
-                logger.Write(level, exception, messageTemplate, propertyValues);
+                if (Log.level < LogLevel.Silent)
+                {
+                    logger.Write(level, exception, messageTemplate, propertyValues);
+                }
             }
             catch (Exception)
             {

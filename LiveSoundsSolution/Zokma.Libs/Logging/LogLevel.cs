@@ -40,5 +40,17 @@ namespace Zokma.Libs.Logging
         /// Fatal level.
         /// </summary>
         Fatal,
+
+        /// <summary>
+        /// Silent level.
+        /// No output.
+        /// </summary>
+        Silent = Int32.MaxValue >> 1,
+
+        /// <summary>
+        /// Level None.
+        /// Logger is not created.
+        /// </summary>
+        None = Int32.MaxValue,
     }
 }
