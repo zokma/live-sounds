@@ -18,9 +18,34 @@ namespace LiveSounds
     public partial class App : Application
     {
         /// <summary>
+        /// Application settings file name.
+        /// </summary>
+        public const string SETTINGS_FILE_NAME = "AppSettings.json";
+
+        /// <summary>
+        /// The directory path in local app data.
+        /// </summary>
+        private static readonly string[] LOCAL_APP_DATA_DIR = { "ZokmaLabs", "LiveSounds" };
+
+        /// <summary>
+        /// The log file path.
+        /// </summary>
+        private static readonly string[] LOG_FILE = { "Logs", "LiveSounds.log" };
+
+        /// <summary>
         /// Checks main form loaded or not.
         /// </summary>
         internal static bool IsMainFormLoaded = false;
+
+        /// <summary>
+        /// Application settings.
+        /// </summary>
+        internal static readonly AppSettings Settings;
+
+        /// <summary>
+        /// Application user directory.
+        /// </summary>
+        internal static readonly Pathfinder UserDirectory;
 
         /// <summary>
         /// Process instance id.
@@ -32,21 +57,65 @@ namespace LiveSounds
         /// </summary>
         private Guid instanceId = Guid.Empty;
 
+
         static App()
         {
             processInstanceId = Guid.NewGuid();
 
-            AppDomain.CurrentDomain.ProcessExit        += ProcessExitHandler;
-            AppDomain.CurrentDomain.UnhandledException += AppDomainUnhandledExceptionHandler;
-            TaskScheduler.UnobservedTaskException      += TaskSchedulerUnhandledExceptionHandler;
+            try
+            {
+                var settings = AppSettings.LoadAppSettings(Pathfinder.ApplicationRoot.FindPathName(SETTINGS_FILE_NAME));
+
+                if(settings.IsPortable)
+                {
+                    UserDirectory = Pathfinder.ApplicationRoot;
+                }
+                else
+                {
+                    UserDirectory = new Pathfinder(PathKind.LocalApplicationData, LOCAL_APP_DATA_DIR);
+                    settings      = AppSettings.LoadAppSettings(UserDirectory.FindPathName(SETTINGS_FILE_NAME));
+                }
+
+                Settings = settings;
+            }
+            catch
+            {
+                UserDirectory = Pathfinder.ApplicationRoot;
+                Settings      = new AppSettings();
+            }
+
+            try
+            {
+                Log.Init(UserDirectory.FindPathName(LOG_FILE), Settings.LogLevel, Settings.LogFileSizeLimitBytes, Settings.LogFileCountLimit, Settings.LogBuffered);
+                Log.Information("Process Start: ProcessInstanceId = {ProcessInstanceId}", processInstanceId);
+            }
+            catch { }
+
+            try
+            {
+                AppDomain.CurrentDomain.ProcessExit        += ProcessExitHandler;
+                AppDomain.CurrentDomain.UnhandledException += AppDomainUnhandledExceptionHandler;
+                TaskScheduler.UnobservedTaskException      += TaskSchedulerUnhandledExceptionHandler;
+            }
+            catch(Exception ex)
+            {
+                Log.Error(ex, "Unexpected Error.");
+            }
         }
 
         public App()
         {
             this.instanceId = Guid.NewGuid();
 
-            //this.Exit += ProcessExitHandler;
-            this.DispatcherUnhandledException += DispatcherUnhandledExceptionHandler;
+            try
+            {
+                //this.Exit += ProcessExitHandler;
+                this.DispatcherUnhandledException += DispatcherUnhandledExceptionHandler;
+            }
+            catch(Exception ex)
+            {
+                Log.Error(ex, "Unexpected Error.");
+            }
         }
 
         /// <summary>
@@ -124,6 +193,9 @@ namespace LiveSounds
         /// <param name="e">Event args.</param>
         private static void ProcessExitHandler(object sender, EventArgs e)
         {
+            // Setting file will be saved on Form Closed, not in this handler.
+            // Settings.Save(UserDirectory.FindPathName(SETTINGS_FILE_NAME));
+
             // In .NET Framework, "AppDomain.ProcessExit" timeouts after 2 secs.
             // But, In .NET Core there is no timeout.
             Log.Information("Process Exit: ProcessInstanceId = {ProcessInstanceId}", processInstanceId);
@@ -134,10 +206,7 @@ namespace LiveSounds
         {
             base.OnStartup(e);
 
-            Log.Init(Pathfinder.ApplicationRoot.FindPathName("Logs", "LiveSounds.log"));
             Log.Information("OnStartup: InstanceId = {InstanceId}", this.instanceId.ToString());
-
-            throw new Exception();
         }
 
         protected override void OnExit(ExitEventArgs e)
