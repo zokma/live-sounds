@@ -44,27 +44,44 @@ namespace Zokma.Libs.Audio
         public AudioDataFileSampleProvider(AudioData audioData, PlaybackToken playbackToken, IMasterVolumeProvider masterVolumeProvider, float volume = 1.0f, bool useParallel = false)
             : base(audioData, playbackToken, masterVolumeProvider, volume, useParallel)
         {
-            this.reader = new AudioFileReader(audioData.FilePath);
-            this.isAudioFileReaderDisposed = false;
+            string filePath = audioData.FilePath;
 
-            this.resampler = AudioData.CreateResampler(this.reader, audioData.WaveFormat, audioData.ResamplingQuality);
+            if (filePath != null)
+            {
+                this.reader = new AudioFileReader(filePath);
+                this.isAudioFileReaderDisposed = false;
 
-            if (this.resampler != null)
-            {
-                this.stream = resampler.ToSampleProvider();
+                this.resampler = AudioData.CreateResampler(this.reader, audioData.WaveFormat, audioData.ResamplingQuality);
+
+                if (this.resampler != null)
+                {
+                    this.stream = resampler.ToSampleProvider();
+                }
+                else
+                {
+                    this.stream = reader;
+                }
             }
-            else
-            {
-                this.stream = reader;
-            }
+        }
+
+        /// <summary>
+        /// Disposes Resampler and AudioReader.
+        /// </summary>
+        private void DisposeReader()
+        {
+            this.resampler?.Dispose();
+            this.reader?.Dispose();
+            this.isAudioFileReaderDisposed = true;
         }
 
         public override int Read(float[] buffer, int offset, int count)
         {
             var playbackState = this.playbackToken.State;
 
-            if (playbackState == PlaybackState.StopRequested || this.isAudioFileReaderDisposed)
+            if (playbackState == PlaybackState.StopRequested || this.isAudioFileReaderDisposed || this.audioData.FilePath == null || this.reader == null)
             {
+                DisposeReader();
+
                 this.playbackToken.State = PlaybackState.Stopped;
 
                 return 0;
@@ -83,9 +100,7 @@ namespace Zokma.Libs.Audio
                 }
                 else
                 {
-                    this.resampler?.Dispose();
-                    this.reader.Dispose();
-                    this.isAudioFileReaderDisposed = true;
+                    DisposeReader();
 
                     this.playbackToken.State = PlaybackState.Stopped;
                 }

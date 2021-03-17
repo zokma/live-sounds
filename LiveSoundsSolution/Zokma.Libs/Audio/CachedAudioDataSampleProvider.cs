@@ -42,12 +42,18 @@ namespace Zokma.Libs.Audio
                 return 0;
             }
 
+            var source = this.audioData.Data;
+
+            if(source == null)
+            {
+                return 0;
+            }
+
             float volume = this.audioData.Volume * this.volume * this.masterVolumeProvider.MasterVolume;
 
-            long availableSamples = this.audioData.Data.Length - position;
+            long availableSamples = source.Length - position;
             long samplesToCopy    = Math.Min(availableSamples, count);
 
-            var source = this.audioData.Data;
 
             if (AudioPlayer.EqualsVolume(volume, 0.0f))
             {
@@ -55,7 +61,7 @@ namespace Zokma.Libs.Audio
             }
             else if (AudioPlayer.EqualsVolume(volume, 1.0f))
             {
-                Array.Copy(this.audioData.Data, position, buffer, offset, samplesToCopy);
+                Array.Copy(source, position, buffer, offset, samplesToCopy);
             }
             else
             {
