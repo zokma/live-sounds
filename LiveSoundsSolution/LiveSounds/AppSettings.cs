@@ -49,6 +49,16 @@ namespace LiveSounds
 
 
         /// <summary>
+        /// JsonWriterOptions for file write.
+        /// </summary>
+        public static readonly JsonWriterOptions JsonWriterOptionForFile = new JsonWriterOptions
+        {
+            Indented = true,
+        };
+
+
+
+        /// <summary>
         /// Is data directory portable.
         /// </summary>
         [JsonInclude]
@@ -95,6 +105,23 @@ namespace LiveSounds
             }
         }
 
+        /// <summary>
+        /// Settings file path.
+        /// </summary>
+        [JsonIgnore]
+        public string FilePath;
+
+        /// <summary>
+        /// true if the settings has file.
+        /// </summary>
+        [JsonIgnore]
+        public bool HasFile 
+        {
+            get
+            {
+                return !String.IsNullOrWhiteSpace(this.FilePath);
+            }
+        }
 
         /// <summary>
         /// Parses enum.
@@ -130,7 +157,10 @@ namespace LiveSounds
                 using (var reader = new StreamReader(fs, new UTF8Encoding(false), true))
                 {
                     result = JsonSerializer.Deserialize<AppSettings>(reader.ReadToEnd(), JsonSerializerOptionsForFileRead);
+                    
+                    result.FilePath = fs.Name;
                 }
+
             }
             catch
             {
@@ -147,10 +177,23 @@ namespace LiveSounds
         public void Save(string filePath)
         {
             using (var fs     = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.Read))
-            using (var writer = new Utf8JsonWriter(fs, new JsonWriterOptions { Indented = true }))
+            using (var writer = new Utf8JsonWriter(fs, JsonWriterOptionForFile))
             {
                 JsonSerializer.Serialize<AppSettings>(writer, this, JsonSerializerOptionsForFileWrite);
             }
+        }
+
+        /// <summary>
+        /// Saves the settings.
+        /// </summary>
+        public void Save()
+        {
+            if(String.IsNullOrWhiteSpace(this.FilePath))
+            {
+                throw new InvalidOperationException("Settings file path to be saved is undefined.");
+            }
+
+            this.Save(this.FilePath);
         }
     }
 }

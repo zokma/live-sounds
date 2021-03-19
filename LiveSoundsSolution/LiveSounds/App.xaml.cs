@@ -55,67 +55,46 @@ namespace LiveSounds
         /// <summary>
         /// Application instance id.
         /// </summary>
-        private Guid instanceId = Guid.Empty;
+        private readonly Guid instanceId;
 
 
         static App()
         {
             processInstanceId = Guid.NewGuid();
 
-            try
-            {
-                var settings = AppSettings.LoadAppSettings(Pathfinder.ApplicationRoot.FindPathName(SETTINGS_FILE_NAME));
+            AppDomain.CurrentDomain.ProcessExit        += ProcessExitHandler;
+            AppDomain.CurrentDomain.UnhandledException += AppDomainUnhandledExceptionHandler;
+            TaskScheduler.UnobservedTaskException      += TaskSchedulerUnhandledExceptionHandler;
 
-                if(settings.IsPortable)
-                {
-                    UserDirectory = Pathfinder.ApplicationRoot;
-                }
-                else
-                {
-                    UserDirectory = new Pathfinder(PathKind.LocalApplicationData, LOCAL_APP_DATA_DIR);
-                    settings      = AppSettings.LoadAppSettings(UserDirectory.FindPathName(SETTINGS_FILE_NAME));
-                }
 
-                Settings = settings;
-            }
-            catch
+            var settings = AppSettings.LoadAppSettings(Pathfinder.ApplicationRoot.FindPathName(SETTINGS_FILE_NAME));
+
+            if(settings.IsPortable)
             {
                 UserDirectory = Pathfinder.ApplicationRoot;
-                Settings      = new AppSettings();
+            }
+            else
+            {
+                UserDirectory = new Pathfinder(PathKind.LocalApplicationData, LOCAL_APP_DATA_DIR);
+                
+                var savedSettings = AppSettings.LoadAppSettings(UserDirectory.FindPathName(SETTINGS_FILE_NAME));
+
+                settings = savedSettings.HasFile ? savedSettings : settings;
             }
 
-            try
-            {
-                Log.Init(UserDirectory.FindPathName(LOG_FILE), Settings.LogLevel, Settings.LogFileSizeLimitBytes, Settings.LogFileCountLimit, Settings.LogBuffered);
-                Log.Information("Process Start: ProcessInstanceId = {ProcessInstanceId}", processInstanceId);
-            }
-            catch { }
+            Settings = settings;
+            Settings.FilePath = UserDirectory.FindPathName(SETTINGS_FILE_NAME);
 
-            try
-            {
-                AppDomain.CurrentDomain.ProcessExit        += ProcessExitHandler;
-                AppDomain.CurrentDomain.UnhandledException += AppDomainUnhandledExceptionHandler;
-                TaskScheduler.UnobservedTaskException      += TaskSchedulerUnhandledExceptionHandler;
-            }
-            catch(Exception ex)
-            {
-                Log.Error(ex, "Unexpected Error.");
-            }
+            Log.Init(UserDirectory.FindPathName(LOG_FILE), Settings.LogLevel, Settings.LogFileSizeLimitBytes, Settings.LogFileCountLimit, Settings.LogBuffered);
+            Log.Information("Process Start: ProcessInstanceId = {ProcessInstanceId}", processInstanceId);
         }
 
         public App()
         {
             this.instanceId = Guid.NewGuid();
 
-            try
-            {
-                //this.Exit += ProcessExitHandler;
-                this.DispatcherUnhandledException += DispatcherUnhandledExceptionHandler;
-            }
-            catch(Exception ex)
-            {
-                Log.Error(ex, "Unexpected Error.");
-            }
+            //this.Exit += ProcessExitHandler;
+            this.DispatcherUnhandledException += DispatcherUnhandledExceptionHandler;
         }
 
         /// <summary>
