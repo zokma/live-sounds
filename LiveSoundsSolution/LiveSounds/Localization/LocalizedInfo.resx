@@ -120,6 +120,21 @@
   <data name="ApplicationTitle" xml:space="preserve">
     <value>Live Sounds</value>
   </data>
+  <data name="CloseAppMenu" xml:space="preserve">
+    <value>Close application(Alt+F4)</value>
+  </data>
+  <data name="CloseWindow" xml:space="preserve">
+    <value>Close the Window</value>
+  </data>
+  <data name="MaximizeWindow" xml:space="preserve">
+    <value>Maximize the Window</value>
+  </data>
+  <data name="MinimizeWindow" xml:space="preserve">
+    <value>Minimize the Window</value>
+  </data>
+  <data name="RestoreWindow" xml:space="preserve">
+    <value>Restore the Window size</value>
+  </data>
   <data name="UnexpectedErrorMessage" xml:space="preserve">
     <value>Unexpected Error has occurred.
 If you observe this message over and over again, 

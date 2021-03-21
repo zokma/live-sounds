@@ -70,6 +70,51 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close application(Alt+F4).
+        /// </summary>
+        public static string CloseAppMenu {
+            get {
+                return ResourceManager.GetString("CloseAppMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close the Window.
+        /// </summary>
+        public static string CloseWindow {
+            get {
+                return ResourceManager.GetString("CloseWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximize the Window.
+        /// </summary>
+        public static string MaximizeWindow {
+            get {
+                return ResourceManager.GetString("MaximizeWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimize the Window.
+        /// </summary>
+        public static string MinimizeWindow {
+            get {
+                return ResourceManager.GetString("MinimizeWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore the Window size.
+        /// </summary>
+        public static string RestoreWindow {
+            get {
+                return ResourceManager.GetString("RestoreWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unexpected Error has occurred.
         ///If you observe this message over and over again, 
         ///please contact the developer.

@@ -5,9 +5,56 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LiveSounds"
         xmlns:l10n="clr-namespace:LiveSounds.Localization"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{x:Null}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="24"
         mc:Ignorable="d"
-        Title="{x:Static l10n:LocalizedInfo.ApplicationTitle}" Height="450" Width="800" Loaded="Window_Loaded">
-    <Grid>
-
-    </Grid>
+        Title="{x:Static l10n:LocalizedInfo.ApplicationTitle}" Height="450" Width="800" Loaded="Window_Loaded" AllowsTransparency="True" WindowStyle="None" ResizeMode="CanResizeWithGrip" MinHeight="240" MinWidth="640">
+    <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderBrush="#44040404" CornerRadius="2,2,2,2" BorderThickness="1,1,2,2">
+        <Grid Background="{DynamicResource MaterialDesignPaper}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <DockPanel>
+                <materialDesign:ColorZone x:Name="ColorZoneTitle"
+                    Padding="4"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                    Mode="PrimaryMid"
+                    DockPanel.Dock="Top" MouseLeftButtonDown="ColorZoneTitle_MouseLeftButtonDown" MouseDoubleClick="ColorZoneTitle_MouseDoubleClick">
+                    <materialDesign:ColorZone.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem x:Name="CloseApplicationMenuItem" Header="{x:Static l10n:LocalizedInfo.CloseAppMenu}" Click="CloseApplicationMenuItem_Click"/>
+                        </ContextMenu>
+                    </materialDesign:ColorZone.ContextMenu>
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="MonitorSpeaker" Margin="14,0,14,0" Width="24" Height="24" VerticalAlignment="Center" />
+                            <TextBlock Text="{x:Static l10n:LocalizedInfo.ApplicationTitle}" FontSize="14" FontWeight="Bold" VerticalAlignment="Center"></TextBlock>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                            <Button x:Name="ButtonWindowMinimize"
+                                Margin="4,4,4,4"
+                                ToolTip="{x:Static l10n:LocalizedInfo.MinimizeWindow}"
+                                Content="{materialDesign:PackIcon Kind=WindowMinimize, Size=24}"
+                                materialDesign:RippleAssist.Feedback="{Binding RelativeSource={RelativeSource Self}, Path=Foreground, Converter={StaticResource BrushRoundConverter}}"
+                                Background="{x:Null}" BorderBrush="{x:Null}"
+                                MouseEnter="ButtonWindow_MouseEnter" MouseLeave="ButtonWindow_MouseLeave" Click="ButtonWindowMinimize_Click" />
+                            <Button x:Name="ButtonWindowMaximize"
+                                Margin="4,4,4,4"
+                                ToolTip="{x:Static l10n:LocalizedInfo.MaximizeWindow}"
+                                materialDesign:RippleAssist.Feedback="{Binding RelativeSource={RelativeSource Self}, Path=Foreground, Converter={StaticResource BrushRoundConverter}}"
+                                Background="{x:Null}" BorderBrush="{x:Null}"
+                                MouseEnter="ButtonWindow_MouseEnter" MouseLeave="ButtonWindow_MouseLeave" Click="ButtonWindowMaximize_Click" />
+                            <Button x:Name="ButtonWindowClose"
+                                Margin="4,4,4,4"
+                                ToolTip="{x:Static l10n:LocalizedInfo.CloseWindow}"
+                                Content="{materialDesign:PackIcon Kind=Close, Size=24}"
+                                materialDesign:RippleAssist.Feedback="{Binding RelativeSource={RelativeSource Self}, Path=Foreground, Converter={StaticResource BrushRoundConverter}}"
+                                Background="{x:Null}" BorderBrush="{x:Null}"
+                                MouseEnter="ButtonWindowClose_MouseEnter" MouseLeave="ButtonWindow_MouseLeave" Click="ButtonWindowClose_Click" />
+                        </StackPanel>
+                    </DockPanel>
+                </materialDesign:ColorZone>
+            </DockPanel>
+        </Grid>
+    </Border>
 </Window>

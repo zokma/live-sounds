@@ -120,6 +120,21 @@
   <data name="ApplicationTitle" xml:space="preserve">
     <value>リモートからポン！</value>
   </data>
+  <data name="CloseAppMenu" xml:space="preserve">
+    <value>アプリケーションを閉じる(Alt+F4)</value>
+  </data>
+  <data name="CloseWindow" xml:space="preserve">
+    <value>ウィンドウを閉じる</value>
+  </data>
+  <data name="MaximizeWindow" xml:space="preserve">
+    <value>ウィンドウを最大化する</value>
+  </data>
+  <data name="MinimizeWindow" xml:space="preserve">
+    <value>ウィンドウを最小化する</value>
+  </data>
+  <data name="RestoreWindow" xml:space="preserve">
+    <value>ウィンドウのサイズを元に戻す</value>
+  </data>
   <data name="UnexpectedErrorMessage" xml:space="preserve">
     <value>予期しないエラーが発生しました。
 このメッセージが何度も表示される場合は、
