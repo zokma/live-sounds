@@ -120,11 +120,8 @@
   <data name="ApplicationTitle" xml:space="preserve">
     <value>リモートからポン！</value>
   </data>
-  <data name="CloseAppMenu" xml:space="preserve">
-    <value>アプリケーションを閉じる(Alt+F4)</value>
-  </data>
-  <data name="CloseWindow" xml:space="preserve">
-    <value>ウィンドウを閉じる</value>
+  <data name="CloseApplication" xml:space="preserve">
+    <value>アプリケーションを閉じる</value>
   </data>
   <data name="MaximizeWindow" xml:space="preserve">
     <value>ウィンドウを最大化する</value>

@@ -120,11 +120,8 @@
   <data name="ApplicationTitle" xml:space="preserve">
     <value>Live Sounds</value>
   </data>
-  <data name="CloseAppMenu" xml:space="preserve">
-    <value>Close application(Alt+F4)</value>
-  </data>
-  <data name="CloseWindow" xml:space="preserve">
-    <value>Close the Window</value>
+  <data name="CloseApplication" xml:space="preserve">
+    <value>Close the Application</value>
   </data>
   <data name="MaximizeWindow" xml:space="preserve">
     <value>Maximize the Window</value>

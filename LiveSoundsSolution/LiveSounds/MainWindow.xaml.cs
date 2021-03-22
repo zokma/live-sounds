@@ -42,7 +42,14 @@ namespace LiveSounds
         /// </summary>
         private static readonly Brush SOLID_COLOR_BRUSH_RED = new SolidColorBrush(Colors.Red);
 
+        /// <summary>
+        /// Icon for Maximize Window.
+        /// </summary>
         private static readonly PackIcon ICON_WINDOW_MAXIMIZE = new PackIcon { Kind = PackIconKind.WindowMaximize, Width = ICON_EDGE_LENGTH_TITLE, Height = ICON_EDGE_LENGTH_TITLE };
+
+        /// <summary>
+        /// Icon for Restore Windows Size.
+        /// </summary>
         private static readonly PackIcon ICON_WINDOW_RESTORE = new PackIcon { Kind = PackIconKind.WindowRestore, Width = ICON_EDGE_LENGTH_TITLE, Height = ICON_EDGE_LENGTH_TITLE };
 
 
@@ -55,30 +62,53 @@ namespace LiveSounds
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            var app = Application.Current;
+
+            if(app != null)
+            {
+                app.ShutdownMode = ShutdownMode.OnMainWindowClose;
+            }
 
             App.IsMainFormLoaded = true;
         }
 
+        /// <summary>
+        /// Inits Form.
+        /// </summary>
         private void InitForm()
         {
+            this.MaxWidth  = SystemParameters.PrimaryScreenWidth;
             this.MaxHeight = SystemParameters.PrimaryScreenHeight;
+            
             ResetWindowMaximizeButton();
         }
 
+        /// <summary>
+        /// Resets Window Maximize Button.
+        /// </summary>
         private void ResetWindowMaximizeButton()
         {
             if(this.WindowState == WindowState.Maximized)
             {
                 this.ButtonWindowMaximize.Content = ICON_WINDOW_RESTORE;
                 this.ButtonWindowMaximize.ToolTip = LocalizedInfo.RestoreWindow;
+
+                this.MenuItemMaximizeWindow.IsEnabled    = false;
+                this.MenuItemRestoreWindowSize.IsEnabled = true;
             }
             else
             {
                 this.ButtonWindowMaximize.Content = ICON_WINDOW_MAXIMIZE;
                 this.ButtonWindowMaximize.ToolTip = LocalizedInfo.MaximizeWindow;
+
+                this.MenuItemMaximizeWindow.IsEnabled    = true;
+                this.MenuItemRestoreWindowSize.IsEnabled = false;
             }
         }
 
+        /// <summary>
+        /// Toggles Windows Maximize mode.
+        /// </summary>
         private void ToggleWindowMaximize()
         {
             if (this.WindowState != WindowState.Maximized)
@@ -153,9 +183,24 @@ namespace LiveSounds
             ToggleWindowMaximize();
         }
 
-        private void CloseApplicationMenuItem_Click(object sender, RoutedEventArgs e)
+        private void MenuItemCloseApplication_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void MenuItemToggleMaximizeWindow_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleWindowMaximize();
+        }
+
+        private void MenuItemMinimizeWindow_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void ButtonTitleIcon_Click(object sender, RoutedEventArgs e)
+        {
+            this.ColorZoneTitle.ContextMenu.IsOpen = true;
         }
     }
 }

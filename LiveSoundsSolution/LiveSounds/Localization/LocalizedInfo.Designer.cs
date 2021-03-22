@@ -70,20 +70,11 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Close application(Alt+F4).
+        ///   Looks up a localized string similar to Close the Application.
         /// </summary>
-        public static string CloseAppMenu {
+        public static string CloseApplication {
             get {
-                return ResourceManager.GetString("CloseAppMenu", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Close the Window.
-        /// </summary>
-        public static string CloseWindow {
-            get {
-                return ResourceManager.GetString("CloseWindow", resourceCulture);
+                return ResourceManager.GetString("CloseApplication", resourceCulture);
             }
         }
         
