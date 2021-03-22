@@ -194,6 +194,39 @@ namespace Zokma.Libs.Logging
             }
         }
 
+        #region IsEnabled
+
+        /// <summary>
+        /// true if Verbose level log enabled to output.
+        /// </summary>
+        public static bool IsVerboseEnabled => IsEnabled(LogLevel.Verbose);
+
+        /// <summary>
+        /// true if Debug level log enabled to output.
+        /// </summary>
+        public static bool IsDebugEnabled => IsEnabled(LogLevel.Debug);
+
+        /// <summary>
+        /// true if Information level log enabled to output.
+        /// </summary>
+        public static bool IsInformationEnabled => IsEnabled(LogLevel.Information);
+
+        /// <summary>
+        /// true if Warning level log enabled to output.
+        /// </summary>
+        public static bool IsWarningEnabled => IsEnabled(LogLevel.Warning);
+
+        /// <summary>
+        /// true if Error level log enabled to output.
+        /// </summary>
+        public static bool IsErrorEnabled => IsEnabled(LogLevel.Error);
+
+        /// <summary>
+        /// true if Fatal level log enabled to output.
+        /// </summary>
+        public static bool IsFatalEnabled => IsEnabled(LogLevel.Fatal);
+
+
         /// <summary>
         /// Checks if the log level is enabled.
         /// </summary>
@@ -203,6 +236,8 @@ namespace Zokma.Libs.Logging
         {
             return ((level < LogLevel.Silent) && (level >= Log.level));
         }
+
+        #endregion
 
         #region WriteLog
 

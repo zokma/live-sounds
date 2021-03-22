@@ -56,6 +56,13 @@ namespace Zokma.Libs.Tests
                 Assert.True(Log.IsEnabled(LogLevel.Error));
                 Assert.True(Log.IsEnabled(LogLevel.Fatal));
 
+                Assert.True(Log.IsVerboseEnabled);
+                Assert.True(Log.IsDebugEnabled);
+                Assert.True(Log.IsInformationEnabled);
+                Assert.True(Log.IsWarningEnabled);
+                Assert.True(Log.IsErrorEnabled);
+                Assert.True(Log.IsFatalEnabled);
+
                 Assert.False(Log.IsEnabled(LogLevel.Silent));
                 Assert.False(Log.IsEnabled(LogLevel.None));
             }
@@ -67,6 +74,13 @@ namespace Zokma.Libs.Tests
                 Assert.True(Log.IsEnabled(LogLevel.Warning));
                 Assert.True(Log.IsEnabled(LogLevel.Error));
                 Assert.True(Log.IsEnabled(LogLevel.Fatal));
+
+                Assert.False(Log.IsVerboseEnabled);
+                Assert.True(Log.IsDebugEnabled);
+                Assert.True(Log.IsInformationEnabled);
+                Assert.True(Log.IsWarningEnabled);
+                Assert.True(Log.IsErrorEnabled);
+                Assert.True(Log.IsFatalEnabled);
 
                 Assert.False(Log.IsEnabled(LogLevel.Silent));
                 Assert.False(Log.IsEnabled(LogLevel.None));
@@ -80,6 +94,13 @@ namespace Zokma.Libs.Tests
                 Assert.True(Log.IsEnabled(LogLevel.Error));
                 Assert.True(Log.IsEnabled(LogLevel.Fatal));
 
+                Assert.False(Log.IsVerboseEnabled);
+                Assert.False(Log.IsDebugEnabled);
+                Assert.True(Log.IsInformationEnabled);
+                Assert.True(Log.IsWarningEnabled);
+                Assert.True(Log.IsErrorEnabled);
+                Assert.True(Log.IsFatalEnabled);
+
                 Assert.False(Log.IsEnabled(LogLevel.Silent));
                 Assert.False(Log.IsEnabled(LogLevel.None));
             }
@@ -91,6 +112,13 @@ namespace Zokma.Libs.Tests
                 Assert.True(Log.IsEnabled(LogLevel.Warning));
                 Assert.True(Log.IsEnabled(LogLevel.Error));
                 Assert.True(Log.IsEnabled(LogLevel.Fatal));
+
+                Assert.False(Log.IsVerboseEnabled);
+                Assert.False(Log.IsDebugEnabled);
+                Assert.False(Log.IsInformationEnabled);
+                Assert.True(Log.IsWarningEnabled);
+                Assert.True(Log.IsErrorEnabled);
+                Assert.True(Log.IsFatalEnabled);
 
                 Assert.False(Log.IsEnabled(LogLevel.Silent));
                 Assert.False(Log.IsEnabled(LogLevel.None));
@@ -104,6 +132,13 @@ namespace Zokma.Libs.Tests
                 Assert.True(Log.IsEnabled(LogLevel.Error));
                 Assert.True(Log.IsEnabled(LogLevel.Fatal));
 
+                Assert.False(Log.IsVerboseEnabled);
+                Assert.False(Log.IsDebugEnabled);
+                Assert.False(Log.IsInformationEnabled);
+                Assert.False(Log.IsWarningEnabled);
+                Assert.True(Log.IsErrorEnabled);
+                Assert.True(Log.IsFatalEnabled);
+
                 Assert.False(Log.IsEnabled(LogLevel.Silent));
                 Assert.False(Log.IsEnabled(LogLevel.None));
             }
@@ -115,6 +150,13 @@ namespace Zokma.Libs.Tests
                 Assert.False(Log.IsEnabled(LogLevel.Warning));
                 Assert.False(Log.IsEnabled(LogLevel.Error));
                 Assert.True(Log.IsEnabled(LogLevel.Fatal));
+
+                Assert.False(Log.IsVerboseEnabled);
+                Assert.False(Log.IsDebugEnabled);
+                Assert.False(Log.IsInformationEnabled);
+                Assert.False(Log.IsWarningEnabled);
+                Assert.False(Log.IsErrorEnabled);
+                Assert.True(Log.IsFatalEnabled);
 
                 Assert.False(Log.IsEnabled(LogLevel.Silent));
                 Assert.False(Log.IsEnabled(LogLevel.None));
@@ -128,6 +170,13 @@ namespace Zokma.Libs.Tests
                 Assert.False(Log.IsEnabled(LogLevel.Error));
                 Assert.False(Log.IsEnabled(LogLevel.Fatal));
 
+                Assert.False(Log.IsVerboseEnabled);
+                Assert.False(Log.IsDebugEnabled);
+                Assert.False(Log.IsInformationEnabled);
+                Assert.False(Log.IsWarningEnabled);
+                Assert.False(Log.IsErrorEnabled);
+                Assert.False(Log.IsFatalEnabled);
+
                 Assert.False(Log.IsEnabled(LogLevel.Silent));
                 Assert.False(Log.IsEnabled(LogLevel.None));
             }
@@ -139,6 +188,13 @@ namespace Zokma.Libs.Tests
                 Assert.False(Log.IsEnabled(LogLevel.Warning));
                 Assert.False(Log.IsEnabled(LogLevel.Error));
                 Assert.False(Log.IsEnabled(LogLevel.Fatal));
+
+                Assert.False(Log.IsVerboseEnabled);
+                Assert.False(Log.IsDebugEnabled);
+                Assert.False(Log.IsInformationEnabled);
+                Assert.False(Log.IsWarningEnabled);
+                Assert.False(Log.IsErrorEnabled);
+                Assert.False(Log.IsFatalEnabled);
 
                 Assert.False(Log.IsEnabled(LogLevel.Silent));
                 Assert.False(Log.IsEnabled(LogLevel.None));
