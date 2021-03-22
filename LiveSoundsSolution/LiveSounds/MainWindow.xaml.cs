@@ -202,5 +202,18 @@ namespace LiveSounds
         {
             this.ColorZoneTitle.ContextMenu.IsOpen = true;
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var notification = new Notifications.Wpf.NotificationManager();
+
+            notification.Show(new Notifications.Wpf.NotificationContent
+            {
+                Message = "てすと",
+                Title = "タイトル",
+                Type = Notifications.Wpf.NotificationType.Information,
+            },
+            areaName: "NotificationAreaMain");
+        }
     }
 }

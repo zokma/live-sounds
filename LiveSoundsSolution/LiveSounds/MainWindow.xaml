@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:LiveSounds"
         xmlns:l10n="clr-namespace:LiveSounds.Localization"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:notifications="clr-namespace:Notifications.Wpf.Controls;assembly=Notifications.Wpf"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{x:Null}"
         TextElement.FontWeight="Medium"
@@ -75,6 +76,16 @@
                         </StackPanel>
                     </DockPanel>
                 </materialDesign:ColorZone>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <Grid>
+                        <Grid>
+                            <notifications:NotificationArea x:Name="NotificationAreaMain" Position="TopRight" MaxItems="5"/>
+                        </Grid>
+                        <Grid>
+                            
+                        </Grid>
+                    </Grid>
+                </ScrollViewer>
             </DockPanel>
         </Grid>
     </Border>
