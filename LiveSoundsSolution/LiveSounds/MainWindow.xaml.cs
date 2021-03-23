@@ -28,6 +28,12 @@ namespace LiveSounds
         private const float ICON_EDGE_LENGTH_TITLE = 24.0f;
 
         /// <summary>
+        /// Edge lenght of icon on button.
+        /// </summary>
+        private const float ICON_EDGE_LENGTH_BUTTON = 24.0f;
+
+
+        /// <summary>
         /// SolidColorBrush for Transparent.
         /// </summary>
         private static readonly Brush SOLID_COLOR_BRUSH_TRANSPARENT = new SolidColorBrush(Colors.Transparent);
@@ -42,6 +48,18 @@ namespace LiveSounds
         /// </summary>
         private static readonly Brush SOLID_COLOR_BRUSH_RED = new SolidColorBrush(Colors.Red);
 
+
+        /// <summary>
+        /// SolidColorBrush for Unmuted.
+        /// </summary>
+        private static readonly Brush SOLID_COLOR_BRUSH_UNMUTED = new SolidColorBrush(Colors.DeepSkyBlue);
+
+        /// <summary>
+        /// SolidColorBrush for muted.
+        /// </summary>
+        private static readonly Brush SOLID_COLOR_BRUSH_MUTED = new SolidColorBrush(Colors.OrangeRed);
+
+
         /// <summary>
         /// Icon for Maximize Window.
         /// </summary>
@@ -52,12 +70,27 @@ namespace LiveSounds
         /// </summary>
         private static readonly PackIcon ICON_WINDOW_RESTORE = new PackIcon { Kind = PackIconKind.WindowRestore, Width = ICON_EDGE_LENGTH_TITLE, Height = ICON_EDGE_LENGTH_TITLE };
 
+        /// <summary>
+        /// Icon for Playback unmuted.
+        /// </summary>
+        private static readonly PackIcon ICON_PLAYBACK_UNMUTED = new PackIcon { Kind = PackIconKind.VolumeHigh, Width = ICON_EDGE_LENGTH_BUTTON, Height = ICON_EDGE_LENGTH_BUTTON };
+
+        /// <summary>
+        /// Icon for Playback muted.
+        /// </summary>
+        private static readonly PackIcon ICON_PLAYBACK_MUTED = new PackIcon { Kind = PackIconKind.VolumeMute, Width = ICON_EDGE_LENGTH_BUTTON, Height = ICON_EDGE_LENGTH_BUTTON };
+
+
+        /// <summary>
+        /// true if audio playback is muted. 
+        /// </summary>
+        private bool isPlaybackMuted;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            InitForm();
+            InitWindow();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -73,14 +106,50 @@ namespace LiveSounds
         }
 
         /// <summary>
-        /// Inits Form.
+        /// Inits Window.
         /// </summary>
-        private void InitForm()
+        private void InitWindow()
         {
             this.MaxWidth  = SystemParameters.PrimaryScreenWidth;
             this.MaxHeight = SystemParameters.PrimaryScreenHeight;
-            
             ResetWindowMaximizeButton();
+
+            var settings = App.Settings;
+
+            int windowWidth  = settings.WindowWidth;
+            int windowHeight = settings.WindowHeight;
+
+            var workArea = SystemParameters.WorkArea;
+
+            if(windowWidth > 0)
+            {
+                this.Width = Math.Max(Math.Min((double)windowWidth, workArea.Width), this.MinWidth);
+            }
+
+            if (windowHeight > 0)
+            {
+                this.Height = Math.Max(Math.Min((double)windowHeight, workArea.Height), this.MinHeight);
+            }
+
+            this.WindowStartupLocation = settings.WindowStartupLocation;
+        }
+
+        /// <summary>
+        /// Saves settings.
+        /// </summary>
+        private void SaveSettings()
+        {
+            var settings = App.Settings;
+
+            settings.WindowWidth  = (int)this.Width;
+            settings.WindowHeight = (int)this.Height;
+
+            if(settings.WindowStartupLocationName != null)
+            {
+                settings.WindowStartupLocation = this.WindowStartupLocation;
+            }
+
+            settings.Save();
         }
 
         /// <summary>
@@ -103,6 +172,38 @@ namespace LiveSounds
 
                 this.MenuItemMaximizeWindow.IsEnabled    = true;
                 this.MenuItemRestoreWindowSize.IsEnabled = false;
+            }
+        }
+
+        /// <summary>
+        /// Resets Playback mute Button.
+        /// </summary>
+        private void ResetPlaybackMuteButton()
+        {
+            if (this.isPlaybackMuted)
+            {
+                this.ButtonPlaybackMute.Background = SOLID_COLOR_BRUSH_MUTED;
+                this.ButtonPlaybackMute.Content    = ICON_PLAYBACK_MUTED;
+            }
+            else
+            {
+                this.ButtonPlaybackMute.Background = SOLID_COLOR_BRUSH_UNMUTED;
+                this.ButtonPlaybackMute.Content    = ICON_PLAYBACK_UNMUTED;
+            }
+        }
+
+        /// <summary>
+        /// Resets Playback mute TextBlock.
+        /// </summary>
+        private void ResetPlaybackMuteTextBlock()
+        {
+            if (!this.isPlaybackMuted && this.SliderPlaybackVolume.Value > 0.0f)
+            {
+                this.TextBlockPlaybackMuted.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                this.TextBlockPlaybackMuted.Visibility = Visibility.Visible;
             }
         }
 
@@ -203,17 +304,26 @@ namespace LiveSounds
             this.ColorZoneTitle.ContextMenu.IsOpen = true;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void SliderPlaybackVolume_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            var notification = new Notifications.Wpf.NotificationManager();
+            int volume = (int)this.SliderPlaybackVolume.Value;
 
-            notification.Show(new Notifications.Wpf.NotificationContent
-            {
-                Message = "てすと",
-                Title = "タイトル",
-                Type = Notifications.Wpf.NotificationType.Information,
-            },
-            areaName: "NotificationAreaMain");
+            this.TextBlockPlaybackVolume.Text = Convert.ToString(volume);
+
+            ResetPlaybackMuteTextBlock();
+        }
+
+        private void ButtonPlaybackMute_Click(object sender, RoutedEventArgs e)
+        {
+            this.isPlaybackMuted = !this.isPlaybackMuted;
+            
+            ResetPlaybackMuteButton();
+            ResetPlaybackMuteTextBlock();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            SaveSettings();
         }
     }
 }

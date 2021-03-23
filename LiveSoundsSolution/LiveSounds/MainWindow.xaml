@@ -12,7 +12,7 @@
         TextElement.FontWeight="Medium"
         TextElement.FontSize="24"
         mc:Ignorable="d"
-        Title="{x:Static l10n:LocalizedInfo.ApplicationTitle}" Height="450" Width="800" Loaded="Window_Loaded" AllowsTransparency="True" WindowStyle="None" ResizeMode="CanResizeWithGrip" MinHeight="240" MinWidth="640">
+        Title="{x:Static l10n:LocalizedInfo.ApplicationTitle}" Height="450" Width="800" Loaded="Window_Loaded" AllowsTransparency="True" WindowStyle="None" ResizeMode="CanResizeWithGrip" MinHeight="240" MinWidth="640" Closed="Window_Closed">
     <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderBrush="#44040404" CornerRadius="2,2,2,2" BorderThickness="1,1,2,2">
         <Grid Background="{DynamicResource MaterialDesignPaper}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <DockPanel>
@@ -40,7 +40,7 @@
                                       Header="{x:Static l10n:LocalizedInfo.CloseApplication}" 
                                       Icon="{materialDesign:PackIcon Kind=Close}"
                                       InputGestureText="Alt+F4"
-                                      Click="MenuItemCloseApplication_Click" />
+                                      Click="MenuItemCloseApplication_Click"/>
                         </ContextMenu>
                     </materialDesign:ColorZone.ContextMenu>
                     <DockPanel>
@@ -78,11 +78,49 @@
                 </materialDesign:ColorZone>
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <Grid>
-                        <Grid>
+                        <Grid Panel.ZIndex="440">
                             <notifications:NotificationArea x:Name="NotificationAreaMain" Position="TopRight" MaxItems="5"/>
                         </Grid>
                         <Grid>
-                            
+                            <GroupBox Header="{x:Static l10n:LocalizedInfo.GroupBoxAudioSettings}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,24,0,0" Width="470" FontSize="14">
+                                <StackPanel>
+                                    <Grid Margin="0,4,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{x:Static l10n:LocalizedInfo.TextBlockPlaybackDevice}"/>
+                                        <ComboBox x:Name="ComboBoxAudioDevices" Grid.Row="0" Grid.Column="1" Margin="14,0,14,0"/>
+                                    </Grid>
+                                    <Grid Margin="0,14,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Text="{x:Static l10n:LocalizedInfo.TextBlockPlaybackVolume}"/>
+                                        <TextBlock x:Name="TextBlockPlaybackMuted" Text="{x:Static l10n:LocalizedInfo.TextBlockPlaybackMuted}" Grid.Column="1" Margin="14,0,0,0" Background="OrangeRed" Foreground="White" Padding="7,1,7,1"/>
+                                        <TextBlock x:Name="TextBlockPlaybackVolume" Text="100" Grid.Column="2" HorizontalAlignment="Right" Margin="0,0,14,0"/>
+                                    </Grid>
+                                    <Grid Margin="0,4,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Button x:Name="ButtonPlaybackMute"
+                                            Margin="0,0,0,0"
+                                            Content="{materialDesign:PackIcon Kind=VolumeHigh, Size=24}" 
+                                            Background="DeepSkyBlue" Click="ButtonPlaybackMute_Click" Padding="7,0,7,0"/>
+                                        <Slider x:Name="SliderPlaybackVolume"
+                                            Value="40"
+                                            Minimum="0"
+                                            Maximum="100"
+                                            TickFrequency="1"
+                                            TickPlacement="BottomRight" Grid.Column="1" Margin="14,0,14,0" ValueChanged="SliderPlaybackVolume_ValueChanged" SmallChange="1" AutoToolTipPlacement="TopLeft" />
+                                    </Grid>
+                                </StackPanel>
+                            </GroupBox>
                         </Grid>
                     </Grid>
                 </ScrollViewer>

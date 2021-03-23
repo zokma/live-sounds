@@ -123,6 +123,9 @@
   <data name="CloseApplication" xml:space="preserve">
     <value>Close the Application</value>
   </data>
+  <data name="GroupBoxAudioSettings" xml:space="preserve">
+    <value>Audio Settings</value>
+  </data>
   <data name="MaximizeWindow" xml:space="preserve">
     <value>Maximize the Window</value>
   </data>
@@ -131,6 +134,15 @@
   </data>
   <data name="RestoreWindow" xml:space="preserve">
     <value>Restore the Window size</value>
+  </data>
+  <data name="TextBlockPlaybackDevice" xml:space="preserve">
+    <value>Playback Device</value>
+  </data>
+  <data name="TextBlockPlaybackMuted" xml:space="preserve">
+    <value>MUTED</value>
+  </data>
+  <data name="TextBlockPlaybackVolume" xml:space="preserve">
+    <value>Volume</value>
   </data>
   <data name="UnexpectedErrorMessage" xml:space="preserve">
     <value>Unexpected Error has occurred.

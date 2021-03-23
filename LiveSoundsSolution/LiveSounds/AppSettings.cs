@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.Windows;
 using Zokma.Libs.Logging;
 
 namespace LiveSounds
@@ -19,6 +20,7 @@ namespace LiveSounds
         public static readonly JsonSerializerOptions JsonSerializerOptionsForFileRead = new JsonSerializerOptions
         {
             AllowTrailingCommas = true,
+            PropertyNameCaseInsensitive = true,
         };
 
         /// <summary>
@@ -36,6 +38,7 @@ namespace LiveSounds
         public static readonly JsonSerializerOptions JsonSerializerOptionsForHttpRead = new JsonSerializerOptions
         {
             AllowTrailingCommas = false,
+            PropertyNameCaseInsensitive = false,
         };
 
         /// <summary>
@@ -68,6 +71,7 @@ namespace LiveSounds
         /// Log level name.
         /// </summary>
         [JsonInclude]
+        [JsonPropertyName("LogLevel")]
         public string LogLevelName { get; private set; } = "None";
 
         /// <summary>
@@ -106,6 +110,40 @@ namespace LiveSounds
         }
 
         /// <summary>
+        /// Window Width.
+        /// </summary>
+        [JsonInclude]
+        public int WindowWidth = 0;
+
+        /// <summary>
+        /// Window Height.
+        /// </summary>
+        [JsonInclude]
+        public int WindowHeight = 0;
+
+        /// <summary>
+        /// Window Startup location name.
+        /// </summary>
+        [JsonInclude]
+        [JsonPropertyName("WindowStartupLocation")]
+        public string WindowStartupLocationName { get; private set; } = null;
+
+        [JsonIgnore]
+        public WindowStartupLocation WindowStartupLocation
+        {
+            get
+            {
+                return ParseEnum(this.WindowStartupLocationName, WindowStartupLocation.Manual);
+            }
+
+            set
+            {
+                this.WindowStartupLocationName = value.ToString();
+            }
+        }
+
+
+        /// <summary>
         /// Settings file path.
         /// </summary>
         [JsonIgnore]
@@ -133,7 +171,7 @@ namespace LiveSounds
         public static TEnum ParseEnum<TEnum>(string name, TEnum defaultValue)
             where TEnum : struct
         {
-            if (Enum.TryParse<TEnum>(name, true, out TEnum result))
+            if (!String.IsNullOrWhiteSpace(name) && Enum.TryParse<TEnum>(name, true, out TEnum result))
             {
                 return result;
             }

@@ -123,6 +123,9 @@
   <data name="CloseApplication" xml:space="preserve">
     <value>アプリケーションを閉じる</value>
   </data>
+  <data name="GroupBoxAudioSettings" xml:space="preserve">
+    <value>オーディオ設定</value>
+  </data>
   <data name="MaximizeWindow" xml:space="preserve">
     <value>ウィンドウを最大化する</value>
   </data>
@@ -131,6 +134,15 @@
   </data>
   <data name="RestoreWindow" xml:space="preserve">
     <value>ウィンドウのサイズを元に戻す</value>
+  </data>
+  <data name="TextBlockPlaybackDevice" xml:space="preserve">
+    <value>再生デバイス</value>
+  </data>
+  <data name="TextBlockPlaybackMuted" xml:space="preserve">
+    <value>ミュート中</value>
+  </data>
+  <data name="TextBlockPlaybackVolume" xml:space="preserve">
+    <value>音量</value>
   </data>
   <data name="UnexpectedErrorMessage" xml:space="preserve">
     <value>予期しないエラーが発生しました。

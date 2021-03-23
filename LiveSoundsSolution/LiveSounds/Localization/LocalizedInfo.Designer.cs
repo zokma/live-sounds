@@ -79,6 +79,15 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Audio Settings.
+        /// </summary>
+        public static string GroupBoxAudioSettings {
+            get {
+                return ResourceManager.GetString("GroupBoxAudioSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Maximize the Window.
         /// </summary>
         public static string MaximizeWindow {
@@ -102,6 +111,33 @@ namespace LiveSounds.Localization {
         public static string RestoreWindow {
             get {
                 return ResourceManager.GetString("RestoreWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Playback Device.
+        /// </summary>
+        public static string TextBlockPlaybackDevice {
+            get {
+                return ResourceManager.GetString("TextBlockPlaybackDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MUTED.
+        /// </summary>
+        public static string TextBlockPlaybackMuted {
+            get {
+                return ResourceManager.GetString("TextBlockPlaybackMuted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Volume.
+        /// </summary>
+        public static string TextBlockPlaybackVolume {
+            get {
+                return ResourceManager.GetString("TextBlockPlaybackVolume", resourceCulture);
             }
         }
         
