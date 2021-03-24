@@ -60,6 +60,17 @@ namespace LiveSounds
         };
 
 
+        /// <summary>
+        /// Audio Render Volume.
+        /// </summary>
+        [JsonInclude]
+        public int AudioRenderVolume = 100;
+
+        /// <summary>
+        /// true if the audio render is muted.
+        /// </summary>
+        [JsonInclude]
+        public bool IsAudioRenderMuted = false;
 
         /// <summary>
         /// Is data directory portable.
@@ -72,7 +83,11 @@ namespace LiveSounds
         /// </summary>
         [JsonInclude]
         [JsonPropertyName("LogLevel")]
+#if DEBUG
+        public string LogLevelName { get; private set; } = "Debug";
+#else
         public string LogLevelName { get; private set; } = "None";
+#endif
 
         /// <summary>
         /// Log file size limit in bytes.
@@ -128,6 +143,9 @@ namespace LiveSounds
         [JsonPropertyName("WindowStartupLocation")]
         public string WindowStartupLocationName { get; private set; } = null;
 
+        /// <summary>
+        /// Windows Startup location.
+        /// </summary>
         [JsonIgnore]
         public WindowStartupLocation WindowStartupLocation
         {
@@ -142,6 +160,29 @@ namespace LiveSounds
             }
         }
 
+        /// <summary>
+        /// Window Style name.
+        /// </summary>
+        [JsonInclude]
+        [JsonPropertyName("WindowStyle")]
+        public string WindowStyleName { get; internal set; } = null;
+
+        /// <summary>
+        /// Window Style.
+        /// </summary>
+        [JsonIgnore]
+        public WindowStyle WindowStyle
+        {
+            get
+            {
+                return ParseEnum(this.WindowStyleName, WindowStyle.None);
+            }
+
+            set
+            {
+                this.WindowStyleName = value.ToString();
+            }
+        }
 
         /// <summary>
         /// Settings file path.

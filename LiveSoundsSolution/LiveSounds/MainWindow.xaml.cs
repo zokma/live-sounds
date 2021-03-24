@@ -2,6 +2,7 @@
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Zokma.Libs;
+using Zokma.Libs.Logging;
 
 namespace LiveSounds
 {
@@ -31,6 +34,16 @@ namespace LiveSounds
         /// Edge lenght of icon on button.
         /// </summary>
         private const float ICON_EDGE_LENGTH_BUTTON = 24.0f;
+
+        /// <summary>
+        /// Data directory name.
+        /// </summary>
+        private const string DATA_DIRECTORY_NAME = "CustomData";
+
+        /// <summary>
+        /// Audio Data directory name.
+        /// </summary>
+        private const string AUDIO_DATA_DIRECTORY_NAME = "AudioFiles";
 
 
         /// <summary>
@@ -86,6 +99,17 @@ namespace LiveSounds
         /// </summary>
         private bool isPlaybackMuted;
 
+        /// <summary>
+        /// Pathfinder for data directory.
+        /// </summary>
+        private Pathfinder dataDirectory;
+
+        /// <summary>
+        /// Pathfinder for audio data directory.
+        /// </summary>
+        private Pathfinder audioDataDirectory;
+
+
         public MainWindow()
         {
             InitializeComponent();
@@ -93,16 +117,37 @@ namespace LiveSounds
             InitWindow();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var app = Application.Current;
+            Log.Information("Window_Loaded starting.");
 
-            if(app != null)
+            this.GridApplicationMain.IsEnabled = false;
+
+            try
             {
-                app.ShutdownMode = ShutdownMode.OnMainWindowClose;
-            }
+                var app = Application.Current;
 
-            App.IsMainFormLoaded = true;
+                if (app != null)
+                {
+                    app.ShutdownMode = ShutdownMode.OnMainWindowClose;
+                }
+
+                InitFormImmediateInfo();
+                await InitApplicationAsync();
+
+                Log.Information("Window_Loaded done.");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Unexpected error on Window_Loaded.");
+
+                throw;
+            }
+            finally
+            {
+                this.GridApplicationMain.IsEnabled = true;
+                App.IsMainFormLoaded = true;
+            }
         }
 
         /// <summary>
@@ -110,6 +155,7 @@ namespace LiveSounds
         /// </summary>
         private void InitWindow()
         {
+            // Adjust Window size.
             this.MaxWidth  = SystemParameters.PrimaryScreenWidth;
             this.MaxHeight = SystemParameters.PrimaryScreenHeight;
             ResetWindowMaximizeButton();
@@ -132,6 +178,104 @@ namespace LiveSounds
             }
 
             this.WindowStartupLocation = settings.WindowStartupLocation;
+
+            // Set Window style.
+            var styleName = settings.WindowStyleName?.ToUpper();
+
+            if(styleName != null)
+            {
+                if(styleName == "MODERN")
+                {
+                    settings.WindowStyleName = "Modern";
+                }
+                else if(styleName == "LEGACY")
+                {
+                    settings.WindowStyleName = "Legacy";
+
+                    this.AllowsTransparency = false;
+                    this.WindowStyle        = WindowStyle.SingleBorderWindow;
+
+                    this.ColorZoneTitle.Visibility    = Visibility.Collapsed;
+                    this.WindowBorder.BorderThickness = new Thickness(0.0f);
+                }
+                else
+                {
+                    var style = settings.WindowStyle;
+
+                    this.AllowsTransparency = (style == WindowStyle.None);
+                    this.WindowStyle        = style;
+
+                    if(!this.AllowsTransparency)
+                    {
+                        this.WindowBorder.BorderThickness = new Thickness(0.0f);
+                    }
+
+                    settings.WindowStyle = style;
+                }
+            }
+
+            if(Log.IsDebugEnabled)
+            {
+                Log.Debug("Init WindowSize: WindowWidth={w}, WindowHeight={h}, MaxWidth={mw}, MaxHeight={mh}", this.Width, this.Height, this.MaxWidth, this.MaxHeight);
+                Log.Debug("Init WindowStyle: Style={style}, Name={name}, AllowsTransparency={allowtrans}", this.WindowStyle, styleName, this.AllowsTransparency);
+                Log.Debug("Init WindowStartupLocation: {location}", this.WindowStartupLocation);
+            }
+        }
+
+        /// <summary>
+        /// Inits form info.
+        /// </summary>
+        private void InitFormImmediateInfo()
+        {
+            this.dataDirectory      = App.UserDirectory.GetSubPathfinder(DATA_DIRECTORY_NAME);
+            this.audioDataDirectory = this.dataDirectory.GetSubPathfinder(AUDIO_DATA_DIRECTORY_NAME);
+
+            var settings = App.Settings;
+
+            this.SliderPlaybackVolume.Value = settings.AudioRenderVolume;
+            this.isPlaybackMuted            = settings.IsAudioRenderMuted;
+            ResetPlaybackMuteButton();
+            ResetPlaybackMuteTextBlock();
+        }
+
+        /// <summary>
+        /// Creates data directory.
+        /// </summary>
+        private void CreateDataDirectory()
+        {
+            var dataDirectoryInfo      = new DirectoryInfo(this.dataDirectory.BaseDirectory);
+            var audioDataDirectoryInfo = new DirectoryInfo(this.audioDataDirectory.BaseDirectory);
+
+            bool shouldCreateInitialData = !dataDirectoryInfo.Exists;
+
+            if(!audioDataDirectoryInfo.Exists)
+            {
+                audioDataDirectoryInfo.Create();
+            }
+        }
+
+        /// <summary>
+        /// Inits this Application.
+        /// </summary>
+        private void InitApplication()
+        {
+            CreateDataDirectory();
+        }
+
+        /// <summary>
+        /// Inits this Application on background task.
+        /// </summary>
+        /// <returns>Task info.</returns>
+        private Task InitApplicationAsync()
+        {
+            var result = Task.Run(
+                () =>
+                {
+                    InitApplication();
+                }
+                );
+
+            return result;
         }
 
         /// <summary>
@@ -148,6 +292,10 @@ namespace LiveSounds
             {
                 settings.WindowStartupLocation = this.WindowStartupLocation;
             }
+
+
+            settings.AudioRenderVolume  = (int)this.SliderPlaybackVolume.Value;
+            settings.IsAudioRenderMuted = this.isPlaybackMuted;
 
             settings.Save();
         }

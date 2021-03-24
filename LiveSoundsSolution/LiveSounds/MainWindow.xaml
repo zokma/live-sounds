@@ -13,7 +13,7 @@
         TextElement.FontSize="24"
         mc:Ignorable="d"
         Title="{x:Static l10n:LocalizedInfo.ApplicationTitle}" Height="450" Width="800" Loaded="Window_Loaded" AllowsTransparency="True" WindowStyle="None" ResizeMode="CanResizeWithGrip" MinHeight="240" MinWidth="640" Closed="Window_Closed">
-    <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderBrush="#44040404" CornerRadius="2,2,2,2" BorderThickness="1,1,2,2">
+    <Border x:Name="WindowBorder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderBrush="#44040404" CornerRadius="2,2,2,2" BorderThickness="1,1,2,2">
         <Grid Background="{DynamicResource MaterialDesignPaper}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <DockPanel>
                 <materialDesign:ColorZone x:Name="ColorZoneTitle"
@@ -81,7 +81,7 @@
                         <Grid Panel.ZIndex="440">
                             <notifications:NotificationArea x:Name="NotificationAreaMain" Position="TopRight" MaxItems="5"/>
                         </Grid>
-                        <Grid>
+                        <Grid x:Name="GridApplicationMain">
                             <GroupBox Header="{x:Static l10n:LocalizedInfo.GroupBoxAudioSettings}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,24,0,0" Width="470" FontSize="14">
                                 <StackPanel>
                                     <Grid Margin="0,4,0,0">
