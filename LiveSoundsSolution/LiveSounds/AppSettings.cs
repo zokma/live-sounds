@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Interop;
 using Zokma.Libs.Logging;
 
 namespace LiveSounds
@@ -70,12 +71,14 @@ namespace LiveSounds
         /// true if the audio render is muted.
         /// </summary>
         [JsonInclude]
+        [JsonPropertyName("AudioRenderMuted")]
         public bool IsAudioRenderMuted = false;
 
         /// <summary>
         /// Is data directory portable.
         /// </summary>
         [JsonInclude]
+        [JsonPropertyName("Portable")]
         public bool IsPortable = true;
 
         /// <summary>
@@ -181,6 +184,30 @@ namespace LiveSounds
             set
             {
                 this.WindowStyleName = value.ToString();
+            }
+        }
+
+        /// <summary>
+        /// Render mode name.
+        /// </summary>
+        [JsonInclude]
+        [JsonPropertyName("RenderMode")]
+        public string RenderModeName { get; internal set; } = null;
+
+        /// <summary>
+        /// Render mode name.
+        /// </summary>
+        [JsonIgnore]
+        public RenderMode RenderMode
+        {
+            get
+            {
+                return ParseEnum(this.RenderModeName, RenderMode.Default);
+            }
+
+            set
+            {
+                this.RenderModeName = value.ToString();
             }
         }
 

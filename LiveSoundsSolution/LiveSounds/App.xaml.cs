@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Threading;
 using Zokma.Libs;
 using Zokma.Libs.Logging;
@@ -84,6 +85,12 @@ namespace LiveSounds
 
             Settings = settings;
             Settings.FilePath = UserDirectory.FindPathName(SETTINGS_FILE_NAME);
+
+            if(!String.IsNullOrWhiteSpace(Settings.RenderModeName))
+            {
+                RenderOptions.ProcessRenderMode = Settings.RenderMode;
+                Settings.RenderMode = RenderOptions.ProcessRenderMode;
+            }
 
             Log.Init(UserDirectory.FindPathName(LOG_FILE), Settings.LogLevel, Settings.LogFileSizeLimitBytes, Settings.LogFileCountLimit, Settings.LogBuffered);
             Log.Information("Process Start: ProcessInstanceId = {ProcessInstanceId}", processInstanceId);

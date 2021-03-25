@@ -210,7 +210,7 @@ namespace LiveSounds
                         this.WindowBorder.BorderThickness = new Thickness(0.0f);
                     }
 
-                    settings.WindowStyle = style;
+                    settings.WindowStyle = this.WindowStyle;
                 }
             }
 
