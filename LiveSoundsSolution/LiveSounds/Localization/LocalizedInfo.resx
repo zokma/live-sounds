@@ -135,6 +135,24 @@
   <data name="RestoreWindow" xml:space="preserve">
     <value>Restore the Window size</value>
   </data>
+  <data name="SampleAudioName01" xml:space="preserve">
+    <value>BOOM</value>
+  </data>
+  <data name="SampleAudioName02" xml:space="preserve">
+    <value>BOOM BOOM</value>
+  </data>
+  <data name="SampleAudioName03" xml:space="preserve">
+    <value>BOOM BOOM BOOM</value>
+  </data>
+  <data name="SampleAudioName04" xml:space="preserve">
+    <value>BOOM BOOM BOOM BOOM</value>
+  </data>
+  <data name="SamplePresetName01" xml:space="preserve">
+    <value>Sample A</value>
+  </data>
+  <data name="SamplePresetName02" xml:space="preserve">
+    <value>Sample B</value>
+  </data>
   <data name="TextBlockPlaybackDevice" xml:space="preserve">
     <value>Playback Device</value>
   </data>

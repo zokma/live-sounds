@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.Unicode;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
@@ -14,6 +16,10 @@ namespace LiveSounds
 {
     internal class AppSettings
     {
+        /// <summary>
+        /// Json encoder.
+        /// </summary>
+        private static readonly JavaScriptEncoder JSON_ENCODER = JavaScriptEncoder.Create(UnicodeRanges.All);
 
         /// <summary>
         /// JsonSerializerOptions for file read.
@@ -22,6 +28,7 @@ namespace LiveSounds
         {
             AllowTrailingCommas = true,
             PropertyNameCaseInsensitive = true,
+            Encoder = JSON_ENCODER,
         };
 
         /// <summary>
@@ -31,6 +38,7 @@ namespace LiveSounds
         {
             WriteIndented = true,
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            Encoder = JSON_ENCODER,
         };
 
         /// <summary>
@@ -40,6 +48,7 @@ namespace LiveSounds
         {
             AllowTrailingCommas = false,
             PropertyNameCaseInsensitive = false,
+            Encoder = JSON_ENCODER,
         };
 
         /// <summary>
@@ -49,6 +58,7 @@ namespace LiveSounds
         {
             WriteIndented = false,
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            Encoder = JSON_ENCODER,
         };
 
 
@@ -58,6 +68,7 @@ namespace LiveSounds
         public static readonly JsonWriterOptions JsonWriterOptionForFile = new JsonWriterOptions
         {
             Indented = true,
+            Encoder  = JSON_ENCODER,
         };
 
 

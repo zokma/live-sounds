@@ -135,6 +135,24 @@
   <data name="RestoreWindow" xml:space="preserve">
     <value>ウィンドウのサイズを元に戻す</value>
   </data>
+  <data name="SampleAudioName01" xml:space="preserve">
+    <value>ドン！</value>
+  </data>
+  <data name="SampleAudioName02" xml:space="preserve">
+    <value>ドンドン！</value>
+  </data>
+  <data name="SampleAudioName03" xml:space="preserve">
+    <value>ドンドンドン！</value>
+  </data>
+  <data name="SampleAudioName04" xml:space="preserve">
+    <value>ドンドンドンドン！</value>
+  </data>
+  <data name="SamplePresetName01" xml:space="preserve">
+    <value>サンプル A</value>
+  </data>
+  <data name="SamplePresetName02" xml:space="preserve">
+    <value>サンプル B</value>
+  </data>
   <data name="TextBlockPlaybackDevice" xml:space="preserve">
     <value>再生デバイス</value>
   </data>

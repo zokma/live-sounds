@@ -115,6 +115,60 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BOOM.
+        /// </summary>
+        public static string SampleAudioName01 {
+            get {
+                return ResourceManager.GetString("SampleAudioName01", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BOOM BOOM.
+        /// </summary>
+        public static string SampleAudioName02 {
+            get {
+                return ResourceManager.GetString("SampleAudioName02", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BOOM BOOM BOOM.
+        /// </summary>
+        public static string SampleAudioName03 {
+            get {
+                return ResourceManager.GetString("SampleAudioName03", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BOOM BOOM BOOM BOOM.
+        /// </summary>
+        public static string SampleAudioName04 {
+            get {
+                return ResourceManager.GetString("SampleAudioName04", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sample A.
+        /// </summary>
+        public static string SamplePresetName01 {
+            get {
+                return ResourceManager.GetString("SamplePresetName01", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sample B.
+        /// </summary>
+        public static string SamplePresetName02 {
+            get {
+                return ResourceManager.GetString("SamplePresetName02", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Playback Device.
         /// </summary>
         public static string TextBlockPlaybackDevice {

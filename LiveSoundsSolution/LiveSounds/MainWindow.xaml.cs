@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -39,6 +40,11 @@ namespace LiveSounds
         /// Data directory name.
         /// </summary>
         private const string DATA_DIRECTORY_NAME = "CustomData";
+
+        /// <summary>
+        /// Sample Data directory name.
+        /// </summary>
+        private const string SAMPLE_DATA_DIRECTORY_NAME = "SampleData";
 
         /// <summary>
         /// Audio Data directory name.
@@ -252,13 +258,72 @@ namespace LiveSounds
             {
                 audioDataDirectoryInfo.Create();
             }
+
+            if(shouldCreateInitialData)
+            {
+                CreateSampleData();
+            }
+        }
+
+        /// <summary>
+        /// Creates sample data.
+        /// </summary>
+        private void CreateSampleData()
+        {
+            var sampleAudioDirectory = new DirectoryInfo(Pathfinder.ApplicationRoot.GetSubPathfinder(SAMPLE_DATA_DIRECTORY_NAME, AUDIO_DATA_DIRECTORY_NAME).BaseDirectory);
+
+            foreach (var fileInfo in sampleAudioDirectory.EnumerateFiles("*.mp3", new EnumerationOptions { RecurseSubdirectories = false, ReturnSpecialDirectories = false, MatchType = MatchType.Simple }))
+            {
+                try
+                {
+                    fileInfo.CopyTo(this.audioDataDirectory.FindPathName(fileInfo.Name));
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning(ex, "Audio file already exists.");
+                }
+            }
+
+            var preset = new DataPreset
+            {
+                Name = LocalizedInfo.SamplePresetName01,
+                AudioItems = new AudioInfo[]
+                {
+                    new AudioInfo{ Name = LocalizedInfo.SampleAudioName02, File = "Sample02.mp3" },
+                    new AudioInfo{ Name = LocalizedInfo.SampleAudioName04, File = "Sample04.mp3" },
+                }
+            };
+
+            using (var fs     = new FileStream(this.dataDirectory.FindPathName("SamplePreset01.json"), FileMode.CreateNew, FileAccess.Write, FileShare.Read))
+            using (var writer = new Utf8JsonWriter(fs, AppSettings.JsonWriterOptionForFile))
+            {
+                JsonSerializer.Serialize(writer, preset, AppSettings.JsonSerializerOptionsForFileWrite);
+            }
+
+            preset = new DataPreset
+            {
+                Name = LocalizedInfo.SamplePresetName02,
+                AudioItems = new AudioInfo[]
+                {
+                    new AudioInfo{ Name = LocalizedInfo.SampleAudioName01, File = "Sample01.mp3" },
+                    new AudioInfo{ Name = LocalizedInfo.SampleAudioName02, File = "Sample02.mp3" },
+                    new AudioInfo{ Name = LocalizedInfo.SampleAudioName03, File = "Sample03.mp3" },
+                    new AudioInfo{ Name = LocalizedInfo.SampleAudioName04, File = "Sample04.mp3" },
+                }
+            };
+
+            using (var fs     = new FileStream(this.dataDirectory.FindPathName("SamplePreset02.json"), FileMode.CreateNew, FileAccess.Write, FileShare.Read))
+            using (var writer = new Utf8JsonWriter(fs, AppSettings.JsonWriterOptionForFile))
+            {
+                JsonSerializer.Serialize(writer, preset, AppSettings.JsonSerializerOptionsForFileWrite);
+            }
         }
 
         /// <summary>
         /// Inits this Application.
         /// </summary>
         private void InitApplication()
-        {
+       {
             CreateDataDirectory();
         }
 
