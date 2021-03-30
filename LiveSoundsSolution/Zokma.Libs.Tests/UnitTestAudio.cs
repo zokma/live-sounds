@@ -161,6 +161,13 @@ namespace Zokma.Libs.Tests
                 Assert.False(devices1[i] != devices2[i]);
                 Assert.True( devices1[i].GetHashCode() == devices2[i].GetHashCode());
 
+                Assert.False(devices1[i] == null);
+                Assert.False(null == devices1[i]);
+
+                Assert.True(devices1[i] != null);
+                Assert.True(null != devices1[i]);
+
+
                 if (i >= 1)
                 {
                     Assert.False(devices1[i] == devices2[i - 1]);

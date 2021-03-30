@@ -307,6 +307,16 @@ namespace Zokma.Libs.Audio
 
         public static bool operator ==(AudioDevice a, AudioDevice b)
         {
+            if(Object.ReferenceEquals(a, b))
+            {
+                return true;
+            }
+
+            if((Object)a == null || (Object)b == null)
+            {
+                return false;
+            }
+
             return (a.DeviceType == b.DeviceType && a.Id == b.Id);
         }
 
