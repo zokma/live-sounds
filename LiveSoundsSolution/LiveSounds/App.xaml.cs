@@ -21,7 +21,7 @@ namespace LiveSounds
         /// <summary>
         /// Application settings file name.
         /// </summary>
-        public const string SETTINGS_FILE_NAME = "AppSettings.json";
+        private const string SETTINGS_FILE_NAME = "AppSettings.json";
 
         /// <summary>
         /// The directory path in local app data.
@@ -34,9 +34,9 @@ namespace LiveSounds
         private static readonly string[] LOG_FILE = { "Logs", "LiveSounds.log" };
 
         /// <summary>
-        /// Checks main form loaded or not.
+        /// Checks main Window loaded or not.
         /// </summary>
-        internal static bool IsMainFormLoaded = false;
+        internal static bool IsMainWindowLoaded = false;
 
         /// <summary>
         /// Application settings.
@@ -130,7 +130,7 @@ namespace LiveSounds
         {
             Log.Fatal(e.Exception, "Unhandled Dispatcher Exception: InstanceId = {InstanceId}", this.instanceId);
 
-            if (ShowUnexpectedErrorDialog(IsMainFormLoaded))
+            if (ShowUnexpectedErrorDialog(IsMainWindowLoaded))
             {
                 e.Handled = true;
             }
@@ -149,7 +149,7 @@ namespace LiveSounds
         {
             Log.Fatal(e.Exception, "Unhandled TaskScheduler Exception: ProcessInstanceId = {ProcessInstanceId}", processInstanceId);
 
-            if (ShowUnexpectedErrorDialog(IsMainFormLoaded))
+            if (ShowUnexpectedErrorDialog(IsMainWindowLoaded))
             {
                 e.SetObserved();
             }

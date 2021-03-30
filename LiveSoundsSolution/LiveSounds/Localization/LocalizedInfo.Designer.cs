@@ -97,6 +97,15 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Device not found.
+        /// </summary>
+        public static string MenuItemNotFoundForAudioDevice {
+            get {
+                return ResourceManager.GetString("MenuItemNotFoundForAudioDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Minimize the Window.
         /// </summary>
         public static string MinimizeWindow {

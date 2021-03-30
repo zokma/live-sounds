@@ -1,4 +1,5 @@
 ﻿using LiveSounds.Localization;
+using LiveSounds.MenuItem;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Zokma.Libs;
+using Zokma.Libs.Audio;
 using Zokma.Libs.Logging;
 
 namespace LiveSounds
@@ -115,6 +117,16 @@ namespace LiveSounds
         /// </summary>
         private Pathfinder audioDataDirectory;
 
+        /// <summary>
+        /// Audio Render device menu items.
+        /// </summary>
+        private AudioDeviceItem[] audioRenderDeviceItems;
+
+        /// <summary>
+        /// Audio Render device selected index.
+        /// </summary>
+        private int audioRenderDeviceSelectedIndex;
+
 
         public MainWindow()
         {
@@ -138,8 +150,9 @@ namespace LiveSounds
                     app.ShutdownMode = ShutdownMode.OnMainWindowClose;
                 }
 
-                InitFormImmediateInfo();
+                InitWindowImmediateInfo();
                 await InitApplicationAsync();
+                CompleteWindowInfo();
 
                 Log.Information("Window_Loaded done.");
             }
@@ -152,7 +165,7 @@ namespace LiveSounds
             finally
             {
                 this.GridApplicationMain.IsEnabled = true;
-                App.IsMainFormLoaded = true;
+                App.IsMainWindowLoaded             = true;
             }
         }
 
@@ -229,9 +242,9 @@ namespace LiveSounds
         }
 
         /// <summary>
-        /// Inits form info.
+        /// Inits Window info on right after Window_Loaded.
         /// </summary>
-        private void InitFormImmediateInfo()
+        private void InitWindowImmediateInfo()
         {
             this.dataDirectory      = App.UserDirectory.GetSubPathfinder(DATA_DIRECTORY_NAME);
             this.audioDataDirectory = this.dataDirectory.GetSubPathfinder(AUDIO_DATA_DIRECTORY_NAME);
@@ -242,6 +255,40 @@ namespace LiveSounds
             this.isPlaybackMuted            = settings.IsAudioRenderMuted;
             ResetPlaybackMuteButton();
             ResetPlaybackMuteTextBlock();
+        }
+
+        /// <summary>
+        /// Completes Window info.
+        /// </summary>
+        private void CompleteWindowInfo()
+        {
+            this.ComboBoxAudioRenderDevices.ItemsSource   = this.audioRenderDeviceItems;
+            this.ComboBoxAudioRenderDevices.SelectedIndex = this.audioRenderDeviceSelectedIndex;
+        }
+
+        /// <summary>
+        /// Inits this Application.
+        /// </summary>
+        private void InitApplication()
+        {
+            CreateDataDirectory();
+            LoadMenuItems();
+        }
+
+        /// <summary>
+        /// Inits this Application on background task.
+        /// </summary>
+        /// <returns>Task info.</returns>
+        private Task InitApplicationAsync()
+        {
+            var result = Task.Run(
+                () =>
+                {
+                    InitApplication();
+                }
+                );
+
+            return result;
         }
 
         /// <summary>
@@ -320,27 +367,49 @@ namespace LiveSounds
         }
 
         /// <summary>
-        /// Inits this Application.
+        /// Loads Menu items.
         /// </summary>
-        private void InitApplication()
-       {
-            CreateDataDirectory();
-        }
-
-        /// <summary>
-        /// Inits this Application on background task.
-        /// </summary>
-        /// <returns>Task info.</returns>
-        private Task InitApplicationAsync()
+        private void LoadMenuItems()
         {
-            var result = Task.Run(
-                () =>
-                {
-                    InitApplication();
-                }
-                );
+            var settings = App.Settings;
 
-            return result;
+            this.audioRenderDeviceSelectedIndex = 0;
+
+            var audioRenderDevices = new List<AudioDeviceItem>();
+
+            try
+            {
+                var devices = AudioDevice.GetAudioRenderDevices(settings.AudioRenderDeviceType, settings.AudioRenderDeviceRole);
+
+                for (int i = 0; i < devices.Length; i++)
+                {
+                    if(this.audioRenderDeviceSelectedIndex == 0 && devices[i].Id == settings.AudioRenderDeviceId)
+                    {
+                        this.audioRenderDeviceSelectedIndex = i;
+                    }
+
+                    audioRenderDevices.Add(new AudioDeviceItem(devices[i]));
+
+                    if(Log.IsDebugEnabled)
+                    {
+                        var device = devices[i];
+
+                        Log.Debug("Audio Render Device: Id={Id}, Name={Name}, FriendlyName={FriendlyName}, Type={Type}",
+                            device.Id, device.Name, device.FriendlyName, device.DeviceType);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error on enumerating audio render devices.");
+            }
+
+            if (audioRenderDevices.Count == 0)
+            {
+                audioRenderDevices.Add(new AudioDeviceItem(null));
+            }
+
+            this.audioRenderDeviceItems = audioRenderDevices.ToArray();
         }
 
         /// <summary>
@@ -358,6 +427,10 @@ namespace LiveSounds
                 settings.WindowStartupLocation = this.WindowStartupLocation;
             }
 
+
+            var device = this.ComboBoxAudioRenderDevices.SelectedItem as AudioDeviceItem;
+
+            settings.AudioRenderDeviceId = device?.Device?.Id;
 
             settings.AudioRenderVolume  = (int)this.SliderPlaybackVolume.Value;
             settings.IsAudioRenderMuted = this.isPlaybackMuted;
@@ -537,6 +610,11 @@ namespace LiveSounds
         private void Window_Closed(object sender, EventArgs e)
         {
             SaveSettings();
+        }
+
+        private void ComboBoxAudioRenderDevices_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            this.audioRenderDeviceSelectedIndex = this.ComboBoxAudioRenderDevices.SelectedIndex;
         }
     }
 }

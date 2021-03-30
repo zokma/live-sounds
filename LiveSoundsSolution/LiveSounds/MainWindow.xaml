@@ -90,7 +90,7 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Text="{x:Static l10n:LocalizedInfo.TextBlockPlaybackDevice}"/>
-                                        <ComboBox x:Name="ComboBoxAudioDevices" Grid.Row="0" Grid.Column="1" Margin="14,0,14,0"/>
+                                        <ComboBox x:Name="ComboBoxAudioRenderDevices" Grid.Row="0" Grid.Column="1" Margin="14,0,14,0" SelectionChanged="ComboBoxAudioRenderDevices_SelectionChanged"/>
                                     </Grid>
                                     <Grid Margin="0,14,0,0">
                                         <Grid.ColumnDefinitions>

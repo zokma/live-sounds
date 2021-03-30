@@ -10,7 +10,7 @@ namespace LiveSounds
     /// <summary>
     /// Audio info class.
     /// </summary>
-    public class AudioInfo
+    internal class AudioInfo
     {
         /// <summary>
         /// Volume min.

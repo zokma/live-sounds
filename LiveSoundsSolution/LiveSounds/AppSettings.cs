@@ -10,6 +10,7 @@ using System.Text.Unicode;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
+using Zokma.Libs.Audio;
 using Zokma.Libs.Logging;
 
 namespace LiveSounds
@@ -84,6 +85,60 @@ namespace LiveSounds
         [JsonInclude]
         [JsonPropertyName("AudioRenderMuted")]
         public bool IsAudioRenderMuted = false;
+
+        /// <summary>
+        /// Audio render device type name.
+        /// </summary>
+        [JsonInclude]
+        [JsonPropertyName("AudioRenderDeviceType")]
+        public string AudioRenderDeviceTypeName { get; private set; } = null;
+
+        /// <summary>
+        /// Audio render device type.
+        /// </summary>
+        [JsonIgnore]
+        public AudioDeviceType AudioRenderDeviceType
+        {
+            get
+            {
+                return ParseEnum(this.AudioRenderDeviceTypeName, AudioDeviceType.WASAPI);
+            }
+
+            set
+            {
+                this.AudioRenderDeviceTypeName = value.ToString();
+            }
+        }
+
+        /// <summary>
+        /// Audio render device role name.
+        /// </summary>
+        [JsonInclude]
+        [JsonPropertyName("AudioRenderDeviceRole")]
+        public string AudioRenderDeviceRoleName { get; private set; } = null;
+
+        /// <summary>
+        /// Audio render device role.
+        /// </summary>
+        [JsonIgnore]
+        public AudioDeviceRole AudioRenderDeviceRole
+        {
+            get
+            {
+                return ParseEnum(this.AudioRenderDeviceRoleName, AudioDeviceRole.Multimedia);
+            }
+
+            set
+            {
+                this.AudioRenderDeviceRoleName = value.ToString();
+            }
+        }
+
+        /// <summary>
+        /// Audio Render device id.
+        /// </summary>
+        [JsonInclude]
+        public string AudioRenderDeviceId;
 
         /// <summary>
         /// Is data directory portable.
@@ -203,7 +258,7 @@ namespace LiveSounds
         /// </summary>
         [JsonInclude]
         [JsonPropertyName("RenderMode")]
-        public string RenderModeName { get; internal set; } = null;
+        public string RenderModeName { get; private set; } = null;
 
         /// <summary>
         /// Render mode name.
@@ -293,6 +348,20 @@ namespace LiveSounds
         /// <param name="filePath">The setting file path to be saved.</param>
         public void Save(string filePath)
         {
+            if (!String.IsNullOrWhiteSpace(this.AudioRenderDeviceTypeName))
+            {
+                this.AudioRenderDeviceTypeName = this.AudioRenderDeviceType.ToString();
+            }
+            if (!String.IsNullOrWhiteSpace(this.AudioRenderDeviceRoleName))
+            {
+                this.AudioRenderDeviceRoleName = this.AudioRenderDeviceRole.ToString();
+            }
+
+            if (!String.IsNullOrWhiteSpace(this.LogLevelName))
+            {
+                this.LogLevelName = this.LogLevel.ToString();
+            }
+
             using (var fs     = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.Read))
             using (var writer = new Utf8JsonWriter(fs, JsonWriterOptionForFile))
             {

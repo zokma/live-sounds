@@ -10,7 +10,7 @@ namespace LiveSounds
     /// <summary>
     /// Data preset class.
     /// </summary>
-    public class DataPreset
+    internal class DataPreset
     {
         /// <summary>
         /// Data preset name.

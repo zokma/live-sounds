@@ -129,6 +129,9 @@
   <data name="MaximizeWindow" xml:space="preserve">
     <value>Maximize the Window</value>
   </data>
+  <data name="MenuItemNotFoundForAudioDevice" xml:space="preserve">
+    <value>Device not found</value>
+  </data>
   <data name="MinimizeWindow" xml:space="preserve">
     <value>Minimize the Window</value>
   </data>

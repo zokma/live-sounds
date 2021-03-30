@@ -129,6 +129,9 @@
   <data name="MaximizeWindow" xml:space="preserve">
     <value>ウィンドウを最大化する</value>
   </data>
+  <data name="MenuItemNotFoundForAudioDevice" xml:space="preserve">
+    <value>デバイスが見つかりません</value>
+  </data>
   <data name="MinimizeWindow" xml:space="preserve">
     <value>ウィンドウを最小化する</value>
   </data>
