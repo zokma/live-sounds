@@ -120,8 +120,20 @@
   <data name="ApplicationTitle" xml:space="preserve">
     <value>Live Sounds</value>
   </data>
+  <data name="ButtonOpenDataDirectory" xml:space="preserve">
+    <value>OPEN DATA FOLDER</value>
+  </data>
+  <data name="ButtonStart" xml:space="preserve">
+    <value>START</value>
+  </data>
+  <data name="ButtonStop" xml:space="preserve">
+    <value>STOP</value>
+  </data>
   <data name="CloseApplication" xml:space="preserve">
     <value>Close the Application</value>
+  </data>
+  <data name="GroupBoxApplicationControl" xml:space="preserve">
+    <value>Application Control</value>
   </data>
   <data name="GroupBoxAudioSettings" xml:space="preserve">
     <value>Audio Settings</value>
@@ -164,6 +176,9 @@
   </data>
   <data name="TextBlockPlaybackVolume" xml:space="preserve">
     <value>Volume</value>
+  </data>
+  <data name="TextBlockPreset" xml:space="preserve">
+    <value>Preset</value>
   </data>
   <data name="UnexpectedErrorMessage" xml:space="preserve">
     <value>Unexpected Error has occurred.

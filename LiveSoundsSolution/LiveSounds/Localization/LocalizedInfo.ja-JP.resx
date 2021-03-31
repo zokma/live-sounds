@@ -120,8 +120,20 @@
   <data name="ApplicationTitle" xml:space="preserve">
     <value>リモートからポン！</value>
   </data>
+  <data name="ButtonOpenDataDirectory" xml:space="preserve">
+    <value>データ格納先を開く</value>
+  </data>
+  <data name="ButtonStart" xml:space="preserve">
+    <value>開始</value>
+  </data>
+  <data name="ButtonStop" xml:space="preserve">
+    <value>停止</value>
+  </data>
   <data name="CloseApplication" xml:space="preserve">
     <value>アプリケーションを閉じる</value>
+  </data>
+  <data name="GroupBoxApplicationControl" xml:space="preserve">
+    <value>アプリケーションの制御</value>
   </data>
   <data name="GroupBoxAudioSettings" xml:space="preserve">
     <value>オーディオ設定</value>
@@ -164,6 +176,9 @@
   </data>
   <data name="TextBlockPlaybackVolume" xml:space="preserve">
     <value>音量</value>
+  </data>
+  <data name="TextBlockPreset" xml:space="preserve">
+    <value>プリセット</value>
   </data>
   <data name="UnexpectedErrorMessage" xml:space="preserve">
     <value>予期しないエラーが発生しました。

@@ -70,11 +70,47 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OPEN DATA FOLDER.
+        /// </summary>
+        public static string ButtonOpenDataDirectory {
+            get {
+                return ResourceManager.GetString("ButtonOpenDataDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to START.
+        /// </summary>
+        public static string ButtonStart {
+            get {
+                return ResourceManager.GetString("ButtonStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to STOP.
+        /// </summary>
+        public static string ButtonStop {
+            get {
+                return ResourceManager.GetString("ButtonStop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close the Application.
         /// </summary>
         public static string CloseApplication {
             get {
                 return ResourceManager.GetString("CloseApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application Control.
+        /// </summary>
+        public static string GroupBoxApplicationControl {
+            get {
+                return ResourceManager.GetString("GroupBoxApplicationControl", resourceCulture);
             }
         }
         
@@ -201,6 +237,15 @@ namespace LiveSounds.Localization {
         public static string TextBlockPlaybackVolume {
             get {
                 return ResourceManager.GetString("TextBlockPlaybackVolume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preset.
+        /// </summary>
+        public static string TextBlockPreset {
+            get {
+                return ResourceManager.GetString("TextBlockPreset", resourceCulture);
             }
         }
         
