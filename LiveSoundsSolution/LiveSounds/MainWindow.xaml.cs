@@ -596,8 +596,6 @@ namespace LiveSounds
             {
                 this.WindowState = WindowState.Normal;
             }
-
-            ResetWindowMaximizeButton();
         }
 
         private void ColorZoneTitle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -750,5 +748,11 @@ namespace LiveSounds
                 this.GridApplicationMain.IsEnabled = true;
             }
         }
+
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            ResetWindowMaximizeButton();
+        }
+
     }
 }
