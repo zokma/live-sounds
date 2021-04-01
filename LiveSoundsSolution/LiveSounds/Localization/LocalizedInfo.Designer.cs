@@ -97,6 +97,15 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TOKEN SETTING.
+        /// </summary>
+        public static string ButtonTokenSetting {
+            get {
+                return ResourceManager.GetString("ButtonTokenSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close the Application.
         /// </summary>
         public static string CloseApplication {
@@ -133,11 +142,29 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} ({1}).
+        /// </summary>
+        public static string MenuItemNameForDataPreset {
+            get {
+                return ResourceManager.GetString("MenuItemNameForDataPreset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Device not found.
         /// </summary>
         public static string MenuItemNotFoundForAudioDevice {
             get {
                 return ResourceManager.GetString("MenuItemNotFoundForAudioDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preset not found.
+        /// </summary>
+        public static string MenuItemNotFoundForDataPreset {
+            get {
+                return ResourceManager.GetString("MenuItemNotFoundForDataPreset", resourceCulture);
             }
         }
         

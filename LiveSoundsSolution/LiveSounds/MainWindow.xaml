@@ -76,22 +76,27 @@
                         </StackPanel>
                     </DockPanel>
                 </materialDesign:ColorZone>
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                     <Grid>
                         <Grid Panel.ZIndex="440">
                             <notifications:NotificationArea x:Name="NotificationAreaMain" Position="TopRight" MaxItems="5"/>
                         </Grid>
                         <Grid x:Name="GridApplicationMain">
                             <StackPanel>
-                                <GroupBox Header="{x:Static l10n:LocalizedInfo.GroupBoxAudioSettings}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,24,0,0" Width="470" FontSize="14">
+                                <GroupBox Header="{x:Static l10n:LocalizedInfo.GroupBoxAudioSettings}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,24,0,0" Width="540" FontSize="14">
                                     <StackPanel>
                                         <Grid Margin="0,4,0,0">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Text="{x:Static l10n:LocalizedInfo.TextBlockPlaybackDevice}"/>
-                                            <ComboBox x:Name="ComboBoxAudioRenderDevices" Grid.Column="1" Margin="14,0,14,0" SelectionChanged="ComboBoxAudioRenderDevices_SelectionChanged"/>
+                                            <TextBlock Text="{x:Static l10n:LocalizedInfo.TextBlockPlaybackDevice}" FontSize="12" VerticalAlignment="Bottom"/>
+                                            <ComboBox x:Name="ComboBoxAudioRenderDevices" Grid.Column="1" Margin="14,0,4,0"/>
+                                            <Button x:Name="ButtonReloadAudioRenderDevices" Grid.Column="2"
+                                                Margin="14,0,0,0"
+                                                Content="{materialDesign:PackIcon Kind=Reload, Size=21}" 
+                                                Padding="7,0,7,0" Click="ButtonReloadAudioRenderDevices_Click"/>
                                         </Grid>
                                         <Grid Margin="0,14,0,0">
                                             <Grid.ColumnDefinitions>
@@ -100,7 +105,7 @@
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBlock Text="{x:Static l10n:LocalizedInfo.TextBlockPlaybackVolume}"/>
+                                            <TextBlock Text="{x:Static l10n:LocalizedInfo.TextBlockPlaybackVolume}" FontSize="12"/>
                                             <TextBlock x:Name="TextBlockPlaybackMuted" Text="{x:Static l10n:LocalizedInfo.TextBlockPlaybackMuted}" Grid.Column="1" Margin="14,0,0,0" Background="OrangeRed" Foreground="White" Padding="7,1,7,1"/>
                                             <TextBlock x:Name="TextBlockPlaybackVolume" Text="100" Grid.Column="2" HorizontalAlignment="Right" Margin="0,0,14,0"/>
                                         </Grid>
@@ -110,40 +115,56 @@
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
                                             <Button x:Name="ButtonPlaybackMute"
-                                            Margin="0,0,0,0"
-                                            Content="{materialDesign:PackIcon Kind=VolumeHigh, Size=24}" 
-                                            Background="DeepSkyBlue" Click="ButtonPlaybackMute_Click" Padding="7,0,7,0"/>
+                                                Margin="0,0,0,0"
+                                                Content="{materialDesign:PackIcon Kind=VolumeHigh, Size=24}" 
+                                                Background="DeepSkyBlue" Click="ButtonPlaybackMute_Click" Padding="7,0,7,0"/>
                                             <Slider x:Name="SliderPlaybackVolume"
-                                            Value="40"
-                                            Minimum="0"
-                                            Maximum="100"
-                                            TickFrequency="1"
-                                            TickPlacement="BottomRight" Grid.Column="1" Margin="14,0,14,0" ValueChanged="SliderPlaybackVolume_ValueChanged" SmallChange="1" AutoToolTipPlacement="TopLeft" />
+                                                Value="40"
+                                                Minimum="0"
+                                                Maximum="100"
+                                                TickFrequency="1"
+                                                TickPlacement="BottomRight" Grid.Column="1" Margin="14,0,14,0" ValueChanged="SliderPlaybackVolume_ValueChanged" SmallChange="1" AutoToolTipPlacement="TopLeft" />
                                         </Grid>
                                     </StackPanel>
                                 </GroupBox>
-                                <GroupBox Header="{x:Static l10n:LocalizedInfo.GroupBoxApplicationControl}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,24,0,0" Width="470" FontSize="14">
+                                <GroupBox Header="{x:Static l10n:LocalizedInfo.GroupBoxApplicationControl}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,24,0,0" Width="540" FontSize="14">
                                     <StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Button x:Name="ButtonStart" Margin="0,0,0,0"  Padding="24,4,24,4"
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Button x:Name="ButtonStart" 
+                                                    Margin="0,0,0,0"  Padding="24,4,24,4"
                                                     Style="{StaticResource MaterialDesignOutlinedButton}"
                                                     Content="{x:Static l10n:LocalizedInfo.ButtonStart}"/>
-                                            <Button x:Name="ButtonStop" Margin="14,0,0,0"  Padding="24,4,24,4"
+                                            <Button x:Name="ButtonStop" Grid.Column="1"
+                                                    Margin="14,0,0,0"  Padding="24,4,24,4"
                                                     Style="{StaticResource MaterialDesignOutlinedButton}"
                                                     Content="{x:Static l10n:LocalizedInfo.ButtonStop}"/>
-                                        </StackPanel>
+                                            <Button x:Name="ButtonTokenSetting" Grid.Column="2"
+                                                    Margin="14,0,0,0"  Padding="24,4,24,4"
+                                                    Style="{StaticResource MaterialDesignOutlinedButton}"
+                                                    Content="{x:Static l10n:LocalizedInfo.ButtonTokenSetting}" HorizontalAlignment="Right"/>
+                                        </Grid>
                                         <Grid Margin="0,14,0,0">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Text="{x:Static l10n:LocalizedInfo.TextBlockPreset}"/>
-                                            <ComboBox x:Name="ComboBoxPreset" Grid.Column="1" Margin="14,0,0,0"/>
-                                            <Button x:Name="ButtonOpenDataDirectory" Grid.Column="2"
+                                            <TextBlock Text="{x:Static l10n:LocalizedInfo.TextBlockPreset}" FontSize="12" VerticalAlignment="Bottom"/>
+                                            <ComboBox x:Name="ComboBoxDataPresets" Grid.Column="1" Margin="14,0,4,0"/>
+                                            <Button x:Name="ButtonReloadDataPresets" Grid.Column="2"
+                                                Margin="14,0,0,0"
+                                                Content="{materialDesign:PackIcon Kind=Reload, Size=21}" 
+                                                Padding="7,0,7,0" Click="ButtonReloadDataPresets_Click"/>
+                                            <Button x:Name="ButtonOpenDataDirectory" Grid.Column="3"
                                                     Margin="14,0,0,0"  Padding="4,4,4,4"
                                                     Style="{StaticResource MaterialDesignOutlinedButton}"
-                                                    Content="{x:Static l10n:LocalizedInfo.ButtonOpenDataDirectory}"/>
+                                                    Content="{x:Static l10n:LocalizedInfo.ButtonOpenDataDirectory}" Click="ButtonOpenDataDirectory_Click" Background="{x:Null}"/>
                                         </Grid>
                                     </StackPanel>
                                 </GroupBox>

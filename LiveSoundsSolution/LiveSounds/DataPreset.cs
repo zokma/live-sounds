@@ -13,6 +13,12 @@ namespace LiveSounds
     internal class DataPreset
     {
         /// <summary>
+        /// Data preset id.
+        /// </summary>
+        [JsonInclude]
+        public string Id;
+
+        /// <summary>
         /// Data preset name.
         /// </summary>
         [JsonInclude]

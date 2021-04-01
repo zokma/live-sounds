@@ -141,6 +141,12 @@ namespace LiveSounds
         public string AudioRenderDeviceId;
 
         /// <summary>
+        /// Data Preset id.
+        /// </summary>
+        [JsonInclude]
+        public string DataPresetId;
+
+        /// <summary>
         /// Is data directory portable.
         /// </summary>
         [JsonInclude]

@@ -3,6 +3,7 @@ using LiveSounds.MenuItem;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -126,6 +127,16 @@ namespace LiveSounds
         /// Audio Render device selected index.
         /// </summary>
         private int audioRenderDeviceSelectedIndex;
+
+        /// <summary>
+        /// DataPreset menu items.
+        /// </summary>
+        private DataPresetItem[] dataPresetItems;
+
+        /// <summary>
+        /// DataPreset selected index.
+        /// </summary>
+        private int dataPresetSelectedIndex;
 
 
         public MainWindow()
@@ -262,8 +273,8 @@ namespace LiveSounds
         /// </summary>
         private void CompleteWindowInfo()
         {
-            this.ComboBoxAudioRenderDevices.ItemsSource   = this.audioRenderDeviceItems;
-            this.ComboBoxAudioRenderDevices.SelectedIndex = this.audioRenderDeviceSelectedIndex;
+            CompleteAudioDeviceMenu();
+            CompleteDataPresetMenu();
         }
 
         /// <summary>
@@ -272,7 +283,8 @@ namespace LiveSounds
         private void InitApplication()
         {
             CreateDataDirectory();
-            LoadMenuItems();
+            LoadAudioDeviceMenuItems(App.Settings.AudioRenderDeviceId);
+            LoadDataPresetMenuItems(App.Settings.DataPresetId);
         }
 
         /// <summary>
@@ -367,9 +379,10 @@ namespace LiveSounds
         }
 
         /// <summary>
-        /// Loads Menu items.
+        /// Loads Audio device Menu items.
         /// </summary>
-        private void LoadMenuItems()
+        /// <param name="selectedId">Id for the selected item.</param>
+        private void LoadAudioDeviceMenuItems(string selectedId)
         {
             var settings = App.Settings;
 
@@ -383,14 +396,14 @@ namespace LiveSounds
 
                 for (int i = 0; i < devices.Length; i++)
                 {
-                    if(this.audioRenderDeviceSelectedIndex == 0 && devices[i].Id == settings.AudioRenderDeviceId)
+                    audioRenderDevices.Add(new AudioDeviceItem(devices[i]));
+
+                    if (this.audioRenderDeviceSelectedIndex == 0 && devices[i].Id == selectedId)
                     {
                         this.audioRenderDeviceSelectedIndex = i;
                     }
 
-                    audioRenderDevices.Add(new AudioDeviceItem(devices[i]));
-
-                    if(Log.IsDebugEnabled)
+                    if (Log.IsDebugEnabled)
                     {
                         var device = devices[i];
 
@@ -413,6 +426,82 @@ namespace LiveSounds
         }
 
         /// <summary>
+        /// Loads DataPreset Menu items.
+        /// </summary>
+        /// <param name="selectedId">Id for the selected item.</param>
+        private void LoadDataPresetMenuItems(string selectedId)
+        {
+            var settings = App.Settings;
+
+            this.dataPresetSelectedIndex = 0;
+
+            var dataPresets = new List<DataPresetItem>();
+
+            var directoryInfo = new DirectoryInfo(this.dataDirectory.BaseDirectory);
+
+            int index = 0;
+
+            foreach (var file in directoryInfo.EnumerateFiles("*.json", new EnumerationOptions { RecurseSubdirectories = false, ReturnSpecialDirectories = false, MatchType = MatchType.Simple }))
+            {
+                try
+                {
+                    using (var fs     = file.Open(FileMode.Open, FileAccess.Read, FileShare.Read))
+                    using (var reader = new StreamReader(fs, new UTF8Encoding(false), true))
+                    {
+                        var dataPreset = JsonSerializer.Deserialize<DataPreset>(reader.ReadToEnd(), AppSettings.JsonSerializerOptionsForFileRead);
+
+                        dataPreset.Id = file.Name;
+
+                        dataPresets.Add(new DataPresetItem(dataPreset));
+
+                        if (this.dataPresetSelectedIndex == 0 && dataPreset.Id == selectedId)
+                        {
+                            this.dataPresetSelectedIndex = index;
+                        }
+                        else
+                        {
+                            index++;
+                        }
+
+                        if (Log.IsDebugEnabled)
+                        {
+                            Log.Debug("DataPreset: Id={Id}, Name={Name}, AudioItems={AudioItems}", dataPreset.Id, dataPreset.Name, dataPreset.AudioItems?.Length);
+                        }
+                    }
+                }
+                catch(Exception ex)
+                {
+                    Log.Error(ex, "Error on getting data preset.");
+                }
+            }
+
+            if (dataPresets.Count == 0)
+            {
+                dataPresets.Add(new DataPresetItem(null));
+            }
+
+            this.dataPresetItems = dataPresets.ToArray();
+        }
+
+        /// <summary>
+        /// Completes AudioDevice menu.
+        /// </summary>
+        private void CompleteAudioDeviceMenu()
+        {
+            this.ComboBoxAudioRenderDevices.ItemsSource   = this.audioRenderDeviceItems;
+            this.ComboBoxAudioRenderDevices.SelectedIndex = this.audioRenderDeviceSelectedIndex;
+        }
+
+        /// <summary>
+        /// Completes DataPreset menu.
+        /// </summary>
+        private void CompleteDataPresetMenu()
+        {
+            this.ComboBoxDataPresets.ItemsSource   = this.dataPresetItems;
+            this.ComboBoxDataPresets.SelectedIndex = this.dataPresetSelectedIndex;
+        }
+
+        /// <summary>
         /// Saves settings.
         /// </summary>
         private void SaveSettings()
@@ -427,13 +516,14 @@ namespace LiveSounds
                 settings.WindowStartupLocation = this.WindowStartupLocation;
             }
 
-
             var device = this.ComboBoxAudioRenderDevices.SelectedItem as AudioDeviceItem;
-
             settings.AudioRenderDeviceId = device?.Device?.Id;
 
             settings.AudioRenderVolume  = (int)this.SliderPlaybackVolume.Value;
             settings.IsAudioRenderMuted = this.isPlaybackMuted;
+
+            var preset = this.ComboBoxDataPresets.SelectedItem as DataPresetItem;
+            settings.DataPresetId = preset?.DataPreset?.Id;
 
             settings.Save();
         }
@@ -612,9 +702,53 @@ namespace LiveSounds
             SaveSettings();
         }
 
-        private void ComboBoxAudioRenderDevices_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ButtonOpenDataDirectory_Click(object sender, RoutedEventArgs e)
         {
-            this.audioRenderDeviceSelectedIndex = this.ComboBoxAudioRenderDevices.SelectedIndex;
+            Process.Start("EXPLORER.EXE", this.dataDirectory.BaseDirectory);
+        }
+
+        private async void ButtonReloadDataPresets_Click(object sender, RoutedEventArgs e)
+        {
+            this.GridApplicationMain.IsEnabled = false;
+
+            try
+            {
+                var selectedItem = this.ComboBoxDataPresets.SelectedItem as DataPresetItem;
+
+                await Task.Run(
+                    () =>
+                    {
+                        LoadDataPresetMenuItems(selectedItem?.DataPreset?.Id);
+                    });
+
+                CompleteDataPresetMenu();
+            }
+            finally
+            {
+                this.GridApplicationMain.IsEnabled = true;
+            }
+        }
+
+        private async void ButtonReloadAudioRenderDevices_Click(object sender, RoutedEventArgs e)
+        {
+            this.GridApplicationMain.IsEnabled = false;
+
+            try
+            {
+                var selectedItem = this.ComboBoxAudioRenderDevices.SelectedItem as AudioDeviceItem;
+
+                await Task.Run(
+                    () =>
+                    {
+                        LoadAudioDeviceMenuItems(selectedItem?.Device?.Id);
+                    });
+
+                CompleteAudioDeviceMenu();
+            }
+            finally
+            {
+                this.GridApplicationMain.IsEnabled = true;
+            }
         }
     }
 }

@@ -22,7 +22,7 @@ namespace LiveSounds.MenuItem
         /// <summary>
         /// Creates menu item.
         /// </summary>
-        /// <param name="device"></param>
+        /// <param name="device">AudioDevice.</param>
         public AudioDeviceItem(AudioDevice device)
         {
             this.Device = device;

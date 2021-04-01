@@ -129,6 +129,9 @@
   <data name="ButtonStop" xml:space="preserve">
     <value>停止</value>
   </data>
+  <data name="ButtonTokenSetting" xml:space="preserve">
+    <value>トークン設定</value>
+  </data>
   <data name="CloseApplication" xml:space="preserve">
     <value>アプリケーションを閉じる</value>
   </data>
@@ -140,6 +143,9 @@
   </data>
   <data name="MaximizeWindow" xml:space="preserve">
     <value>ウィンドウを最大化する</value>
+  </data>
+  <data name="MenuItemNameForDataPreset" xml:space="preserve">
+    <value>{0} ({1})</value>
   </data>
   <data name="MenuItemNotFoundForAudioDevice" xml:space="preserve">
     <value>デバイスが見つかりません</value>
