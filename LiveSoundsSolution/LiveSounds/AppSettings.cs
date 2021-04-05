@@ -18,6 +18,26 @@ namespace LiveSounds
     internal class AppSettings
     {
         /// <summary>
+        /// Play audio limits min.
+        /// </summary>
+        public const int PLAY_AUDIO_LIMITS_MIN = 0;
+
+        /// <summary>
+        /// Play audio limits max.
+        /// </summary>
+        public const int PLAY_AUDIO_LIMITS_MAX = 999;
+
+        /// <summary>
+        /// Play audio limits per app default.
+        /// </summary>
+        public const int PLAY_AUDIO_LIMITS_PER_APP_DEFAULT = 30;
+
+        /// <summary>
+        /// Play audio limits per user default.
+        /// </summary>
+        public const int PLAY_AUDIO_LIMITS_PER_USER_DEFAULT = 5;
+
+        /// <summary>
         /// Json encoder.
         /// </summary>
         private static readonly JavaScriptEncoder JSON_ENCODER = JavaScriptEncoder.Create(UnicodeRanges.All);
@@ -85,6 +105,52 @@ namespace LiveSounds
         [JsonInclude]
         [JsonPropertyName("AudioRenderMuted")]
         public bool IsAudioRenderMuted = false;
+
+        /// <summary>
+        /// Play Audio limits per minute per app.
+        /// </summary>
+        [JsonInclude]
+        [JsonPropertyName("PlayAudioLimitsPerMinutePerApp")]
+        public int PlayAudioLimitsPerMinutePerAppNumber = 20;
+
+        /// <summary>
+        /// Play Audio limits per minute per app.
+        /// </summary>
+        [JsonIgnore]
+        public int PlayAudioLimitsPerMinutePerApp 
+        {
+            get
+            {
+                return GetPlayAudioLimits(this.PlayAudioLimitsPerMinutePerAppNumber);
+            }
+            set
+            {
+                this.PlayAudioLimitsPerMinutePerAppNumber = GetPlayAudioLimits(value);
+            }
+        }
+
+        /// <summary>
+        /// Play Audio limits per minute per user.
+        /// </summary>
+        [JsonInclude]
+        [JsonPropertyName("PlayAudioLimitsPerMinutePerUser")]
+        public int PlayAudioLimitsPerMinutePerUserNumber = 5;
+
+        /// <summary>
+        /// Play Audio limits per minute per user.
+        /// </summary>
+        [JsonIgnore]
+        public int PlayAudioLimitsPerMinutePerUser
+        {
+            get
+            {
+                return GetPlayAudioLimits(this.PlayAudioLimitsPerMinutePerUserNumber);
+            }
+            set
+            {
+                this.PlayAudioLimitsPerMinutePerUserNumber = GetPlayAudioLimits(value);
+            }
+        }
 
         /// <summary>
         /// Audio render device type name.
@@ -317,6 +383,34 @@ namespace LiveSounds
             }
 
             return defaultValue;
+        }
+
+        /// <summary>
+        /// Gets play audio limits.
+        /// </summary>
+        /// <param name="times">Play audio limits.</param>
+        /// <returns>Adjusted play audio limits.</returns>
+        public static int GetPlayAudioLimits(int times)
+        {
+            return Math.Max(Math.Min(times, PLAY_AUDIO_LIMITS_MAX), PLAY_AUDIO_LIMITS_MIN);
+        }
+
+        /// <summary>
+        /// Gets play audio limits from string.
+        /// </summary>
+        /// <param name="times">Play audio limits string.</param>
+        /// <param name="defaultLimits">Default limits.</param>
+        /// <returns>Adjusted play audio limits.</returns>
+        public static int GetPlayAudioLimits(string times, int defaultLimits)
+        {
+            int limits;
+
+            if(!Int32.TryParse(times, out limits))
+            {
+                limits = defaultLimits;
+            }
+
+            return GetPlayAudioLimits(limits);
         }
 
 

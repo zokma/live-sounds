@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -101,6 +102,11 @@ namespace LiveSounds
         /// Icon for Playback muted.
         /// </summary>
         private static readonly PackIcon ICON_PLAYBACK_MUTED = new PackIcon { Kind = PackIconKind.VolumeMute, Width = ICON_EDGE_LENGTH_BUTTON, Height = ICON_EDGE_LENGTH_BUTTON };
+
+        /// <summary>
+        /// Regex for digit only.
+        /// </summary>
+        private static readonly Regex REGEX_DIGITS_ONLY = new Regex("^[0-9]*$", RegexOptions.Compiled | RegexOptions.Singleline, TimeSpan.FromSeconds(4.0));
 
 
         /// <summary>
@@ -266,6 +272,9 @@ namespace LiveSounds
             this.isPlaybackMuted            = settings.IsAudioRenderMuted;
             ResetPlaybackMuteButton();
             ResetPlaybackMuteTextBlock();
+
+            this.TextBoxPlayAudioLimitsPerApp.Text  = settings.PlayAudioLimitsPerMinutePerApp.ToString();
+            this.TextBoxPlayAudioLimitsPerUser.Text = settings.PlayAudioLimitsPerMinutePerUser.ToString();
         }
 
         /// <summary>
@@ -525,6 +534,9 @@ namespace LiveSounds
             var preset = this.ComboBoxDataPresets.SelectedItem as DataPresetItem;
             settings.DataPresetId = preset?.DataPreset?.Id;
 
+            settings.PlayAudioLimitsPerMinutePerApp  = AppSettings.GetPlayAudioLimits(this.TextBoxPlayAudioLimitsPerApp.Text,  AppSettings.PLAY_AUDIO_LIMITS_PER_APP_DEFAULT);
+            settings.PlayAudioLimitsPerMinutePerUser = AppSettings.GetPlayAudioLimits(this.TextBoxPlayAudioLimitsPerUser.Text, AppSettings.PLAY_AUDIO_LIMITS_PER_USER_DEFAULT);
+
             settings.Save();
         }
 
@@ -754,5 +766,36 @@ namespace LiveSounds
             ResetWindowMaximizeButton();
         }
 
+        private void TextBoxDigitsOnly_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            if(e.Command == ApplicationCommands.Paste)
+            {
+                e.Handled = true;
+            }
+            else
+            {
+                var command = e.Command as RoutedUICommand;
+
+                if(command?.Name == "Space")
+                {
+                    e.Handled = true;
+                }
+            }
+        }
+
+        private void TextBoxDigitsOnly_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !(REGEX_DIGITS_ONLY.IsMatch(e.Text));
+        }
+
+        private void TextBoxPlayAudioLimitsPerApp_LostFocus(object sender, RoutedEventArgs e)
+        {
+            this.TextBoxPlayAudioLimitsPerApp.Text = AppSettings.GetPlayAudioLimits(this.TextBoxPlayAudioLimitsPerApp.Text, AppSettings.PLAY_AUDIO_LIMITS_PER_APP_DEFAULT).ToString();
+        }
+
+        private void TextBoxPlayAudioLimitsPerUser_LostFocus(object sender, RoutedEventArgs e)
+        {
+            this.TextBoxPlayAudioLimitsPerUser.Text = AppSettings.GetPlayAudioLimits(this.TextBoxPlayAudioLimitsPerUser.Text, AppSettings.PLAY_AUDIO_LIMITS_PER_USER_DEFAULT).ToString();
+        }
     }
 }

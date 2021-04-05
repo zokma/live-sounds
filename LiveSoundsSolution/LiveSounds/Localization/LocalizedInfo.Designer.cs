@@ -241,6 +241,15 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Play Audio Limits per minute.
+        /// </summary>
+        public static string TextBlockPlayAudioLimitsPerMinute {
+            get {
+                return ResourceManager.GetString("TextBlockPlayAudioLimitsPerMinute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Playback Device.
         /// </summary>
         public static string TextBlockPlaybackDevice {
@@ -273,6 +282,24 @@ namespace LiveSounds.Localization {
         public static string TextBlockPreset {
             get {
                 return ResourceManager.GetString("TextBlockPreset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  times(per app).
+        /// </summary>
+        public static string TextBoxPlayAudioLimitsPerAppSuffix {
+            get {
+                return ResourceManager.GetString("TextBoxPlayAudioLimitsPerAppSuffix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  times(per user).
+        /// </summary>
+        public static string TextBoxPlayAudioLimitsPerUserSuffix {
+            get {
+                return ResourceManager.GetString("TextBoxPlayAudioLimitsPerUserSuffix", resourceCulture);
             }
         }
         

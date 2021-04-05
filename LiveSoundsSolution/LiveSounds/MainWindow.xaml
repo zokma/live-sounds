@@ -166,6 +166,34 @@
                                                     Style="{StaticResource MaterialDesignOutlinedButton}"
                                                     Content="{x:Static l10n:LocalizedInfo.ButtonOpenDataDirectory}" Click="ButtonOpenDataDirectory_Click" Background="{x:Null}"/>
                                         </Grid>
+                                        <Grid Margin="0,14,0,14">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{x:Static l10n:LocalizedInfo.TextBlockPlayAudioLimitsPerMinute}" VerticalAlignment="Bottom" FontSize="12"/>
+                                            <TextBox x:Name="TextBoxPlayAudioLimitsPerApp" 
+                                                     Grid.Column="1" 
+                                                     MaxLength="3" MaxLines="1" 
+                                                     Margin="14,0,0,0" 
+                                                     materialDesign:TextFieldAssist.SuffixText="{x:Static l10n:LocalizedInfo.TextBoxPlayAudioLimitsPerAppSuffix}" 
+                                                     InputScope="Digits" 
+                                                     InputMethod.IsInputMethodEnabled="False" 
+                                                     CommandManager.PreviewExecuted="TextBoxDigitsOnly_PreviewExecuted" 
+                                                     PreviewTextInput="TextBoxDigitsOnly_PreviewTextInput" 
+                                                     LostFocus="TextBoxPlayAudioLimitsPerApp_LostFocus" />
+                                            <TextBox x:Name="TextBoxPlayAudioLimitsPerUser" 
+                                                     Grid.Column="2" 
+                                                     MaxLength="3" MaxLines="1" 
+                                                     Margin="14,0,0,0" 
+                                                     materialDesign:TextFieldAssist.SuffixText="{x:Static l10n:LocalizedInfo.TextBoxPlayAudioLimitsPerUserSuffix}" 
+                                                     CommandManager.PreviewExecuted="TextBoxDigitsOnly_PreviewExecuted" 
+                                                     InputScope="Digits" 
+                                                     InputMethod.IsInputMethodEnabled="False" 
+                                                     PreviewTextInput="TextBoxDigitsOnly_PreviewTextInput" 
+                                                     LostFocus="TextBoxPlayAudioLimitsPerUser_LostFocus" />
+                                        </Grid>
                                     </StackPanel>
                                 </GroupBox>
                             </StackPanel>

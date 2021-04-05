@@ -177,6 +177,9 @@
   <data name="SamplePresetName02" xml:space="preserve">
     <value>Sample B</value>
   </data>
+  <data name="TextBlockPlayAudioLimitsPerMinute" xml:space="preserve">
+    <value>Play Audio Limits per minute</value>
+  </data>
   <data name="TextBlockPlaybackDevice" xml:space="preserve">
     <value>Playback Device</value>
   </data>
@@ -188,6 +191,12 @@
   </data>
   <data name="TextBlockPreset" xml:space="preserve">
     <value>Preset</value>
+  </data>
+  <data name="TextBoxPlayAudioLimitsPerAppSuffix" xml:space="preserve">
+    <value> times(per app)</value>
+  </data>
+  <data name="TextBoxPlayAudioLimitsPerUserSuffix" xml:space="preserve">
+    <value> times(per user)</value>
   </data>
   <data name="UnexpectedErrorMessage" xml:space="preserve">
     <value>Unexpected Error has occurred.
