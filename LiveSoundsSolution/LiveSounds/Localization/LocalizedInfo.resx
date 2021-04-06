@@ -129,6 +129,9 @@
   <data name="ButtonStop" xml:space="preserve">
     <value>STOP</value>
   </data>
+  <data name="ButtonTestPlay" xml:space="preserve">
+    <value>PLAY TEST</value>
+  </data>
   <data name="ButtonTokenSetting" xml:space="preserve">
     <value>TOKEN SETTING</value>
   </data>
@@ -137,6 +140,15 @@
   </data>
   <data name="CloseApplication" xml:space="preserve">
     <value>Close the Application</value>
+  </data>
+  <data name="DataGridDateTime" xml:space="preserve">
+    <value>DateTime</value>
+  </data>
+  <data name="DataGridLevel" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="DataGridMessage" xml:space="preserve">
+    <value>Message</value>
   </data>
   <data name="GroupBoxApplicationControl" xml:space="preserve">
     <value>Application Control</value>
@@ -156,8 +168,29 @@
   <data name="MenuItemNotFoundForDataPreset" xml:space="preserve">
     <value>Preset not found</value>
   </data>
+  <data name="MessageAppStartSuccess" xml:space="preserve">
+    <value>Application started successfully.</value>
+  </data>
+  <data name="MessageAppStartWithError" xml:space="preserve">
+    <value>Application started with some errors.</value>
+  </data>
   <data name="MinimizeWindow" xml:space="preserve">
     <value>Minimize the Window</value>
+  </data>
+  <data name="NotificationDateTimeFormat" xml:space="preserve">
+    <value>yyyy/MM/dd HH:mm:ss.fff</value>
+  </data>
+  <data name="NotificationLevelError" xml:space="preserve">
+    <value>ERROR</value>
+  </data>
+  <data name="NotificationLevelInfo" xml:space="preserve">
+    <value>INFO</value>
+  </data>
+  <data name="NotificationLevelSuccess" xml:space="preserve">
+    <value>SUCCESS</value>
+  </data>
+  <data name="NotificationLevelWarn" xml:space="preserve">
+    <value>WARNING</value>
   </data>
   <data name="RestoreWindow" xml:space="preserve">
     <value>Restore the Window size</value>

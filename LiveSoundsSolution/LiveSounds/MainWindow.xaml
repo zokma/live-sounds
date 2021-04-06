@@ -127,10 +127,11 @@
                                         </Grid>
                                     </StackPanel>
                                 </GroupBox>
-                                <GroupBox Header="{x:Static l10n:LocalizedInfo.GroupBoxApplicationControl}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,24,0,0" Width="540" FontSize="14">
+                                <GroupBox Header="{x:Static l10n:LocalizedInfo.GroupBoxApplicationControl}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,24,0,24" Width="540" FontSize="14">
                                     <StackPanel>
                                         <Grid>
                                             <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="*"/>
@@ -143,7 +144,11 @@
                                                     Margin="14,0,0,0"  Padding="24,4,24,4"
                                                     Style="{StaticResource MaterialDesignOutlinedButton}"
                                                     Content="{x:Static l10n:LocalizedInfo.ButtonStop}"/>
-                                            <Button x:Name="ButtonTokenSetting" Grid.Column="2"
+                                            <Button x:Name="ButtonTestPlay" Grid.Column="2"
+                                                    Margin="14,0,0,0"  Padding="24,4,24,4"
+                                                    Style="{StaticResource MaterialDesignOutlinedButton}"
+                                                    Content="{x:Static l10n:LocalizedInfo.ButtonTestPlay}"/>
+                                            <Button x:Name="ButtonTokenSetting" Grid.Column="3"
                                                     Margin="14,0,0,0"  Padding="24,4,24,4"
                                                     Style="{StaticResource MaterialDesignOutlinedButton}"
                                                     Content="{x:Static l10n:LocalizedInfo.ButtonTokenSetting}" HorizontalAlignment="Right"/>
@@ -219,6 +224,17 @@
                                         </Grid>
                                     </StackPanel>
                                 </GroupBox>
+                                <Grid Margin="0,0,0,24">
+                                    <DataGrid x:Name="DataGridHistory" 
+                                              ItemsSource="{Binding}" 
+                                              Margin="24,0,24,0" 
+                                              MaxHeight="440" MaxWidth="640" 
+                                              IsReadOnly="True" 
+                                              CanUserReorderColumns="False" 
+                                              CanUserSortColumns="False" 
+                                              CanUserAddRows="False" 
+                                              CanUserDeleteRows="False" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                </Grid>
                             </StackPanel>
                         </Grid>
                     </Grid>

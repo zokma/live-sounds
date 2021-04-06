@@ -129,6 +129,9 @@
   <data name="ButtonStop" xml:space="preserve">
     <value>停止</value>
   </data>
+  <data name="ButtonTestPlay" xml:space="preserve">
+    <value>再生テスト</value>
+  </data>
   <data name="ButtonTokenSetting" xml:space="preserve">
     <value>トークン設定</value>
   </data>
@@ -137,6 +140,15 @@
   </data>
   <data name="CloseApplication" xml:space="preserve">
     <value>アプリケーションを閉じる</value>
+  </data>
+  <data name="DataGridDateTime" xml:space="preserve">
+    <value>日時</value>
+  </data>
+  <data name="DataGridLevel" xml:space="preserve">
+    <value>種類</value>
+  </data>
+  <data name="DataGridMessage" xml:space="preserve">
+    <value>メッセージ</value>
   </data>
   <data name="GroupBoxApplicationControl" xml:space="preserve">
     <value>アプリケーションの制御</value>
@@ -153,8 +165,29 @@
   <data name="MenuItemNotFoundForAudioDevice" xml:space="preserve">
     <value>デバイスが見つかりません</value>
   </data>
+  <data name="MessageAppStartSuccess" xml:space="preserve">
+    <value>アプリケーションが正常に起動しました。</value>
+  </data>
+  <data name="MessageAppStartWithError" xml:space="preserve">
+    <value>アプリケーション起動中にエラーが発生しました。</value>
+  </data>
   <data name="MinimizeWindow" xml:space="preserve">
     <value>ウィンドウを最小化する</value>
+  </data>
+  <data name="NotificationDateTimeFormat" xml:space="preserve">
+    <value>yyyy/MM/dd HH:mm:ss.fff</value>
+  </data>
+  <data name="NotificationLevelError" xml:space="preserve">
+    <value>エラー</value>
+  </data>
+  <data name="NotificationLevelInfo" xml:space="preserve">
+    <value>情報</value>
+  </data>
+  <data name="NotificationLevelSuccess" xml:space="preserve">
+    <value>成功</value>
+  </data>
+  <data name="NotificationLevelWarn" xml:space="preserve">
+    <value>警告</value>
   </data>
   <data name="RestoreWindow" xml:space="preserve">
     <value>ウィンドウのサイズを元に戻す</value>

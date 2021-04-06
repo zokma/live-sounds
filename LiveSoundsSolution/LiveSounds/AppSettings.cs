@@ -305,6 +305,21 @@ namespace LiveSounds
         }
 
         /// <summary>
+        /// Notification max.
+        /// </summary>
+        [JsonInclude]
+        public int NotificationMax = 5;
+
+        /// <summary>
+        /// History max.
+        /// </summary>
+        [JsonInclude]
+#if DEBUG
+        public int HistoryMax = 100;
+#else
+        public int HistoryMax = 10;
+#endif
+        /// <summary>
         /// Window Width.
         /// </summary>
         [JsonInclude]

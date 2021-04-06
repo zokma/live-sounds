@@ -97,6 +97,15 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PLAY TEST.
+        /// </summary>
+        public static string ButtonTestPlay {
+            get {
+                return ResourceManager.GetString("ButtonTestPlay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TOKEN SETTING.
         /// </summary>
         public static string ButtonTokenSetting {
@@ -120,6 +129,33 @@ namespace LiveSounds.Localization {
         public static string CloseApplication {
             get {
                 return ResourceManager.GetString("CloseApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DateTime.
+        /// </summary>
+        public static string DataGridDateTime {
+            get {
+                return ResourceManager.GetString("DataGridDateTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level.
+        /// </summary>
+        public static string DataGridLevel {
+            get {
+                return ResourceManager.GetString("DataGridLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message.
+        /// </summary>
+        public static string DataGridMessage {
+            get {
+                return ResourceManager.GetString("DataGridMessage", resourceCulture);
             }
         }
         
@@ -178,11 +214,74 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Application started successfully..
+        /// </summary>
+        public static string MessageAppStartSuccess {
+            get {
+                return ResourceManager.GetString("MessageAppStartSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application started with some errors..
+        /// </summary>
+        public static string MessageAppStartWithError {
+            get {
+                return ResourceManager.GetString("MessageAppStartWithError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Minimize the Window.
         /// </summary>
         public static string MinimizeWindow {
             get {
                 return ResourceManager.GetString("MinimizeWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to yyyy/MM/dd HH:mm:ss.fff.
+        /// </summary>
+        public static string NotificationDateTimeFormat {
+            get {
+                return ResourceManager.GetString("NotificationDateTimeFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ERROR.
+        /// </summary>
+        public static string NotificationLevelError {
+            get {
+                return ResourceManager.GetString("NotificationLevelError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to INFO.
+        /// </summary>
+        public static string NotificationLevelInfo {
+            get {
+                return ResourceManager.GetString("NotificationLevelInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SUCCESS.
+        /// </summary>
+        public static string NotificationLevelSuccess {
+            get {
+                return ResourceManager.GetString("NotificationLevelSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WARNING.
+        /// </summary>
+        public static string NotificationLevelWarn {
+            get {
+                return ResourceManager.GetString("NotificationLevelWarn", resourceCulture);
             }
         }
         

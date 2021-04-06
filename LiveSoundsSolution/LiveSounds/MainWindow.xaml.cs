@@ -1,5 +1,6 @@
 ﻿using LiveSounds.Localization;
 using LiveSounds.MenuItem;
+using LiveSounds.Notification;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
@@ -55,6 +56,11 @@ namespace LiveSounds
         /// </summary>
         private const string AUDIO_DATA_DIRECTORY_NAME = "AudioFiles";
 
+        /// <summary>
+        /// Notification Area name.
+        /// </summary>
+        private const string NOTIFICATION_AREA_NAME = "NotificationAreaMain";
+
 
         /// <summary>
         /// SolidColorBrush for Transparent.
@@ -108,6 +114,21 @@ namespace LiveSounds
         /// </summary>
         private static readonly Regex REGEX_DIGITS_ONLY = new Regex("^[0-9]*$", RegexOptions.Compiled | RegexOptions.Singleline, TimeSpan.FromSeconds(4.0));
 
+        /// <summary>
+        /// Default duration for notification.
+        /// </summary>
+        private static readonly TimeSpan NOTIFICATION_DURATION_DEFAULT = TimeSpan.FromSeconds(5.0f);
+
+        /// <summary>
+        /// Long duration for notification.
+        /// </summary>
+        private static readonly TimeSpan NOTIFICATION_DURATION_LONG = TimeSpan.FromSeconds(15.0f);
+
+        /// <summary>
+        /// Long duration for notification.
+        /// </summary>
+        private static readonly TimeSpan NOTIFICATION_DURATION_INFINITE = TimeSpan.MaxValue;
+
 
         /// <summary>
         /// true if audio playback is muted. 
@@ -144,6 +165,11 @@ namespace LiveSounds
         /// </summary>
         private int dataPresetSelectedIndex;
 
+        /// <summary>
+        /// Notification manager.
+        /// </summary>
+        private NotificationManager notification;
+
 
         public MainWindow()
         {
@@ -171,10 +197,14 @@ namespace LiveSounds
                 await InitApplicationAsync();
                 CompleteWindowInfo();
 
+                this.notification.ShowNotification(LocalizedInfo.MessageAppStartSuccess, NotificationLevel.Success);
+                
                 Log.Information("Window_Loaded done.");
             }
             catch (Exception ex)
             {
+                this.notification.ShowNotification(LocalizedInfo.MessageAppStartWithError, NotificationLevel.Warn);
+                
                 Log.Error(ex, "Unexpected error on Window_Loaded.");
 
                 throw;
@@ -277,6 +307,20 @@ namespace LiveSounds
             this.TextBoxPlayAudioLimitsPerUser.Text = settings.PlayAudioLimitsPerMinutePerUser.ToString();
 
             this.TextBoxLocalPort.Text = settings.LocalPort.ToString();
+
+
+            this.notification = new NotificationManager(settings.NotificationMax, settings.HistoryMax, this.Dispatcher, NOTIFICATION_AREA_NAME);
+
+            this.NotificationAreaMain.MaxItems = this.notification.NotificationMax;
+
+            if (this.notification.HistoryMax > 0)
+            {
+                this.DataGridHistory.DataContext = this.notification.HistoryTable;
+            }
+            else
+            {
+                this.DataGridHistory.Visibility = Visibility.Collapsed;
+            }
         }
 
         /// <summary>
