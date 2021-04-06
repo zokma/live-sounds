@@ -38,6 +38,21 @@ namespace LiveSounds
         public const int PLAY_AUDIO_LIMITS_PER_USER_DEFAULT = 5;
 
         /// <summary>
+        /// Network port min.
+        /// </summary>
+        public const int NETWORK_PORT_MIN = 1024;
+
+        /// <summary>
+        /// Network port max.
+        /// </summary>
+        public const int NETWORK_PORT_MAX = UInt16.MaxValue;
+
+        /// <summary>
+        /// Network port min.
+        /// </summary>
+        public const int LOCAL_PORT_DEFAULT = 8080;
+
+        /// <summary>
         /// Json encoder.
         /// </summary>
         private static readonly JavaScriptEncoder JSON_ENCODER = JavaScriptEncoder.Create(UnicodeRanges.All);
@@ -111,7 +126,7 @@ namespace LiveSounds
         /// </summary>
         [JsonInclude]
         [JsonPropertyName("PlayAudioLimitsPerMinutePerApp")]
-        public int PlayAudioLimitsPerMinutePerAppNumber = 20;
+        public int PlayAudioLimitsPerMinutePerAppNumber = PLAY_AUDIO_LIMITS_PER_APP_DEFAULT;
 
         /// <summary>
         /// Play Audio limits per minute per app.
@@ -125,7 +140,7 @@ namespace LiveSounds
             }
             set
             {
-                this.PlayAudioLimitsPerMinutePerAppNumber = GetPlayAudioLimits(value);
+                this.PlayAudioLimitsPerMinutePerAppNumber = value;
             }
         }
 
@@ -134,7 +149,7 @@ namespace LiveSounds
         /// </summary>
         [JsonInclude]
         [JsonPropertyName("PlayAudioLimitsPerMinutePerUser")]
-        public int PlayAudioLimitsPerMinutePerUserNumber = 5;
+        public int PlayAudioLimitsPerMinutePerUserNumber = PLAY_AUDIO_LIMITS_PER_USER_DEFAULT;
 
         /// <summary>
         /// Play Audio limits per minute per user.
@@ -148,7 +163,7 @@ namespace LiveSounds
             }
             set
             {
-                this.PlayAudioLimitsPerMinutePerUserNumber = GetPlayAudioLimits(value);
+                this.PlayAudioLimitsPerMinutePerUserNumber = value;
             }
         }
 
@@ -211,6 +226,30 @@ namespace LiveSounds
         /// </summary>
         [JsonInclude]
         public string DataPresetId;
+
+
+        /// <summary>
+        /// Local port number.
+        /// </summary>
+        [JsonInclude]
+        [JsonPropertyName("LocalPort")]
+        public int LocalPortNumber = LOCAL_PORT_DEFAULT;
+
+        /// <summary>
+        /// Local port number.
+        /// </summary>
+        [JsonIgnore]
+        public int LocalPort
+        {
+            get
+            {
+                return GetNetworkPort(this.LocalPortNumber);
+            }
+            set
+            {
+                this.LocalPortNumber = value;
+            }
+        }
 
         /// <summary>
         /// Is data directory portable.
@@ -413,6 +452,33 @@ namespace LiveSounds
             return GetPlayAudioLimits(limits);
         }
 
+        /// <summary>
+        /// Gets Network port number.
+        /// </summary>
+        /// <param name="port">Network port.</param>
+        /// <returns>Adjusted Network port.</returns>
+        public static int GetNetworkPort(int port)
+        {
+            return Math.Max(Math.Min(port, NETWORK_PORT_MAX), NETWORK_PORT_MIN);
+        }
+
+        /// <summary>
+        /// Gets Network port number from string.
+        /// </summary>
+        /// <param name="port">Network port.</param>
+        /// <param name="defaultPort">Default port.</param>
+        /// <returns>Adjusted Network port.</returns>
+        public static int GetNetworkPort(string port, int defaultPort)
+        {
+            int portNumber;
+
+            if (!Int32.TryParse(port, out portNumber))
+            {
+                portNumber = defaultPort;
+            }
+
+            return GetNetworkPort(portNumber);
+        }
 
         /// <summary>
         /// Loads the app settings.

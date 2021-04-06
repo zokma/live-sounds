@@ -132,6 +132,9 @@
   <data name="ButtonTokenSetting" xml:space="preserve">
     <value>TOKEN SETTING</value>
   </data>
+  <data name="ButtonUserWebPage" xml:space="preserve">
+    <value>WEB PAGE INFO FOR USERS</value>
+  </data>
   <data name="CloseApplication" xml:space="preserve">
     <value>Close the Application</value>
   </data>
@@ -177,6 +180,9 @@
   <data name="SamplePresetName02" xml:space="preserve">
     <value>Sample B</value>
   </data>
+  <data name="TextBlockNetworkSettings" xml:space="preserve">
+    <value>Network Settings</value>
+  </data>
   <data name="TextBlockPlayAudioLimitsPerMinute" xml:space="preserve">
     <value>Play Audio Limits per minute</value>
   </data>
@@ -197,6 +203,9 @@
   </data>
   <data name="TextBoxPlayAudioLimitsPerUserSuffix" xml:space="preserve">
     <value> times(per user)</value>
+  </data>
+  <data name="TextBoxPortNumberPrefix" xml:space="preserve">
+    <value>Port </value>
   </data>
   <data name="UnexpectedErrorMessage" xml:space="preserve">
     <value>Unexpected Error has occurred.

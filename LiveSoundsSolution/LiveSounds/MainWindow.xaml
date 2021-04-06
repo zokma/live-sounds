@@ -194,6 +194,29 @@
                                                      PreviewTextInput="TextBoxDigitsOnly_PreviewTextInput" 
                                                      LostFocus="TextBoxPlayAudioLimitsPerUser_LostFocus" />
                                         </Grid>
+                                        <Grid Margin="0,14,0,14">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{x:Static l10n:LocalizedInfo.TextBlockNetworkSettings}" VerticalAlignment="Bottom" FontSize="12"/>
+                                            <TextBox x:Name="TextBoxLocalPort" 
+                                                     Grid.Column="1" 
+                                                     MaxLength="5" MaxLines="1" 
+                                                     Margin="14,0,0,0" 
+                                                     materialDesign:TextFieldAssist.PrefixText="{x:Static l10n:LocalizedInfo.TextBoxPortNumberPrefix}" 
+                                                     materialDesign:HintAssist.Hint="{x:Static l10n:LocalizedInfo.TextBoxPortNumberPrefix}"
+                                                     InputScope="Digits" 
+                                                     InputMethod.IsInputMethodEnabled="False" 
+                                                     CommandManager.PreviewExecuted="TextBoxDigitsOnly_PreviewExecuted" 
+                                                     PreviewTextInput="TextBoxDigitsOnly_PreviewTextInput" 
+                                                     LostFocus="TextBoxLocalPort_LostFocus" />
+                                            <Button x:Name="ButtonUserWebPage" Grid.Column="2"
+                                                    Margin="24,0,0,0"  Padding="24,4,24,4"
+                                                    Style="{StaticResource MaterialDesignOutlinedButton}"
+                                                    Content="{x:Static l10n:LocalizedInfo.ButtonUserWebPage}"/>
+                                        </Grid>
                                     </StackPanel>
                                 </GroupBox>
                             </StackPanel>

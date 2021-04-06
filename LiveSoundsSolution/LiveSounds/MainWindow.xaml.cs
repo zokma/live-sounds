@@ -275,6 +275,8 @@ namespace LiveSounds
 
             this.TextBoxPlayAudioLimitsPerApp.Text  = settings.PlayAudioLimitsPerMinutePerApp.ToString();
             this.TextBoxPlayAudioLimitsPerUser.Text = settings.PlayAudioLimitsPerMinutePerUser.ToString();
+
+            this.TextBoxLocalPort.Text = settings.LocalPort.ToString();
         }
 
         /// <summary>
@@ -537,6 +539,8 @@ namespace LiveSounds
             settings.PlayAudioLimitsPerMinutePerApp  = AppSettings.GetPlayAudioLimits(this.TextBoxPlayAudioLimitsPerApp.Text,  AppSettings.PLAY_AUDIO_LIMITS_PER_APP_DEFAULT);
             settings.PlayAudioLimitsPerMinutePerUser = AppSettings.GetPlayAudioLimits(this.TextBoxPlayAudioLimitsPerUser.Text, AppSettings.PLAY_AUDIO_LIMITS_PER_USER_DEFAULT);
 
+            settings.LocalPort = AppSettings.GetNetworkPort(this.TextBoxLocalPort.Text, AppSettings.LOCAL_PORT_DEFAULT);
+
             settings.Save();
         }
 
@@ -796,6 +800,11 @@ namespace LiveSounds
         private void TextBoxPlayAudioLimitsPerUser_LostFocus(object sender, RoutedEventArgs e)
         {
             this.TextBoxPlayAudioLimitsPerUser.Text = AppSettings.GetPlayAudioLimits(this.TextBoxPlayAudioLimitsPerUser.Text, AppSettings.PLAY_AUDIO_LIMITS_PER_USER_DEFAULT).ToString();
+        }
+
+        private void TextBoxLocalPort_LostFocus(object sender, RoutedEventArgs e)
+        {
+            this.TextBoxLocalPort.Text = AppSettings.GetNetworkPort(this.TextBoxLocalPort.Text, AppSettings.LOCAL_PORT_DEFAULT).ToString();
         }
     }
 }

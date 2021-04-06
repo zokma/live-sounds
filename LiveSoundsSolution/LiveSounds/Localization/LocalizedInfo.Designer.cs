@@ -106,6 +106,15 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WEB PAGE INFO FOR USERS.
+        /// </summary>
+        public static string ButtonUserWebPage {
+            get {
+                return ResourceManager.GetString("ButtonUserWebPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close the Application.
         /// </summary>
         public static string CloseApplication {
@@ -241,6 +250,15 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Network Settings.
+        /// </summary>
+        public static string TextBlockNetworkSettings {
+            get {
+                return ResourceManager.GetString("TextBlockNetworkSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Play Audio Limits per minute.
         /// </summary>
         public static string TextBlockPlayAudioLimitsPerMinute {
@@ -300,6 +318,15 @@ namespace LiveSounds.Localization {
         public static string TextBoxPlayAudioLimitsPerUserSuffix {
             get {
                 return ResourceManager.GetString("TextBoxPlayAudioLimitsPerUserSuffix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port .
+        /// </summary>
+        public static string TextBoxPortNumberPrefix {
+            get {
+                return ResourceManager.GetString("TextBoxPortNumberPrefix", resourceCulture);
             }
         }
         

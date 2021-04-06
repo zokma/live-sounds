@@ -132,6 +132,9 @@
   <data name="ButtonTokenSetting" xml:space="preserve">
     <value>トークン設定</value>
   </data>
+  <data name="ButtonUserWebPage" xml:space="preserve">
+    <value>ユーザ用 Webページ情報</value>
+  </data>
   <data name="CloseApplication" xml:space="preserve">
     <value>アプリケーションを閉じる</value>
   </data>
@@ -174,6 +177,9 @@
   <data name="SamplePresetName02" xml:space="preserve">
     <value>サンプル B</value>
   </data>
+  <data name="TextBlockNetworkSettings" xml:space="preserve">
+    <value>ネットワーク設定</value>
+  </data>
   <data name="TextBlockPlayAudioLimitsPerMinute" xml:space="preserve">
     <value>1分間あたりの再生制限</value>
   </data>
@@ -194,6 +200,9 @@
   </data>
   <data name="TextBoxPlayAudioLimitsPerUserSuffix" xml:space="preserve">
     <value> 回(ユーザごと)</value>
+  </data>
+  <data name="TextBoxPortNumberPrefix" xml:space="preserve">
+    <value>ポート番号 </value>
   </data>
   <data name="UnexpectedErrorMessage" xml:space="preserve">
     <value>予期しないエラーが発生しました。
