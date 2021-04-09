@@ -186,13 +186,6 @@ namespace LiveSounds
 
             try
             {
-                var app = Application.Current;
-
-                if (app != null)
-                {
-                    app.ShutdownMode = ShutdownMode.OnMainWindowClose;
-                }
-
                 InitWindowImmediateInfo();
                 await InitApplicationAsync();
                 CompleteWindowInfo();
