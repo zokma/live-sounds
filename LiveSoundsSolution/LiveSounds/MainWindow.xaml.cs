@@ -180,12 +180,12 @@ namespace LiveSounds
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Log.Information("Window_Loaded starting.");
-
-            this.GridApplicationMain.IsEnabled = false;
-
             try
             {
+                Log.Information("Window_Loaded starting.");
+
+                this.GridApplicationMain.IsEnabled = false;
+
                 InitWindowImmediateInfo();
                 await InitApplicationAsync();
                 CompleteWindowInfo();
@@ -760,10 +760,10 @@ namespace LiveSounds
 
         private async void ButtonReloadDataPresets_Click(object sender, RoutedEventArgs e)
         {
-            this.GridApplicationMain.IsEnabled = false;
-
             try
             {
+                this.GridApplicationMain.IsEnabled = false;
+
                 var selectedItem = this.ComboBoxDataPresets.SelectedItem as DataPresetItem;
 
                 await Task.Run(
@@ -782,10 +782,10 @@ namespace LiveSounds
 
         private async void ButtonReloadAudioRenderDevices_Click(object sender, RoutedEventArgs e)
         {
-            this.GridApplicationMain.IsEnabled = false;
-
             try
             {
+                this.GridApplicationMain.IsEnabled = false;
+
                 var selectedItem = this.ComboBoxAudioRenderDevices.SelectedItem as AudioDeviceItem;
 
                 await Task.Run(
@@ -842,6 +842,23 @@ namespace LiveSounds
         private void TextBoxLocalPort_LostFocus(object sender, RoutedEventArgs e)
         {
             this.TextBoxLocalPort.Text = AppSettings.GetNetworkPort(this.TextBoxLocalPort.Text, AppSettings.LOCAL_PORT_DEFAULT).ToString();
+        }
+
+        private void ButtonTokenSetting_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.GridApplicationMain.IsEnabled = false;
+
+                var tokenSettingWindow = new TokenSettingWindow();
+
+                tokenSettingWindow.Owner = this;
+                tokenSettingWindow.ShowDialog();
+            }
+            finally
+            {
+                this.GridApplicationMain.IsEnabled = true;
+            }
         }
     }
 }

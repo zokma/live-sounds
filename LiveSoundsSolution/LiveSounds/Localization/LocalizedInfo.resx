@@ -120,6 +120,12 @@
   <data name="ApplicationTitle" xml:space="preserve">
     <value>Live Sounds</value>
   </data>
+  <data name="ButtonApply" xml:space="preserve">
+    <value>APPLY</value>
+  </data>
+  <data name="ButtonCancel" xml:space="preserve">
+    <value>CANCEL</value>
+  </data>
   <data name="ButtonOpenDataDirectory" xml:space="preserve">
     <value>OPEN DATA FOLDER</value>
   </data>
@@ -239,6 +245,12 @@
   </data>
   <data name="TextBoxPortNumberPrefix" xml:space="preserve">
     <value>Port </value>
+  </data>
+  <data name="TextBoxTokenInfoHint" xml:space="preserve">
+    <value>Please paste token info you obtained.</value>
+  </data>
+  <data name="TokenSettingWindowTitle" xml:space="preserve">
+    <value>Token Setting</value>
   </data>
   <data name="UnexpectedErrorMessage" xml:space="preserve">
     <value>Unexpected Error has occurred.

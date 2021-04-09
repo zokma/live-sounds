@@ -120,6 +120,12 @@
   <data name="ApplicationTitle" xml:space="preserve">
     <value>リモートからポン！</value>
   </data>
+  <data name="ButtonApply" xml:space="preserve">
+    <value>適用</value>
+  </data>
+  <data name="ButtonCancel" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
   <data name="ButtonOpenDataDirectory" xml:space="preserve">
     <value>データ格納先を開く</value>
   </data>
@@ -236,6 +242,12 @@
   </data>
   <data name="TextBoxPortNumberPrefix" xml:space="preserve">
     <value>ポート番号 </value>
+  </data>
+  <data name="TextBoxTokenInfoHint" xml:space="preserve">
+    <value>入手したトークン情報をペーストしてください。</value>
+  </data>
+  <data name="TokenSettingWindowTitle" xml:space="preserve">
+    <value>トークン設定</value>
   </data>
   <data name="UnexpectedErrorMessage" xml:space="preserve">
     <value>予期しないエラーが発生しました。

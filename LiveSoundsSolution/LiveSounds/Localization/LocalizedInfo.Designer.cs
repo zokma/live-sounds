@@ -70,6 +70,24 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to APPLY.
+        /// </summary>
+        public static string ButtonApply {
+            get {
+                return ResourceManager.GetString("ButtonApply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CANCEL.
+        /// </summary>
+        public static string ButtonCancel {
+            get {
+                return ResourceManager.GetString("ButtonCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OPEN DATA FOLDER.
         /// </summary>
         public static string ButtonOpenDataDirectory {
@@ -426,6 +444,24 @@ namespace LiveSounds.Localization {
         public static string TextBoxPortNumberPrefix {
             get {
                 return ResourceManager.GetString("TextBoxPortNumberPrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please paste token info you obtained..
+        /// </summary>
+        public static string TextBoxTokenInfoHint {
+            get {
+                return ResourceManager.GetString("TextBoxTokenInfoHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Token Setting.
+        /// </summary>
+        public static string TokenSettingWindowTitle {
+            get {
+                return ResourceManager.GetString("TokenSettingWindowTitle", resourceCulture);
             }
         }
         
