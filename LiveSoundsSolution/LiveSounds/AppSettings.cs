@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -106,6 +107,13 @@ namespace LiveSounds
             Indented = true,
             Encoder  = JSON_ENCODER,
         };
+
+        /// <summary>
+        /// Internal ETP.
+        /// It will be better that the value is generated conditionally and located on far location.
+        /// But, in this time, it will be reasonable against purpose.
+        /// </summary>
+        private static readonly byte[] ETP = { 0x4d, 0xa4, 0x10, 0xa9, 0x2c, 0xe2, 0x8d, 0x7c, 0xe4, 0xfb, 0x44, 0xaf, 0x09, 0x52, 0x68, 0x50, };
 
 
         /// <summary>
@@ -248,6 +256,83 @@ namespace LiveSounds
             set
             {
                 this.LocalPortNumber = value;
+            }
+        }
+
+        /// <summary>
+        /// Encrypted Token.
+        /// </summary>
+        [JsonInclude]
+        [JsonPropertyName("Token")]
+        public string EncryptedToken { get; set; }
+
+        /// <summary>
+        /// Token.
+        /// </summary>
+        [JsonIgnore]
+        public string Token
+        {
+            get
+            {
+                string result = String.Empty;
+
+                if (!String.IsNullOrWhiteSpace(this.EncryptedToken))
+                {
+                    try
+                    {
+                        var data = Convert.FromBase64String(this.EncryptedToken);
+
+                        data = ProtectedData.Unprotect(data, ETP, this.DataProtectionScope);
+
+                        var utf8 = new UTF8Encoding(false);
+
+                        result = utf8.GetString(data);
+                    }
+                    catch (FormatException ex)
+                    {
+                        Log.Error(ex, "Base64 string has invalid format.");
+                    }
+                    catch (CryptographicException ex)
+                    {
+                        Log.Error(ex, "Unprotect failed.");
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        Log.Error(ex, "UTF8 Decode failed.");
+                    }
+                }
+
+                return result;
+            }
+
+            set
+            {
+                if (!String.IsNullOrWhiteSpace(value))
+                {
+                    var utf8 = new UTF8Encoding(false);
+
+                    var data = utf8.GetBytes(value);
+
+                    data = ProtectedData.Protect(data, ETP, this.DataProtectionScope);
+
+                    this.EncryptedToken = Convert.ToBase64String(data, Base64FormattingOptions.None);
+                }
+                else
+                {
+                    this.EncryptedToken = null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// DataProtectionScope.
+        /// </summary>
+        [JsonIgnore]
+        private DataProtectionScope DataProtectionScope
+        {
+            get
+            {
+                return (this.IsPortable ? DataProtectionScope.LocalMachine : DataProtectionScope.CurrentUser); 
             }
         }
 

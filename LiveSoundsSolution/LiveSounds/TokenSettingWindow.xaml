@@ -11,8 +11,8 @@
         TextElement.FontWeight="Medium"
         TextElement.FontSize="17"
         mc:Ignorable="d"
-        Title="{x:Static l10n:LocalizedInfo.TokenSettingWindowTitle}" Height="310" Width="440" BorderThickness="14"
-        ResizeMode="NoResize" WindowStartupLocation="CenterOwner" WindowStyle="None" AllowsTransparency="True">
+        Title="{x:Static l10n:LocalizedInfo.TokenSettingWindowTitle}" Height="270" Width="440" BorderThickness="14"
+        ResizeMode="NoResize" WindowStartupLocation="CenterOwner" WindowStyle="None" AllowsTransparency="True" Loaded="Window_Loaded">
     <Window.Effect>
         <DropShadowEffect Opacity="0.7" Direction="324" BlurRadius="4" ShadowDepth="7"/>
     </Window.Effect>
@@ -39,7 +39,8 @@
                 </Grid.ColumnDefinitions>
                 <Button x:Name="ButtonApply" 
                         Style="{StaticResource MaterialDesignOutlinedButton}"
-                        Content="{x:Static l10n:LocalizedInfo.ButtonApply}"/>
+                        Content="{x:Static l10n:LocalizedInfo.ButtonApply}" 
+                        Click="ButtonApply_Click"/>
                 <Button x:Name="ButtonCancel" Grid.Column="1" 
                         Style="{StaticResource MaterialDesignOutlinedButton}" 
                         Content="{x:Static l10n:LocalizedInfo.ButtonCancel}"

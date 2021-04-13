@@ -24,9 +24,51 @@ namespace LiveSounds
             InitializeComponent();
         }
 
-        private void ButtonCancel_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Applies token setting.
+        /// </summary>
+        private void Apply()
+        {
+            try
+            {
+                string token = this.TextBoxTokenInfo.Text;
+
+                if (token != null)
+                {
+                    token = token.Trim(new char[] { '"', ' ' });
+
+                    App.Settings.Token = token;
+
+                    this.DialogResult = true;
+                }
+            }
+            finally
+            {
+                this.Close();
+            }
+        }
+
+        /// <summary>
+        /// Cancels token setting.
+        /// </summary>
+        private void Cancel()
         {
             this.Close();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.TextBoxTokenInfo.Text = App.Settings.Token;
+        }
+
+        private void ButtonApply_Click(object sender, RoutedEventArgs e)
+        {
+            Apply();
+        }
+
+        private void ButtonCancel_Click(object sender, RoutedEventArgs e)
+        {
+            Cancel();
         }
     }
 }
