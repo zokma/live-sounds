@@ -751,6 +751,8 @@ namespace LiveSounds
         private void Window_Closed(object sender, EventArgs e)
         {
             SaveSettings();
+
+            Log.Information("Window Closed.");
         }
 
         private void ButtonOpenDataDirectory_Click(object sender, RoutedEventArgs e)

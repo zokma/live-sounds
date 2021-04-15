@@ -598,7 +598,6 @@ namespace LiveSounds
                     
                     result.FilePath = fs.Name;
                 }
-
             }
             catch
             {
@@ -633,6 +632,8 @@ namespace LiveSounds
             {
                 JsonSerializer.Serialize<AppSettings>(writer, this, JsonSerializerOptionsForFileWrite);
             }
+
+            Log.Information("AppSettings are saved to file.");
         }
 
         /// <summary>

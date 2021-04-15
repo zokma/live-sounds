@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:LiveSounds"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              StartupUri="MainWindow.xaml" 
-             ShutdownMode="OnMainWindowClose">
+             ShutdownMode="OnMainWindowClose" Startup="Application_Startup" Exit="Application_Exit" SessionEnding="Application_SessionEnding">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

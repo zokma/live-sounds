@@ -188,18 +188,19 @@ namespace LiveSounds
             Log.Close();
         }
 
-        protected override void OnStartup(StartupEventArgs e)
+        private void Application_Startup(object sender, StartupEventArgs e)
         {
-            base.OnStartup(e);
-
-            Log.Information("OnStartup: InstanceId = {InstanceId}", this.instanceId.ToString());
+            Log.Information("AppStartup: InstanceId = {InstanceId}", this.instanceId.ToString());
         }
 
-        protected override void OnExit(ExitEventArgs e)
+        private void Application_Exit(object sender, ExitEventArgs e)
         {
-            Log.Information("OnExit: InstanceId = {InstanceId}", this.instanceId.ToString());
+            Log.Information("AppExit: InstanceId = {InstanceId}, ExitCode = {ExitCode}", this.instanceId.ToString(), e.ApplicationExitCode);
+        }
 
-            base.OnExit(e);
+        private void Application_SessionEnding(object sender, SessionEndingCancelEventArgs e)
+        {
+            Log.Information("AppSessionEnding: InstanceId = {InstanceId}, Reason = {Reason}", this.instanceId.ToString(), e.ReasonSessionEnding);
         }
     }
 }
