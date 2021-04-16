@@ -250,6 +250,15 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Token info not found. Please set token info from [TOKEN SETTING] button..
+        /// </summary>
+        public static string MessageTokenInfoNotFound {
+            get {
+                return ResourceManager.GetString("MessageTokenInfoNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Token info has been updated..
         /// </summary>
         public static string MessageTokenInfoUpdated {

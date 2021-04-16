@@ -177,6 +177,10 @@
   <data name="MessageAppStartWithError" xml:space="preserve">
     <value>アプリケーション起動中にエラーが発生しました。</value>
   </data>
+  <data name="MessageTokenInfoNotFound" xml:space="preserve">
+    <value>トークン情報が設定されていません。
+[トークン設定]ボタンからトークンを設定してください。</value>
+  </data>
   <data name="MessageTokenInfoUpdated" xml:space="preserve">
     <value>トークン情報が更新されました。</value>
   </data>

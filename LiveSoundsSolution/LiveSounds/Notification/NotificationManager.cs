@@ -36,6 +36,25 @@ namespace LiveSounds.Notification
         /// </summary>
         private const int HISTORY_MAX = 1024;
 
+        /// <summary>
+        /// Normal Duration.
+        /// </summary>
+        public static readonly TimeSpan DURATION_NORMAL = TimeSpan.FromSeconds(5.0f);
+
+        /// <summary>
+        /// Long Duration.
+        /// </summary>
+        public static readonly TimeSpan DURATION_LONG = TimeSpan.FromSeconds(15.0f);
+
+        /// <summary>
+        /// Infinite Duration.
+        /// </summary>
+        public static readonly TimeSpan DURATION_INFINITE = TimeSpan.MaxValue;
+
+        /// <summary>
+        /// Default Duration.
+        /// </summary>
+        public static readonly TimeSpan DURATION_DEFAULT = DURATION_NORMAL;
 
         /// <summary>
         /// Notification max.
@@ -168,7 +187,7 @@ namespace LiveSounds.Notification
                     Type    = GetNotificationType(level),
                 };
 
-                this.notification.Show(content, this.areaName, duration, onClick, onClose);
+                this.notification.Show(content, this.areaName, (duration ?? DURATION_DEFAULT), onClick, onClose);
             }
 
             if(this.HistoryMax > 0 && this.dispatcher != null)

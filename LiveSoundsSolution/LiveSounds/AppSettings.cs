@@ -267,6 +267,18 @@ namespace LiveSounds
         public string EncryptedToken { get; set; }
 
         /// <summary>
+        /// Checks if Encrypted token info is set.
+        /// </summary>
+        [JsonIgnore]
+        public bool HasEncryptedToken
+        {
+            get
+            {
+                return !(String.IsNullOrWhiteSpace(this.EncryptedToken));
+            }
+        }
+
+        /// <summary>
         /// Token.
         /// </summary>
         [JsonIgnore]

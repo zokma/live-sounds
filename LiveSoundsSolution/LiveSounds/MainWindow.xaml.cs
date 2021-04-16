@@ -191,7 +191,16 @@ namespace LiveSounds
                 CompleteWindowInfo();
 
                 this.notification.ShowNotification(LocalizedInfo.MessageAppStartSuccess, NotificationLevel.Success);
-                
+
+                if(!App.Settings.HasEncryptedToken)
+                {
+                    this.notification.ShowNotification(LocalizedInfo.MessageTokenInfoNotFound, NotificationLevel.Warn, NOTIFICATION_DURATION_LONG,
+                        () =>
+                        {
+                            this.Dispatcher.Invoke(() => ShowTokenInfoDialog());
+                        });
+                }
+
                 Log.Information("Window_Loaded done.");
             }
             catch (Exception ex)
@@ -651,6 +660,32 @@ namespace LiveSounds
             }
         }
 
+        /// <summary>
+        /// Shows token info dialog.
+        /// </summary>
+        private void ShowTokenInfoDialog()
+        {
+            try
+            {
+                this.GridApplicationMain.IsEnabled = false;
+
+                var tokenSettingWindow = new TokenSettingWindow();
+
+                tokenSettingWindow.Owner = this;
+
+                bool? result = tokenSettingWindow.ShowDialog();
+
+                if (result == true)
+                {
+                    this.notification.ShowNotification(LocalizedInfo.MessageTokenInfoUpdated, NotificationLevel.Info);
+                }
+            }
+            finally
+            {
+                this.GridApplicationMain.IsEnabled = true;
+            }
+        }
+
         private void ColorZoneTitle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
@@ -848,25 +883,7 @@ namespace LiveSounds
 
         private void ButtonTokenSetting_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                this.GridApplicationMain.IsEnabled = false;
-
-                var tokenSettingWindow = new TokenSettingWindow();
-
-                tokenSettingWindow.Owner = this;
-
-                bool? result = tokenSettingWindow.ShowDialog();
-
-                if (result == true)
-                {
-                    this.notification.ShowNotification(LocalizedInfo.MessageTokenInfoUpdated, NotificationLevel.Info);
-                }
-            }
-            finally
-            {
-                this.GridApplicationMain.IsEnabled = true;
-            }
+            ShowTokenInfoDialog();
         }
     }
 }

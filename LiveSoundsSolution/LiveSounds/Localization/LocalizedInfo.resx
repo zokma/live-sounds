@@ -180,6 +180,9 @@
   <data name="MessageAppStartWithError" xml:space="preserve">
     <value>Application started with some errors.</value>
   </data>
+  <data name="MessageTokenInfoNotFound" xml:space="preserve">
+    <value>Token info not found. Please set token info from [TOKEN SETTING] button.</value>
+  </data>
   <data name="MessageTokenInfoUpdated" xml:space="preserve">
     <value>Token info has been updated.</value>
   </data>
