@@ -855,7 +855,13 @@ namespace LiveSounds
                 var tokenSettingWindow = new TokenSettingWindow();
 
                 tokenSettingWindow.Owner = this;
-                tokenSettingWindow.ShowDialog();
+
+                bool? result = tokenSettingWindow.ShowDialog();
+
+                if (result == true)
+                {
+                    this.notification.ShowNotification(LocalizedInfo.MessageTokenInfoUpdated, NotificationLevel.Info);
+                }
             }
             finally
             {

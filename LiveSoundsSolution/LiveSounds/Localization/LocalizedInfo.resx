@@ -180,6 +180,9 @@
   <data name="MessageAppStartWithError" xml:space="preserve">
     <value>Application started with some errors.</value>
   </data>
+  <data name="MessageTokenInfoUpdated" xml:space="preserve">
+    <value>Token info has been updated.</value>
+  </data>
   <data name="MinimizeWindow" xml:space="preserve">
     <value>Minimize the Window</value>
   </data>
@@ -218,6 +221,9 @@
   </data>
   <data name="SamplePresetName02" xml:space="preserve">
     <value>Sample B</value>
+  </data>
+  <data name="TextBlockCautionTokenInfo" xml:space="preserve">
+    <value>NEVER SHARE TOKEN INFO WITH OTHERS</value>
   </data>
   <data name="TextBlockNetworkSettings" xml:space="preserve">
     <value>Network Settings</value>

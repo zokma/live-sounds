@@ -250,6 +250,15 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Token info has been updated..
+        /// </summary>
+        public static string MessageTokenInfoUpdated {
+            get {
+                return ResourceManager.GetString("MessageTokenInfoUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Minimize the Window.
         /// </summary>
         public static string MinimizeWindow {
@@ -363,6 +372,15 @@ namespace LiveSounds.Localization {
         public static string SamplePresetName02 {
             get {
                 return ResourceManager.GetString("SamplePresetName02", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NEVER SHARE TOKEN INFO WITH OTHERS.
+        /// </summary>
+        public static string TextBlockCautionTokenInfo {
+            get {
+                return ResourceManager.GetString("TextBlockCautionTokenInfo", resourceCulture);
             }
         }
         

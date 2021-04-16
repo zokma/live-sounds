@@ -11,7 +11,7 @@
         TextElement.FontWeight="Medium"
         TextElement.FontSize="17"
         mc:Ignorable="d"
-        Title="{x:Static l10n:LocalizedInfo.TokenSettingWindowTitle}" Height="270" Width="440" BorderThickness="14"
+        Title="{x:Static l10n:LocalizedInfo.TokenSettingWindowTitle}" Height="240" Width="440" BorderThickness="14"
         ResizeMode="NoResize" WindowStartupLocation="CenterOwner" WindowStyle="None" AllowsTransparency="True" Loaded="Window_Loaded">
     <Window.Effect>
         <DropShadowEffect Opacity="0.7" Direction="324" BlurRadius="4" ShadowDepth="7"/>
@@ -20,19 +20,24 @@
         <Grid Background="AliceBlue">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Button HorizontalAlignment="Right"
                     Content="{materialDesign:PackIcon Kind=Close, Size=14}"
                     Click="ButtonCancel_Click"/>
-            <TextBox x:Name="TextBoxTokenInfo" Grid.Row="1" Margin="14,24,14,24" Padding="11" 
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="14,0,0,0">
+                <materialDesign:PackIcon Kind="AlertBox" Foreground="OrangeRed"/>
+                <TextBlock Text="{x:Static l10n:LocalizedInfo.TextBlockCautionTokenInfo}" Margin="4,0,0,0" FontSize="11" Foreground="OrangeRed"/>
+            </StackPanel>
+            <TextBox x:Name="TextBoxTokenInfo" Grid.Row="2" Margin="14,4,14,24" Padding="11" 
                      TextWrapping="Wrap" 
                      Background="LightGoldenrodYellow"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:TextFieldAssist.HasClearButton="True"
                      materialDesign:HintAssist.Hint="{x:Static l10n:LocalizedInfo.TextBoxTokenInfoHint}"/>
-            <Grid Grid.Row="2">
+            <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
