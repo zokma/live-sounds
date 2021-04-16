@@ -48,11 +48,16 @@ namespace LiveSounds.Ngrok
 
                     string text = await content.ReadAsStringAsync();
 
+                    if(Log.IsDebugEnabled)
+                    {
+                        Log.Debug("Ngrok Tunnels: {TunnelsInfo}", text);
+                    }
+
                     var ngrokTunnels = JsonSerializer.Deserialize<NgrokTunnels>(text);
 
                     foreach (var item in ngrokTunnels.Tunnels)
                     {
-                        if (item.Protocol == "https")
+                        if (item.Protocol == "https" && item.PublicUrl.StartsWith("https://"))
                         {
                             result = item;
                             break;

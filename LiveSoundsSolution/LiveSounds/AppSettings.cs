@@ -49,9 +49,14 @@ namespace LiveSounds
         public const int NETWORK_PORT_MAX = UInt16.MaxValue;
 
         /// <summary>
-        /// Network port min.
+        /// Network port default.
         /// </summary>
         public const int LOCAL_PORT_DEFAULT = 8080;
+
+        /// <summary>
+        /// Ngrok api port default.
+        /// </summary>
+        public const int NGROK_API_PORT_DEFAULT = 4040;
 
         /// <summary>
         /// Json encoder.
@@ -497,6 +502,33 @@ namespace LiveSounds
             set
             {
                 this.RenderModeName = value.ToString();
+            }
+        }
+
+        /// <summary>
+        /// Port for Ngrok api.
+        /// </summary>
+        [JsonInclude]
+        [JsonPropertyName("NgrokApiPort")]
+        public int? NgrokApiPortNumber = null;
+
+        /// <summary>
+        /// Port for Ngrok api.
+        /// </summary>
+        [JsonIgnore]
+        public int NgrokApiPort {
+            get
+            {
+                int? portNumber = this.NgrokApiPortNumber;
+
+                int port = NGROK_API_PORT_DEFAULT;
+
+                if(portNumber.HasValue)
+                {
+                    port = GetNetworkPort(portNumber.Value);
+                }
+
+                return port;
             }
         }
 

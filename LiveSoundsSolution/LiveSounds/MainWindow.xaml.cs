@@ -2,6 +2,7 @@
 using LiveSounds.MenuItem;
 using LiveSounds.Ngrok;
 using LiveSounds.Notification;
+using LiveSounds.Service;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
@@ -170,6 +171,11 @@ namespace LiveSounds
         /// Notification manager.
         /// </summary>
         private NotificationManager notification;
+
+        /// <summary>
+        /// Service manager;
+        /// </summary>
+        private ServiceManager serviceManager;
 
 
         public MainWindow()
@@ -889,6 +895,37 @@ namespace LiveSounds
 
         private async void ButtonStart_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                this.GridApplicationMain.IsEnabled = false;
+
+                this.notification.ShowNotification(LocalizedInfo.MessageStartingService, NotificationLevel.Info);
+
+                var settings = App.Settings;
+
+                this.serviceManager = new ServiceManager();
+
+                var config = new ServiceConfig
+                {
+                    NotificationManager = this.notification,
+                    NgrokApiPort        = settings.NgrokApiPort,
+                };
+
+                var info = await this.serviceManager.StartService(config);
+
+                if(info.IsRunning)
+                {
+                    this.TextBoxLocalPort.Text = info.TunnelInfo.ForwardingInfo.Port.ToString();
+                }
+                else
+                {
+                    this.notification.ShowNotification(LocalizedInfo.MessageServiceStartFailed, NotificationLevel.Error, NOTIFICATION_DURATION_LONG);
+                }
+            }
+            finally
+            {
+                this.GridApplicationMain.IsEnabled = true;
+            }
         }
     }
 }

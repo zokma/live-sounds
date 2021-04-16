@@ -250,6 +250,34 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ngrok could not be detected.
+        ///Please check if Ngrok is started..
+        /// </summary>
+        public static string MessageNoNgrokDetected {
+            get {
+                return ResourceManager.GetString("MessageNoNgrokDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to start..
+        /// </summary>
+        public static string MessageServiceStartFailed {
+            get {
+                return ResourceManager.GetString("MessageServiceStartFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting....
+        /// </summary>
+        public static string MessageStartingService {
+            get {
+                return ResourceManager.GetString("MessageStartingService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Token info not found. Please set token info from [TOKEN SETTING] button..
         /// </summary>
         public static string MessageTokenInfoNotFound {
