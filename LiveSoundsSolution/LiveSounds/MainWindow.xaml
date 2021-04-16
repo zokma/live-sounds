@@ -139,7 +139,7 @@
                                             <Button x:Name="ButtonStart" 
                                                     Margin="0,0,0,0"  Padding="24,4,24,4"
                                                     Style="{StaticResource MaterialDesignOutlinedButton}"
-                                                    Content="{x:Static l10n:LocalizedInfo.ButtonStart}"/>
+                                                    Content="{x:Static l10n:LocalizedInfo.ButtonStart}" Click="ButtonStart_Click"/>
                                             <Button x:Name="ButtonStop" Grid.Column="1"
                                                     Margin="14,0,0,0"  Padding="24,4,24,4"
                                                     Style="{StaticResource MaterialDesignOutlinedButton}"

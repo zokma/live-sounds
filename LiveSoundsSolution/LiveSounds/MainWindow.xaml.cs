@@ -1,5 +1,6 @@
 ﻿using LiveSounds.Localization;
 using LiveSounds.MenuItem;
+using LiveSounds.Ngrok;
 using LiveSounds.Notification;
 using MaterialDesignThemes.Wpf;
 using System;
@@ -884,6 +885,10 @@ namespace LiveSounds
         private void ButtonTokenSetting_Click(object sender, RoutedEventArgs e)
         {
             ShowTokenInfoDialog();
+        }
+
+        private async void ButtonStart_Click(object sender, RoutedEventArgs e)
+        {
         }
     }
 }
