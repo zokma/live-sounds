@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using Zokma.Libs.Logging;
 
 namespace LiveSounds.Notification
 {
@@ -98,6 +99,11 @@ namespace LiveSounds.Notification
             }
         }
 
+        /// <summary>
+        /// Gets NotificationType from NotificationLevel.
+        /// </summary>
+        /// <param name="level">NotificationLevel.</param>
+        /// <returns>NotificationType.</returns>
         public static NotificationType GetNotificationType(NotificationLevel level)
         {
             var result = level switch
@@ -112,6 +118,11 @@ namespace LiveSounds.Notification
             return result;
         }
 
+        /// <summary>
+        /// Gets localized NotificationTypeName from NotificationLevel.
+        /// </summary>
+        /// <param name="level">NotificationLevel.</param>
+        /// <returns>Localized NotificationTypeName.</returns>
         public static string GetNotificationTypeName(NotificationLevel level)
         {
             var result = level switch
@@ -141,6 +152,11 @@ namespace LiveSounds.Notification
             if(level == NotificationLevel.None)
             {
                 return;
+            }
+
+            if(Log.IsInformationEnabled)
+            {
+                Log.Information("Notification: Title = {Title}, Message = {Message}, Level = {Level}, ShowNotification = {ShowNotification}, Duration = {duration}", title, message, level, isNotificationShown, duration);
             }
 
             if(isNotificationShown && this.NotificationMax > 0)
