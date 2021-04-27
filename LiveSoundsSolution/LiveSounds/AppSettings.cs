@@ -18,6 +18,46 @@ namespace LiveSounds
 {
     internal class AppSettings
     {
+
+#if   LOCAL_TEST_ENV
+        public const string ZOKMA_API_URI = "http://localhost";
+#elif SANDBOX_ENV
+        public const string ZOKMA_API_URI = "https://api-sandbox.zokma.net";
+#else
+        public const string ZOKMA_API_URI = "https://api.zokma.net";
+#endif
+
+        /// <summary>
+        /// Audio sample rate min.
+        /// </summary>
+        public const int AUDIO_SAMPLE_RATE_MIN = 8000;
+
+        /// <summary>
+        /// Audio sample rate max.
+        /// </summary>
+        public const int AUDIO_SAMPLE_RATE_MAX = 5644800;
+
+        /// <summary>
+        /// Audio sample rate default.
+        /// </summary>
+        public const int AUDIO_SAMPLE_RATE_DEFAULT = 44100;
+
+        /// <summary>
+        /// Audio channels min.
+        /// </summary>
+        public const int AUDIO_CHANNELS_MIN = 1;
+
+        /// <summary>
+        /// Audio channels max.
+        /// </summary>
+        //public const int AUDIO_CHANNELS_MAX = 12;
+        public const int AUDIO_CHANNELS_MAX = 2;
+
+        /// <summary>
+        /// Audio channels default.
+        /// </summary>
+        public const int AUDIO_CHANNELS_DEFAULT = 2;
+
         /// <summary>
         /// Play audio limits min.
         /// </summary>
@@ -181,6 +221,54 @@ namespace LiveSounds
         }
 
         /// <summary>
+        /// Audio sample rate.
+        /// </summary>
+        [JsonInclude]
+        [JsonPropertyName("AudioSampleRate")]
+        public int AudioSampleRateNumber { get; private set; } = AUDIO_SAMPLE_RATE_DEFAULT;
+
+        /// <summary>
+        /// Audio sample rate.
+        /// </summary>
+        [JsonIgnore]
+        public int AudioSampleRate
+        {
+            get
+            {
+                return Math.Max(Math.Min(this.AudioSampleRateNumber, AUDIO_SAMPLE_RATE_MAX), AUDIO_SAMPLE_RATE_MIN);
+            }
+
+            set
+            {
+                this.AudioSampleRateNumber = value;
+            }
+        }
+
+        /// <summary>
+        /// Audio channels.
+        /// </summary>
+        [JsonInclude]
+        [JsonPropertyName("AudioChannels")]
+        public int AudioSampleChannelsNumber { get; private set; } = AUDIO_CHANNELS_DEFAULT;
+
+        /// <summary>
+        /// Audio channels.
+        /// </summary>
+        [JsonIgnore]
+        public int AudioChannels
+        {
+            get
+            {
+                return Math.Max(Math.Min(this.AudioSampleChannelsNumber, AUDIO_CHANNELS_MAX), AUDIO_CHANNELS_MIN);
+            }
+
+            set
+            {
+                this.AudioSampleChannelsNumber = value;
+            }
+        }
+
+        /// <summary>
         /// Audio render device type name.
         /// </summary>
         [JsonInclude]
@@ -227,6 +315,42 @@ namespace LiveSounds
                 this.AudioRenderDeviceRoleName = value.ToString();
             }
         }
+
+        /// <summary>
+        /// Share mode for Audio Render Engine.
+        /// </summary>
+        [JsonInclude]
+        [JsonPropertyName("AudioRenderEngineShareMode")]
+        public string AudioRenderEngineShareModeName { get; private set; } = null;
+
+        /// <summary>
+        /// Share mode for Audio Render Engine.
+        /// </summary>
+        [JsonIgnore]
+        public AudioEngineShareMode AudioRenderEngineShareMode
+        {
+            get
+            {
+                return ParseEnum(this.AudioRenderEngineShareModeName, AudioEngineShareMode.Shared);
+            }
+            set
+            {
+                this.AudioRenderEngineShareModeName = value.ToString();
+            }
+        }
+
+
+        /// <summary>
+        /// Audio latency.
+        /// </summary>
+        [JsonInclude]
+        public int AudioRenderLatency = 200;
+
+        /// <summary>
+        /// Audio resampling quality;
+        /// </summary>
+        [JsonInclude]
+        public int AudioResamplingQuality = 60;
 
         /// <summary>
         /// Audio Render device id.
@@ -664,6 +788,10 @@ namespace LiveSounds
             if (!String.IsNullOrWhiteSpace(this.AudioRenderDeviceRoleName))
             {
                 this.AudioRenderDeviceRoleName = this.AudioRenderDeviceRole.ToString();
+            }
+            if (!String.IsNullOrWhiteSpace(this.AudioRenderEngineShareModeName))
+            {
+                this.AudioRenderEngineShareModeName = this.AudioRenderEngineShareMode.ToString();
             }
 
             if (!String.IsNullOrWhiteSpace(this.LogLevelName))

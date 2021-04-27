@@ -22,11 +22,6 @@ namespace LiveSounds
         /// </summary>
         private const float VOLUME_MAX = 4.0f;
 
-        /// <summary>
-        /// Id.
-        /// </summary>
-        [JsonInclude]
-        public string Id;
 
         /// <summary>
         /// Name of the Audio Info.
@@ -65,6 +60,36 @@ namespace LiveSounds
             set
             {
                 this.VolumeValue = Math.Max(VOLUME_MIN, Math.Min(VOLUME_MAX, value));
+            }
+        }
+
+
+        /// <summary>
+        /// true if the audio cached.
+        /// </summary>
+        [JsonInclude]
+        [JsonPropertyName("Cached")]
+        public bool? CachedValue { get; private set; } = null;
+
+
+        /// <summary>
+        /// true if the audio cached.
+        /// </summary>
+        [JsonIgnore]
+        public bool IsCached {
+            get
+            {
+                if (this.CachedValue.HasValue)
+                {
+                    return this.CachedValue.Value;
+                }
+
+                return true;
+            }
+            
+            set
+            {
+                this.CachedValue = value;
             }
         }
     }
