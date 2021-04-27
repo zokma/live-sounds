@@ -24,7 +24,7 @@ namespace LiveSounds.Notification
         /// <summary>
         /// Notification max.
         /// </summary>
-        private const int NOTIFICATION_MAX = 40;
+        private const int NOTIFICATION_MAX = 256;
 
         /// <summary>
         /// History min.
