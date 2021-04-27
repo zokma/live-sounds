@@ -30,6 +30,16 @@ namespace Zokma.Libs.Audio
         internal const float MAX_VOLUME = 1.0f;
 
         /// <summary>
+        /// Min latency.
+        /// </summary>
+        internal const int MIN_LATENCY = 0;
+
+        /// <summary>
+        /// Max latency.
+        /// </summary>
+        internal const int MAX_LATENCY = 15000;
+
+        /// <summary>
         /// Default Wave format.
         /// </summary>
         public static readonly WaveFormat DefaultWaveFormat = new WaveFormat(44100, 2);
@@ -114,7 +124,7 @@ namespace Zokma.Libs.Audio
             this.WaveFormat = waveFormat;
 
             this.shareMode   = shareMode;
-            this.latency     = latency;
+            this.latency     = Math.Max(Math.Min(latency, MAX_LATENCY), MIN_LATENCY);
             this.useParallel = useParallel;
 
             this.mixer = new MixingSampleProvider(waveFormat.NAudioWaveFormat)
