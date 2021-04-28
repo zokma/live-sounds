@@ -12,7 +12,7 @@
         TextElement.FontWeight="Medium"
         TextElement.FontSize="24"
         mc:Ignorable="d"
-        Title="{x:Static l10n:LocalizedInfo.ApplicationTitle}" Height="450" Width="800" Loaded="Window_Loaded" AllowsTransparency="True" WindowStyle="None" ResizeMode="CanResizeWithGrip" MinHeight="240" MinWidth="640" Closed="Window_Closed" StateChanged="Window_StateChanged">
+        Title="{x:Static l10n:LocalizedInfo.ApplicationTitle}" Height="450" Width="800" Loaded="Window_Loaded" AllowsTransparency="True" WindowStyle="None" ResizeMode="CanResizeWithGrip" MinHeight="240" MinWidth="640" Closed="Window_Closed" StateChanged="Window_StateChanged" Closing="Window_Closing">
     <Border x:Name="WindowBorder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderBrush="#44040404" CornerRadius="2,2,2,2" BorderThickness="1,1,2,2">
         <Grid Background="{DynamicResource MaterialDesignPaper}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <DockPanel>

@@ -29,13 +29,22 @@ namespace LiveSounds.Service
         public TunnelInfo TunnelInfo { get; private set; }
 
         /// <summary>
+        /// Validity Period.
+        /// </summary>
+        public TimeSpan ValidityPeriod { get; private set; }
+
+        /// <summary>
         /// Creates ServiceInfo.
         /// </summary>
         /// <param name="manager">ServiceManager.</param>
-        public ServiceInfo(ServiceManager manager, TunnelInfo tunnelInfo)
+        /// <param name="tunnelInfo">Tunnel info.</param>
+        /// <param name="validitySeconds">Validity seconds.</param>
+        public ServiceInfo(ServiceManager manager, TunnelInfo tunnelInfo, int validitySeconds)
         {
             this.manager    = manager;
             this.TunnelInfo = tunnelInfo;
+
+            this.ValidityPeriod = TimeSpan.FromSeconds(validitySeconds);
         }
     }
 }

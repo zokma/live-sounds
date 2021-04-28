@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Zokma.Libs;
 
 namespace LiveSounds.Service
 {
@@ -21,5 +22,16 @@ namespace LiveSounds.Service
         /// Port for Ngrok api.
         /// </summary>
         public int NgrokApiPort;
+
+        /// <summary>
+        /// Audio Items;
+        /// </summary>
+        public AudioInfo[] AudioItems;
+
+        /// <summary>
+        /// Audio data directory.
+        /// </summary>
+        public Pathfinder AudioDataDirectory;
+
     }
 }

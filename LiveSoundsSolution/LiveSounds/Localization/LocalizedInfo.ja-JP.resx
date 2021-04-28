@@ -177,9 +177,16 @@
   <data name="MessageAppStartWithError" xml:space="preserve">
     <value>アプリケーション起動中にエラーが発生しました。</value>
   </data>
+  <data name="MessageHttpPostSizeTooLarge" xml:space="preserve">
+    <value>HTTPリクエストのサイズが大きすぎます。
+このアプリケーションの開発元にお問い合わせください。</value>
+  </data>
   <data name="MessageNoNgrokDetected" xml:space="preserve">
     <value>Ngrokの起動が検知できませんでした。
 Ngrokが起動しているか確認してください。</value>
+  </data>
+  <data name="MessagePatternFailedToLoadAudioFile" xml:space="preserve">
+    <value>オーディオファイル「{0}」の読み込みに失敗しました。</value>
   </data>
   <data name="MessageServiceStartFailed" xml:space="preserve">
     <value>開始に失敗しました。</value>
@@ -193,6 +200,9 @@ Ngrokが起動しているか確認してください。</value>
   </data>
   <data name="MessageTokenInfoUpdated" xml:space="preserve">
     <value>トークン情報が更新されました。</value>
+  </data>
+  <data name="MessageValidAudioFileNotFound" xml:space="preserve">
+    <value>有効なオーディオファイルが見つかりませんでした。</value>
   </data>
   <data name="MinimizeWindow" xml:space="preserve">
     <value>ウィンドウを最小化する</value>

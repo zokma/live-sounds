@@ -250,12 +250,31 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The size of HTTP request is too large.
+        ///Please contact the application developer..
+        /// </summary>
+        public static string MessageHttpPostSizeTooLarge {
+            get {
+                return ResourceManager.GetString("MessageHttpPostSizeTooLarge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ngrok could not be detected.
         ///Please check if Ngrok is started..
         /// </summary>
         public static string MessageNoNgrokDetected {
             get {
                 return ResourceManager.GetString("MessageNoNgrokDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to load audio file &quot;{0}&quot;..
+        /// </summary>
+        public static string MessagePatternFailedToLoadAudioFile {
+            get {
+                return ResourceManager.GetString("MessagePatternFailedToLoadAudioFile", resourceCulture);
             }
         }
         
@@ -292,6 +311,15 @@ namespace LiveSounds.Localization {
         public static string MessageTokenInfoUpdated {
             get {
                 return ResourceManager.GetString("MessageTokenInfoUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Valid Audio file not found..
+        /// </summary>
+        public static string MessageValidAudioFileNotFound {
+            get {
+                return ResourceManager.GetString("MessageValidAudioFileNotFound", resourceCulture);
             }
         }
         

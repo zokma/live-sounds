@@ -99,6 +99,53 @@ namespace LiveSounds
         public const int NGROK_API_PORT_DEFAULT = 4040;
 
         /// <summary>
+        /// Items limit min.
+        /// </summary>
+        public const int ITEMS_LIMIT_MIN = 1;
+
+        /// <summary>
+        /// Items limit max.
+        /// </summary>
+        public const int ITEMS_LIMIT_MAX = 256;
+
+        /// <summary>
+        /// Items limit max.
+        /// </summary>
+        public const int ITEMS_LIMIT_DEFAULT = 64;
+
+        /// <summary>
+        /// Http post limits bytes min.
+        /// </summary>
+        public const int HTTP_POST_LIMIT_BYTES_MIN = 64 * 1024;
+
+        /// <summary>
+        /// Http post limits bytes max.
+        /// </summary>
+        public const int HTTP_POST_LIMIT_BYTES_MAX = 10 * 1024 * 1024;
+
+        /// <summary>
+        /// Http post limits bytes default.
+        /// </summary>
+        public const int HTTP_POST_LIMIT_BYTES_DEFAULT = 1 * 1024 * 1024;
+
+        /// <summary>
+        /// Service Validity seconds min.
+        /// </summary>
+        public const int SERVICE_VALIDITY_SECONDS_MIN = 1 * 60 * 60;
+
+        /// <summary>
+        /// Service Validity seconds max.
+        /// </summary>
+        public const int SERVICE_VALIDITY_SECONDS_MAX = 4 * 24 * 60 * 60;
+
+        /// <summary>
+        /// Service Validity seconds default.
+        /// </summary>
+        public const int SERVICE_VALIDITY_SECONDS_DEFAULT = 1 * 24 * 60 * 60;
+
+
+
+        /// <summary>
         /// Json encoder.
         /// </summary>
         private static readonly JavaScriptEncoder JSON_ENCODER = JavaScriptEncoder.Create(UnicodeRanges.All);
@@ -129,6 +176,7 @@ namespace LiveSounds
         public static readonly JsonSerializerOptions JsonSerializerOptionsForHttpRead = new JsonSerializerOptions
         {
             AllowTrailingCommas = false,
+            PropertyNamingPolicy        = JsonNamingPolicy.CamelCase,
             PropertyNameCaseInsensitive = false,
             Encoder = JSON_ENCODER,
         };
@@ -139,6 +187,7 @@ namespace LiveSounds
         public static readonly JsonSerializerOptions JsonSerializerOptionsForHttpWrite = new JsonSerializerOptions
         {
             WriteIndented = false,
+            PropertyNamingPolicy   = JsonNamingPolicy.CamelCase,
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
             Encoder = JSON_ENCODER,
         };
@@ -248,11 +297,6 @@ namespace LiveSounds
             {
                 return Math.Max(Math.Min(this.AudioSampleRateNumber, AUDIO_SAMPLE_RATE_MAX), AUDIO_SAMPLE_RATE_MIN);
             }
-
-            set
-            {
-                this.AudioSampleRateNumber = value;
-            }
         }
 
         /// <summary>
@@ -260,7 +304,7 @@ namespace LiveSounds
         /// </summary>
         [JsonInclude]
         [JsonPropertyName("AudioChannels")]
-        public int AudioSampleChannelsNumber { get; private set; } = AUDIO_CHANNELS_DEFAULT;
+        public int AudioChannelsNumber { get; private set; } = AUDIO_CHANNELS_DEFAULT;
 
         /// <summary>
         /// Audio channels.
@@ -270,12 +314,19 @@ namespace LiveSounds
         {
             get
             {
-                return Math.Max(Math.Min(this.AudioSampleChannelsNumber, AUDIO_CHANNELS_MAX), AUDIO_CHANNELS_MIN);
+                return Math.Max(Math.Min(this.AudioChannelsNumber, AUDIO_CHANNELS_MAX), AUDIO_CHANNELS_MIN);
             }
+        }
 
-            set
+        /// <summary>
+        /// Audio Wave Format.
+        /// </summary>
+        [JsonIgnore]
+        public WaveFormat AudioWaveFormat
+        {
+            get
             {
-                this.AudioSampleChannelsNumber = value;
+                return new WaveFormat(this.AudioSampleRate, this.AudioChannels);
             }
         }
 
@@ -396,6 +447,63 @@ namespace LiveSounds
             set
             {
                 this.LocalPortNumber = value;
+            }
+        }
+
+        /// <summary>
+        /// Items limit.
+        /// </summary>
+        [JsonInclude]
+        [JsonPropertyName("ItemsLimit")]
+        public int ItemsLimitNumber { get; private set; } = ITEMS_LIMIT_DEFAULT;
+
+        /// <summary>
+        /// Items limit.
+        /// </summary>
+        [JsonIgnore]
+        public int ItemsLimit
+        {
+            get
+            {
+                return Math.Max(Math.Min(this.ItemsLimitNumber, ITEMS_LIMIT_MAX), ITEMS_LIMIT_MIN);
+            }
+        }
+
+        /// <summary>
+        /// HTTP POST size limit in bytes.
+        /// </summary>
+        [JsonInclude]
+        [JsonPropertyName("HttpPostSizeLimitBytes")]
+        public int HttpPostSizeLimitBytesNumber { get; private set; } = HTTP_POST_LIMIT_BYTES_DEFAULT;
+
+        /// <summary>
+        /// HTTP POST size limit in bytes.
+        /// </summary>
+        [JsonIgnore]
+        public int HttpPostSizeLimitBytes
+        {
+            get
+            {
+                return Math.Max(Math.Min(this.HttpPostSizeLimitBytesNumber, HTTP_POST_LIMIT_BYTES_MAX), HTTP_POST_LIMIT_BYTES_MIN);
+            }
+        }
+
+        /// <summary>
+        /// Validity seconds.
+        /// </summary>
+        [JsonInclude]
+        [JsonPropertyName("ServiceValiditySeconds")]
+        public int ServiceValiditySecondsNumber { get; private set; } = SERVICE_VALIDITY_SECONDS_DEFAULT;
+
+        /// <summary>
+        /// Validity seconds.
+        /// </summary>
+        [JsonIgnore]
+        public int ServiceValiditySeconds
+        {
+            get
+            {
+                return Math.Max(Math.Min(this.ServiceValiditySecondsNumber, SERVICE_VALIDITY_SECONDS_MAX), SERVICE_VALIDITY_SECONDS_MIN);
             }
         }
 

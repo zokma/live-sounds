@@ -197,6 +197,8 @@ namespace LiveSounds
                 await InitApplicationAsync();
                 CompleteWindowInfo();
 
+                this.serviceManager = new ServiceManager();
+
                 this.notification.ShowNotification(LocalizedInfo.MessageAppStartSuccess, NotificationLevel.Success);
 
                 if(!App.Settings.HasEncryptedToken)
@@ -514,17 +516,20 @@ namespace LiveSounds
                     {
                         var dataPreset = JsonSerializer.Deserialize<DataPreset>(reader.ReadToEnd(), AppSettings.JsonSerializerOptionsForFileRead);
 
-                        dataPreset.Id = file.Name;
-
-                        dataPresets.Add(new DataPresetItem(dataPreset));
-
-                        if (this.dataPresetSelectedIndex == 0 && dataPreset.Id == selectedId)
+                        if (dataPreset.AudioItems != null && dataPreset.AudioItems.Length > 0)
                         {
-                            this.dataPresetSelectedIndex = index;
-                        }
-                        else
-                        {
-                            index++;
+                            dataPreset.Id = file.Name;
+
+                            dataPresets.Add(new DataPresetItem(dataPreset));
+
+                            if (this.dataPresetSelectedIndex == 0 && dataPreset.Id == selectedId)
+                            {
+                                this.dataPresetSelectedIndex = index;
+                            }
+                            else
+                            {
+                                index++;
+                            }
                         }
 
                         if (Log.IsDebugEnabled)
@@ -790,6 +795,13 @@ namespace LiveSounds
             ResetPlaybackMuteTextBlock();
         }
 
+        private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            await this.serviceManager?.Stop();
+
+            Log.Information("Window Closing.");
+        }
+
         private void Window_Closed(object sender, EventArgs e)
         {
             SaveSettings();
@@ -903,12 +915,12 @@ namespace LiveSounds
 
                 var settings = App.Settings;
 
-                this.serviceManager = new ServiceManager();
-
                 var config = new ServiceConfig
                 {
                     NotificationManager = this.notification,
                     NgrokApiPort        = settings.NgrokApiPort,
+                    AudioItems          = (this.ComboBoxDataPresets.SelectedItem as DataPresetItem)?.DataPreset?.AudioItems,
+                    AudioDataDirectory  = this.audioDataDirectory,
                 };
 
                 var info = await this.serviceManager.StartService(config);
