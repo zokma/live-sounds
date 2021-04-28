@@ -36,7 +36,10 @@ namespace LiveSounds.Ngrok
                 using var http = new HttpClient(new SocketsHttpHandler
                 {
                     AllowAutoRedirect = false,
+                    ConnectTimeout    = AppSettings.HTTP_CONNECTION_TIMEOUT,
                 });
+
+                http.Timeout = AppSettings.HTTP_CLIENT_TIMEOUT;
 
                 http.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 

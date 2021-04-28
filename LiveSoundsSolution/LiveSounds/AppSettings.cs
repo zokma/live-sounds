@@ -154,6 +154,17 @@ namespace LiveSounds
         };
 
         /// <summary>
+        /// HTTP Connection timeout.
+        /// </summary>
+        public static readonly TimeSpan HTTP_CONNECTION_TIMEOUT = TimeSpan.FromSeconds(15.0f);
+
+        /// <summary>
+        /// HTTP Client timeout.
+        /// </summary>
+        public static readonly TimeSpan HTTP_CLIENT_TIMEOUT = TimeSpan.FromSeconds(90.0f);
+
+
+        /// <summary>
         /// Internal ETP.
         /// It will be better that the value is generated conditionally and located on far location.
         /// But, in this time, it will be reasonable against purpose.
