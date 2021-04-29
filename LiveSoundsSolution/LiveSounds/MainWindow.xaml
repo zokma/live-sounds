@@ -147,7 +147,7 @@
                                             <Button x:Name="ButtonTestPlay" Grid.Column="2"
                                                     Margin="14,0,0,0"  Padding="24,4,24,4"
                                                     Style="{StaticResource MaterialDesignOutlinedButton}"
-                                                    Content="{x:Static l10n:LocalizedInfo.ButtonTestPlay}"/>
+                                                    Content="{x:Static l10n:LocalizedInfo.ButtonTestPlay}" Click="ButtonTestPlay_Click"/>
                                             <Button x:Name="ButtonTokenSetting" Grid.Column="3"
                                                     Margin="14,0,0,0"  Padding="24,4,24,4"
                                                     Style="{StaticResource MaterialDesignOutlinedButton}"

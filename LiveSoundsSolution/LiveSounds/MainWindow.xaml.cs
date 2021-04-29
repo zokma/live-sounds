@@ -1,4 +1,5 @@
-﻿using LiveSounds.Localization;
+﻿using LiveSounds.Audio;
+using LiveSounds.Localization;
 using LiveSounds.MenuItem;
 using LiveSounds.Ngrok;
 using LiveSounds.Notification;
@@ -691,7 +692,7 @@ namespace LiveSounds
 
             var audioDeviceItem = this.ComboBoxAudioRenderDevices.SelectedItem as AudioDeviceItem;
 
-            if(audioDeviceItem == null || audioDeviceItem.Device == null)
+            if (audioDeviceItem == null || audioDeviceItem.Device == null)
             {
                 this.notification.ShowNotification(LocalizedInfo.MessageValidAudioRenderDeviceNotFound, NotificationLevel.Error);
 
@@ -1044,6 +1045,58 @@ namespace LiveSounds
             finally
             {
                 this.GridApplicationMain.IsEnabled = true;
+            }
+        }
+
+        private async Task StartTestPlay(AudioInfo[] audioInfoList)
+        {
+            using var audioManager = AudioManager.CreateAudioManager(audioInfoList, this.audioDataDirectory, this.notification);
+
+            if(audioManager.AudioItems == null || audioManager.AudioItems.Count <= 0)
+            {
+                notification.ShowNotification(LocalizedInfo.MessageValidAudioFileNotFound, Notification.NotificationLevel.Error);
+
+                return;
+            }
+
+            foreach (var item in audioManager.AudioItems)
+            {
+                this.audioPlayer.Play(item.Data);
+
+                await Task.Delay(1000);
+            }
+        }
+
+        private async void ButtonTestPlay_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.ComboBoxAudioRenderDevices.IsEnabled     = false;
+                this.ButtonReloadAudioRenderDevices.IsEnabled = false;
+
+                this.ButtonStart.IsEnabled    = false;
+                this.ButtonTestPlay.IsEnabled = false;
+
+                if(CreateAudioPlayer())
+                {
+                    var audioItems = (this.ComboBoxDataPresets.SelectedItem as DataPresetItem)?.DataPreset?.AudioItems;
+
+                    await Task.Run(
+                        async () =>
+                        {
+                            await StartTestPlay(audioItems);
+                        });
+                }
+
+                DeleteAudioPlayer();
+            }
+            finally
+            {
+                this.ButtonTestPlay.IsEnabled = true;
+                this.ButtonStart.IsEnabled    = true;
+
+                this.ButtonReloadAudioRenderDevices.IsEnabled = true;
+                this.ComboBoxAudioRenderDevices.IsEnabled     = true;
             }
         }
     }
