@@ -173,9 +173,14 @@ namespace LiveSounds
         private NotificationManager notification;
 
         /// <summary>
-        /// Service manager;
+        /// Service manager.
         /// </summary>
         private ServiceManager serviceManager;
+
+        /// <summary>
+        /// Audio Player.
+        /// </summary>
+        private AudioPlayer audioPlayer;
 
 
         public MainWindow()
@@ -672,6 +677,104 @@ namespace LiveSounds
             }
         }
 
+
+        /// <summary>
+        /// Creates AudioPlayer.
+        /// </summary>
+        /// <returns>true if the operation was succeeded.</returns>
+        private bool CreateAudioPlayer()
+        {
+            if(this.audioPlayer != null)
+            {
+                DeleteAudioPlayer();
+            }
+
+            var audioDeviceItem = this.ComboBoxAudioRenderDevices.SelectedItem as AudioDeviceItem;
+
+            if(audioDeviceItem == null || audioDeviceItem.Device == null)
+            {
+                this.notification.ShowNotification(LocalizedInfo.MessageValidAudioRenderDeviceNotFound, NotificationLevel.Error);
+
+                return false;
+            }
+
+            bool result = false;
+
+            AudioPlayer player = null;
+
+            try
+            {
+                var settings = App.Settings;
+
+                player = new AudioPlayer(
+                                    audioDeviceItem.Device,
+                                    settings.AudioWaveFormat,
+                                    settings.AudioRenderEngineShareMode,
+                                    settings.AudioRenderLatency);
+
+                SetAudioPlayerMasterVolume(player);
+
+                player.Init();
+                player.Start();
+
+                this.audioPlayer = player;
+
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error on creating AudioPlayer.");
+
+                this.notification.ShowNotification(LocalizedInfo.MessageInitAudioRenderDeviceFailed, NotificationLevel.Error);
+
+                player?.Dispose();
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Deletes AudioPlayer().
+        /// </summary>
+        /// <returns>true if the operation was succeeded.</returns>
+        private bool DeleteAudioPlayer()
+        {
+            bool result = false;
+
+            try
+            {
+                this.audioPlayer?.Dispose();
+                this.audioPlayer = null;
+
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error on deleting AudioPlayer.");
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Sets MasterVolume for AudioPlayer.
+        /// </summary>
+        /// <param name="player">AudioPlayer to be configured.</param>
+        /// <returns>true if the operation was succeeded.</returns>
+        public bool SetAudioPlayerMasterVolume(AudioPlayer player)
+        {
+            bool result = false;
+
+            if(player != null)
+            {
+                player.MasterVolume = (this.isPlaybackMuted ? 0.0f : (float)this.SliderPlaybackVolume.Value);
+
+                result = true;
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Shows token info dialog.
         /// </summary>
@@ -780,6 +883,8 @@ namespace LiveSounds
 
         private void SliderPlaybackVolume_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+            SetAudioPlayerMasterVolume(this.audioPlayer);
+
             int volume = (int)this.SliderPlaybackVolume.Value;
 
             this.TextBlockPlaybackVolume.Text = Convert.ToString(volume);
@@ -790,7 +895,9 @@ namespace LiveSounds
         private void ButtonPlaybackMute_Click(object sender, RoutedEventArgs e)
         {
             this.isPlaybackMuted = !this.isPlaybackMuted;
-            
+
+            SetAudioPlayerMasterVolume(this.audioPlayer);
+
             ResetPlaybackMuteButton();
             ResetPlaybackMuteTextBlock();
         }

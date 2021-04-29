@@ -184,6 +184,9 @@
     <value>The size of HTTP request is too large.
 Please contact the application developer.</value>
   </data>
+  <data name="MessageInitAudioRenderDeviceFailed" xml:space="preserve">
+    <value>Failed to init Audio playback device.</value>
+  </data>
   <data name="MessageNoNgrokDetected" xml:space="preserve">
     <value>Ngrok could not be detected.
 Please check if Ngrok is started.</value>
@@ -205,6 +208,9 @@ Please check if Ngrok is started.</value>
   </data>
   <data name="MessageValidAudioFileNotFound" xml:space="preserve">
     <value>Valid Audio file not found.</value>
+  </data>
+  <data name="MessageValidAudioRenderDeviceNotFound" xml:space="preserve">
+    <value>Valid Audio playback device is not found.</value>
   </data>
   <data name="MinimizeWindow" xml:space="preserve">
     <value>Minimize the Window</value>

@@ -181,6 +181,9 @@
     <value>HTTPリクエストのサイズが大きすぎます。
 このアプリケーションの開発元にお問い合わせください。</value>
   </data>
+  <data name="MessageInitAudioRenderDeviceFailed" xml:space="preserve">
+    <value>オーディオ再生デバイスの初期化に失敗しました。</value>
+  </data>
   <data name="MessageNoNgrokDetected" xml:space="preserve">
     <value>Ngrokの起動が検知できませんでした。
 Ngrokが起動しているか確認してください。</value>
@@ -203,6 +206,9 @@ Ngrokが起動しているか確認してください。</value>
   </data>
   <data name="MessageValidAudioFileNotFound" xml:space="preserve">
     <value>有効なオーディオファイルが見つかりませんでした。</value>
+  </data>
+  <data name="MessageValidAudioRenderDeviceNotFound" xml:space="preserve">
+    <value>有効なオーディオ再生デバイスが見つかりません。</value>
   </data>
   <data name="MinimizeWindow" xml:space="preserve">
     <value>ウィンドウを最小化する</value>

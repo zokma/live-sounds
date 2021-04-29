@@ -260,6 +260,15 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to init Audio playback device..
+        /// </summary>
+        public static string MessageInitAudioRenderDeviceFailed {
+            get {
+                return ResourceManager.GetString("MessageInitAudioRenderDeviceFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ngrok could not be detected.
         ///Please check if Ngrok is started..
         /// </summary>
@@ -320,6 +329,15 @@ namespace LiveSounds.Localization {
         public static string MessageValidAudioFileNotFound {
             get {
                 return ResourceManager.GetString("MessageValidAudioFileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Valid Audio playback device is not found..
+        /// </summary>
+        public static string MessageValidAudioRenderDeviceNotFound {
+            get {
+                return ResourceManager.GetString("MessageValidAudioRenderDeviceNotFound", resourceCulture);
             }
         }
         
