@@ -15,9 +15,14 @@ namespace LiveSounds.MenuItem
     internal class AudioDeviceItem
     {
         /// <summary>
-        /// Audio device.
+        /// Device Id.
         /// </summary>
-        internal AudioDevice Device { get; private set; }
+        public string DeviceId { get; private set; }
+
+        /// <summary>
+        /// Dispolay Name.
+        /// </summary>
+        public string DisplayName { get; private set; }
 
         /// <summary>
         /// Creates menu item.
@@ -25,7 +30,8 @@ namespace LiveSounds.MenuItem
         /// <param name="device">AudioDevice.</param>
         public AudioDeviceItem(AudioDevice device)
         {
-            this.Device = device;
+            this.DeviceId    = device?.Id;
+            this.DisplayName = device?.FriendlyName;
         }
 
         /// <summary>
@@ -34,12 +40,12 @@ namespace LiveSounds.MenuItem
         /// <returns>Display string of the menu.</returns>
         public override string ToString()
         {
-            if (this.Device == null)
+            if (this.DeviceId == null)
             {
                 return LocalizedInfo.MenuItemNotFoundForAudioDevice;
             }
 
-            return this.Device.FriendlyName;
+            return this.DisplayName;
         }
     }
 }

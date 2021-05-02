@@ -250,12 +250,31 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Audio will be played 5 times randomly every second.
+        ///Please check you can hear sounds..
+        /// </summary>
+        public static string MessageAudioTestPlay {
+            get {
+                return ResourceManager.GetString("MessageAudioTestPlay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The size of HTTP request is too large.
         ///Please contact the application developer..
         /// </summary>
         public static string MessageHttpPostSizeTooLarge {
             get {
                 return ResourceManager.GetString("MessageHttpPostSizeTooLarge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Faild to init Audio Player..
+        /// </summary>
+        public static string MessageInitAudioPlayerFailed {
+            get {
+                return ResourceManager.GetString("MessageInitAudioPlayerFailed", resourceCulture);
             }
         }
         
@@ -284,6 +303,15 @@ namespace LiveSounds.Localization {
         public static string MessagePatternFailedToLoadAudioFile {
             get {
                 return ResourceManager.GetString("MessagePatternFailedToLoadAudioFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Playing: {0}.
+        /// </summary>
+        public static string MessagePatternPlaying {
+            get {
+                return ResourceManager.GetString("MessagePatternPlaying", resourceCulture);
             }
         }
         

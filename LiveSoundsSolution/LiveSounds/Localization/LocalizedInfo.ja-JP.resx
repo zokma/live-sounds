@@ -177,9 +177,16 @@
   <data name="MessageAppStartWithError" xml:space="preserve">
     <value>アプリケーション起動中にエラーが発生しました。</value>
   </data>
+  <data name="MessageAudioTestPlay" xml:space="preserve">
+    <value>1秒おきに5回、ランダムに再生します。
+音が聞こえるか確認ください。</value>
+  </data>
   <data name="MessageHttpPostSizeTooLarge" xml:space="preserve">
     <value>HTTPリクエストのサイズが大きすぎます。
 このアプリケーションの開発元にお問い合わせください。</value>
+  </data>
+  <data name="MessageInitAudioPlayerFailed" xml:space="preserve">
+    <value>オーディオプレイヤーの初期化に失敗しました。</value>
   </data>
   <data name="MessageInitAudioRenderDeviceFailed" xml:space="preserve">
     <value>オーディオ再生デバイスの初期化に失敗しました。</value>
@@ -190,6 +197,9 @@ Ngrokが起動しているか確認してください。</value>
   </data>
   <data name="MessagePatternFailedToLoadAudioFile" xml:space="preserve">
     <value>オーディオファイル「{0}」の読み込みに失敗しました。</value>
+  </data>
+  <data name="MessagePatternPlaying" xml:space="preserve">
+    <value>再生中: {0}</value>
   </data>
   <data name="MessageServiceStartFailed" xml:space="preserve">
     <value>開始に失敗しました。</value>

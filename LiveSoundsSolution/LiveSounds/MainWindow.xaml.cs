@@ -64,6 +64,16 @@ namespace LiveSounds
         /// </summary>
         private const string NOTIFICATION_AREA_NAME = "NotificationAreaMain";
 
+        /// <summary>
+        /// Delay before audio device destory.
+        /// </summary>
+        private const int SAFE_DELAY_BEFORE_AUDIO_DEVICE_DESTROY_MS = 100;
+
+        /// <summary>
+        /// Delay after audio device destory.
+        /// </summary>
+        private const int SAFE_DELAY_AFTER_AUDIO_DEVICE_DESTROY_MS = 1000;
+
 
         /// <summary>
         /// SolidColorBrush for Transparent.
@@ -468,17 +478,17 @@ namespace LiveSounds
 
                 for (int i = 0; i < devices.Length; i++)
                 {
-                    audioRenderDevices.Add(new AudioDeviceItem(devices[i]));
+                    using var device = devices[i];
 
-                    if (this.audioRenderDeviceSelectedIndex == 0 && devices[i].Id == selectedId)
+                    audioRenderDevices.Add(new AudioDeviceItem(device));
+
+                    if (this.audioRenderDeviceSelectedIndex == 0 && device.Id == selectedId)
                     {
                         this.audioRenderDeviceSelectedIndex = i;
                     }
 
                     if (Log.IsDebugEnabled)
                     {
-                        var device = devices[i];
-
                         Log.Debug("Audio Render Device: Id={Id}, Name={Name}, FriendlyName={FriendlyName}, Type={Type}",
                             device.Id, device.Name, device.FriendlyName, device.DeviceType);
                     }
@@ -592,7 +602,7 @@ namespace LiveSounds
             }
 
             var device = this.ComboBoxAudioRenderDevices.SelectedItem as AudioDeviceItem;
-            settings.AudioRenderDeviceId = device?.Device?.Id;
+            settings.AudioRenderDeviceId = device.DeviceId;
 
             settings.AudioRenderVolume  = (int)this.SliderPlaybackVolume.Value;
             settings.IsAudioRenderMuted = this.isPlaybackMuted;
@@ -678,76 +688,134 @@ namespace LiveSounds
             }
         }
 
-
         /// <summary>
         /// Creates AudioPlayer.
         /// </summary>
-        /// <returns>true if the operation was succeeded.</returns>
-        private bool CreateAudioPlayer()
+        /// <param name="audioDeviceId">Audio Device id.</param>
+        /// <returns>AudioPlayer.</returns>
+        private AudioPlayer CreateAudioPlayer(string audioDeviceId)
         {
-            if(this.audioPlayer != null)
-            {
-                DeleteAudioPlayer();
-            }
-
-            var audioDeviceItem = this.ComboBoxAudioRenderDevices.SelectedItem as AudioDeviceItem;
-
-            if (audioDeviceItem == null || audioDeviceItem.Device == null)
-            {
-                this.notification.ShowNotification(LocalizedInfo.MessageValidAudioRenderDeviceNotFound, NotificationLevel.Error);
-
-                return false;
-            }
-
-            bool result = false;
-
             AudioPlayer player = null;
 
             try
             {
                 var settings = App.Settings;
 
-                player = new AudioPlayer(
-                                    audioDeviceItem.Device,
-                                    settings.AudioWaveFormat,
-                                    settings.AudioRenderEngineShareMode,
-                                    settings.AudioRenderLatency);
+                AudioDevice device = null;
 
-                SetAudioPlayerMasterVolume(player);
+                if (audioDeviceId != null)
+                {
+                    var devices = AudioDevice.GetAudioRenderDevices(settings.AudioRenderDeviceType, settings.AudioRenderDeviceRole);
 
-                player.Init();
-                player.Start();
+                    foreach (var item in devices)
+                    {
+                        if (item.Id == audioDeviceId)
+                        {
+                            device = item;
+                            break;
+                        }
+                        else
+                        {
+                            item.Dispose();
+                        }
+                    }
+                }
 
-                this.audioPlayer = player;
+                if (device != null)
+                {
+                    player = new AudioPlayer(
+                        device,
+                        settings.AudioWaveFormat,
+                        settings.AudioRenderEngineShareMode,
+                        settings.AudioRenderLatency);
 
-                result = true;
+                    player.Init();
+                    player.Start();
+                }
+                else
+                {
+                    this.notification.ShowNotification(LocalizedInfo.MessageValidAudioRenderDeviceNotFound, NotificationLevel.Error);
+                }
             }
             catch (Exception ex)
             {
                 Log.Error(ex, "Error on creating AudioPlayer.");
 
-                this.notification.ShowNotification(LocalizedInfo.MessageInitAudioRenderDeviceFailed, NotificationLevel.Error);
-
                 player?.Dispose();
+                player = null;
+            }
+
+            if(player == null)
+            {
+                this.notification.ShowNotification(LocalizedInfo.MessageInitAudioPlayerFailed, NotificationLevel.Error);
+            }
+
+            return player;
+        }
+
+        /// <summary>
+        /// Inits AudioPlayer.
+        /// </summary>
+        /// <returns>true if the operation was succeeded.</returns>
+        private async Task<bool> InitAudioPlayer(AudioDeviceItem audioDeviceItem)
+        {
+            if(this.audioPlayer != null)
+            {
+                await DestroyAudioPlayer();
+            }
+
+            bool result = false;
+
+            var player = await Task.Run(
+                () =>
+                {
+                    return CreateAudioPlayer(audioDeviceItem?.DeviceId);
+                });
+
+            if(player != null)
+            {
+                this.audioPlayer = player;
+                result = true;
             }
 
             return result;
         }
 
         /// <summary>
-        /// Deletes AudioPlayer().
+        /// Destroys AudioPlayer().
         /// </summary>
         /// <returns>true if the operation was succeeded.</returns>
-        private bool DeleteAudioPlayer()
+        private async Task<bool> DestroyAudioPlayer()
         {
             bool result = false;
 
             try
             {
-                this.audioPlayer?.Dispose();
+                var player = this.audioPlayer;
+
                 this.audioPlayer = null;
 
-                result = true;
+                if(player != null)
+                {
+                    if(player.State == AudioEngineState.Started)
+                    {
+                        player.Stop();
+
+                        if (SAFE_DELAY_BEFORE_AUDIO_DEVICE_DESTROY_MS > 0)
+                        {
+                            await Task.Delay(SAFE_DELAY_BEFORE_AUDIO_DEVICE_DESTROY_MS);
+                        }
+                    }
+
+                    player.Dispose();
+
+                    if (SAFE_DELAY_AFTER_AUDIO_DEVICE_DESTROY_MS > 0)
+                    {
+                        await Task.Delay(SAFE_DELAY_AFTER_AUDIO_DEVICE_DESTROY_MS);
+                    }
+
+                    result = true;
+                }
             }
             catch (Exception ex)
             {
@@ -768,7 +836,7 @@ namespace LiveSounds
 
             if(player != null)
             {
-                player.MasterVolume = (this.isPlaybackMuted ? 0.0f : (float)this.SliderPlaybackVolume.Value);
+                player.MasterVolume = (this.isPlaybackMuted ? 0.0f : (float)(this.SliderPlaybackVolume.Value / 100.0f));
 
                 result = true;
             }
@@ -906,6 +974,7 @@ namespace LiveSounds
         private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             await this.serviceManager?.Stop();
+            await DestroyAudioPlayer();
 
             Log.Information("Window Closing.");
         }
@@ -955,7 +1024,7 @@ namespace LiveSounds
                 await Task.Run(
                     () =>
                     {
-                        LoadAudioDeviceMenuItems(selectedItem?.Device?.Id);
+                        LoadAudioDeviceMenuItems(selectedItem?.DeviceId);
                     });
 
                 CompleteAudioDeviceMenu();
@@ -1058,10 +1127,24 @@ namespace LiveSounds
 
                 return;
             }
-
-            foreach (var item in audioManager.AudioItems)
+            else
             {
-                this.audioPlayer.Play(item.Data);
+                notification.ShowNotification(LocalizedInfo.MessageAudioTestPlay, Notification.NotificationLevel.Info);
+            }
+
+            var random     = new Random();
+            var audioItems = audioManager.AudioItems;
+
+            int count = audioItems.Count;
+
+            for (int i = 0; i < 5; i++)
+            {
+                var audio = audioItems[random.Next(count)];
+                this.audioPlayer.Play(audio.Data);
+                
+                notification.Notify(
+                    String.Format(LocalizedInfo.MessagePatternPlaying, audio.Name), 
+                    Notification.NotificationLevel.Info);
 
                 await Task.Delay(1000);
             }
@@ -1071,14 +1154,22 @@ namespace LiveSounds
         {
             try
             {
-                this.ComboBoxAudioRenderDevices.IsEnabled     = false;
-                this.ButtonReloadAudioRenderDevices.IsEnabled = false;
+                this.GridApplicationMain.IsEnabled = false;
 
-                this.ButtonStart.IsEnabled    = false;
-                this.ButtonTestPlay.IsEnabled = false;
+                var audioDeviceItem = (this.ComboBoxAudioRenderDevices.SelectedItem as AudioDeviceItem);
 
-                if(CreateAudioPlayer())
+                if(await InitAudioPlayer(audioDeviceItem))
                 {
+                    this.GridApplicationMain.IsEnabled = true;
+
+                    this.ComboBoxAudioRenderDevices.IsEnabled     = false;
+                    this.ButtonReloadAudioRenderDevices.IsEnabled = false;
+
+                    this.ButtonStart.IsEnabled    = false;
+                    this.ButtonTestPlay.IsEnabled = false;
+
+                    SetAudioPlayerMasterVolume(this.audioPlayer);
+
                     var audioItems = (this.ComboBoxDataPresets.SelectedItem as DataPresetItem)?.DataPreset?.AudioItems;
 
                     await Task.Run(
@@ -1086,9 +1177,9 @@ namespace LiveSounds
                         {
                             await StartTestPlay(audioItems);
                         });
-                }
 
-                DeleteAudioPlayer();
+                    await DestroyAudioPlayer();
+                }
             }
             finally
             {
@@ -1097,6 +1188,8 @@ namespace LiveSounds
 
                 this.ButtonReloadAudioRenderDevices.IsEnabled = true;
                 this.ComboBoxAudioRenderDevices.IsEnabled     = true;
+
+                this.GridApplicationMain.IsEnabled = true;
             }
         }
     }
