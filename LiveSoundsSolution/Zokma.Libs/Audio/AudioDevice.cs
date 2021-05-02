@@ -57,7 +57,7 @@ namespace Zokma.Libs.Audio
     /// <summary>
     /// Audio Device.
     /// </summary>
-    public class AudioDevice
+    public class AudioDevice : IDisposable
     {
         /// <summary>
         /// Audio Device Type.
@@ -303,6 +303,11 @@ namespace Zokma.Libs.Audio
         public override int GetHashCode()
         {
             return String.Format("{0}.{1}", this.DeviceType, this.Id).GetHashCode();
+        }
+
+        public void Dispose()
+        {
+            this.MMDevice?.Dispose();
         }
 
         public static bool operator ==(AudioDevice a, AudioDevice b)
