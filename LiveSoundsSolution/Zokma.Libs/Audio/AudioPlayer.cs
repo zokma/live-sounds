@@ -378,6 +378,7 @@ namespace Zokma.Libs.Audio
             {
                 if (disposing)
                 {
+                    this.device?.Dispose();
                     this.player?.Dispose();
                     this.State = AudioEngineState.Disposed;
                 }
