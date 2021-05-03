@@ -214,6 +214,9 @@ Ngrokが起動しているか確認してください。</value>
   <data name="MessageTokenInfoUpdated" xml:space="preserve">
     <value>トークン情報が更新されました。</value>
   </data>
+  <data name="MessageTokenInvalidError" xml:space="preserve">
+    <value>トークンが無効か期限がきれています。</value>
+  </data>
   <data name="MessageValidAudioFileNotFound" xml:space="preserve">
     <value>有効なオーディオファイルが見つかりませんでした。</value>
   </data>

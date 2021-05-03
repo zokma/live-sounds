@@ -14,16 +14,6 @@ namespace LiveSounds.Service
     internal class ServiceConfig
     {
         /// <summary>
-        /// Notification manager.
-        /// </summary>
-        public NotificationManager NotificationManager;
-
-        /// <summary>
-        /// Port for Ngrok api.
-        /// </summary>
-        public int NgrokApiPort;
-
-        /// <summary>
         /// Audio Items;
         /// </summary>
         public AudioInfo[] AudioItems;

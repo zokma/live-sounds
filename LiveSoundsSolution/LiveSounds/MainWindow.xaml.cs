@@ -213,7 +213,7 @@ namespace LiveSounds
                 await InitApplicationAsync();
                 CompleteWindowInfo();
 
-                this.serviceManager = new ServiceManager();
+                this.serviceManager = new ServiceManager(this.notification);
 
                 this.notification.ShowNotification(LocalizedInfo.MessageAppStartSuccess, NotificationLevel.Success);
 
@@ -1094,10 +1094,8 @@ namespace LiveSounds
 
                 var config = new ServiceConfig
                 {
-                    NotificationManager = this.notification,
-                    NgrokApiPort        = settings.NgrokApiPort,
-                    AudioItems          = (this.ComboBoxDataPresets.SelectedItem as DataPresetItem)?.DataPreset?.AudioItems,
-                    AudioDataDirectory  = this.audioDataDirectory,
+                    AudioItems         = (this.ComboBoxDataPresets.SelectedItem as DataPresetItem)?.DataPreset?.AudioItems,
+                    AudioDataDirectory = this.audioDataDirectory,
                 };
 
                 var info = await this.serviceManager.StartService(config);

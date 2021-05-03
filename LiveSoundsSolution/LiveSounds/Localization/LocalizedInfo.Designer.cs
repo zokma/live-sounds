@@ -352,6 +352,15 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Token is invalid or expired..
+        /// </summary>
+        public static string MessageTokenInvalidError {
+            get {
+                return ResourceManager.GetString("MessageTokenInvalidError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Valid Audio file not found..
         /// </summary>
         public static string MessageValidAudioFileNotFound {

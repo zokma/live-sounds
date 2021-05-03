@@ -216,6 +216,9 @@ Please check if Ngrok is started.</value>
   <data name="MessageTokenInfoUpdated" xml:space="preserve">
     <value>Token info has been updated.</value>
   </data>
+  <data name="MessageTokenInvalidError" xml:space="preserve">
+    <value>Token is invalid or expired.</value>
+  </data>
   <data name="MessageValidAudioFileNotFound" xml:space="preserve">
     <value>Valid Audio file not found.</value>
   </data>

@@ -114,6 +114,21 @@ namespace LiveSounds
         public const int ITEMS_LIMIT_DEFAULT = 64;
 
         /// <summary>
+        /// Http Threads min.
+        /// </summary>
+        public const int HTTP_LISTENER_THREDS_MIN = 1;
+
+        /// <summary>
+        /// Http Threads max.
+        /// </summary>
+        public const int HTTP_LISTENER_THREDS_MAX = 64;
+
+        /// <summary>
+        /// Http Threads default.
+        /// </summary>
+        public const int HTTP_LISTENER_THREDS_DEFAULT = 4;
+
+        /// <summary>
         /// Http post limits bytes min.
         /// </summary>
         public const int HTTP_POST_LIMIT_BYTES_MIN = 64 * 1024;
@@ -127,6 +142,11 @@ namespace LiveSounds
         /// Http post limits bytes default.
         /// </summary>
         public const int HTTP_POST_LIMIT_BYTES_DEFAULT = 1 * 1024 * 1024;
+
+        /// <summary>
+        /// Http Listener requested bytes limit.
+        /// </summary>
+        public const int HTTP_LISTENER_LIMIT_REQUESTED_BYTES = 64 * 1024;
 
         /// <summary>
         /// Service Validity seconds min.
@@ -466,6 +486,25 @@ namespace LiveSounds
             get
             {
                 return Math.Max(Math.Min(this.ItemsLimitNumber, ITEMS_LIMIT_MAX), ITEMS_LIMIT_MIN);
+            }
+        }
+
+        /// <summary>
+        /// HTTP Listener threads.
+        /// </summary>
+        [JsonInclude]
+        [JsonPropertyName("HttpListenerThreads")]
+        public int HttpListenerThreadsNumber { get; private set; } = HTTP_LISTENER_THREDS_DEFAULT;
+
+        /// <summary>
+        /// HTTP Listener threads.
+        /// </summary>
+        [JsonIgnore]
+        public int HttpListenerThreads
+        {
+            get
+            {
+                return Math.Max(Math.Min(this.HttpListenerThreadsNumber, HTTP_LISTENER_THREDS_MAX), HTTP_LISTENER_THREDS_MIN);
             }
         }
 

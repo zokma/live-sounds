@@ -102,6 +102,10 @@ namespace LiveSounds.Api
 
                 result = JsonSerializer.Deserialize<Sound>(body, AppSettings.JsonSerializerOptionsForHttpRead);
             }
+            else if(response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                throw new AuthenticationException();
+            }
 
             return result;
         }
@@ -126,6 +130,10 @@ namespace LiveSounds.Api
             if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
             {
                 result = true;
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                throw new AuthenticationException();
             }
 
             return result;
