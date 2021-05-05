@@ -89,6 +89,43 @@ namespace LiveSounds.Service
         private AudioManager audioManager;
 
         /// <summary>
+        /// RateLimit manager.
+        /// </summary>
+        private RateLimitManager rateLimitManager;
+
+        /// <summary>
+        /// Play Audio Limit per application.
+        /// </summary>
+        public int PlayAudioLimitsPerApp 
+        {
+            get
+            {
+                return this.rateLimitManager.GlobalLimit;
+            }
+
+            set
+            {
+                this.rateLimitManager.GlobalLimit = value;
+            }
+        }
+
+        /// <summary>
+        /// Play Audio Limit per user.
+        /// </summary>
+        public int PlayAudioLimitsPerUser
+        {
+            get
+            {
+                return this.rateLimitManager.UserLimit;
+            }
+
+            set
+            {
+                this.rateLimitManager.UserLimit = value;
+            }
+        }
+
+        /// <summary>
         /// Sound id.
         /// </summary>
         private string soundId;
@@ -107,9 +144,16 @@ namespace LiveSounds.Service
         /// Creates ServiceManager.
         /// </summary>
         /// <param name="notification">Notification manager.</param>
-        public ServiceManager(NotificationManager notification)
+        /// <param name="playAudioLimitsPerApp">Play Audio Limit per application.</param>
+        /// <param name="playAudioLimitsPerUser">Play Audio Limit per user.</param>
+        public ServiceManager(NotificationManager notification, int playAudioLimitsPerApp, int playAudioLimitsPerUser)
         {
-            this.notification = notification;
+            this.notification     = notification;
+            this.rateLimitManager = new RateLimitManager()
+            {
+                GlobalLimit = playAudioLimitsPerApp,
+                UserLimit   = playAudioLimitsPerUser,
+            };
 
             this.IsRunning = false;
         }
@@ -139,7 +183,14 @@ namespace LiveSounds.Service
 
                         try
                         {
-                            if (request.RawUrl == validPath && 
+                            int retryAfter = this.rateLimitManager.CheckGlobalRetryAfterSecounds();
+
+                            if (retryAfter > 0)
+                            {
+                                status = HttpStatusCode.TooManyRequests;
+                                response.Headers.Add("Retry-After", retryAfter.ToString());
+                            }
+                            else if (request.RawUrl == validPath && 
                                 request.HttpMethod == HttpMethod.Post.Method && 
                                 request.ContentType.StartsWith("application/json") && 
                                 request.ContentLength64 <= AppSettings.HTTP_LISTENER_LIMIT_REQUESTED_BYTES)
@@ -155,6 +206,24 @@ namespace LiveSounds.Service
                                 }
 
                                 var audioRenerings = JsonSerializer.Deserialize<AudioRendering>(body, AppSettings.JsonSerializerOptionsForHttpRead);
+
+                                if(audioRenerings.SoundId == this.soundId && 
+                                   audioRenerings.Secret  == this.secretString &&
+                                   !String.IsNullOrWhiteSpace(audioRenerings.Id) &&
+                                   !String.IsNullOrWhiteSpace(audioRenerings.UserHash))
+                                {
+                                    retryAfter = this.rateLimitManager.CheckUserRetryAfterSecounds(audioRenerings.UserHash);
+
+                                    if (retryAfter > 0)
+                                    {
+                                        status = HttpStatusCode.TooManyRequests;
+                                        response.Headers.Add("Retry-After", retryAfter.ToString());
+                                    }
+                                    else
+                                    {
+
+                                    }
+                                }
                             }
                         }
                         finally
@@ -197,6 +266,8 @@ namespace LiveSounds.Service
             this.listener.Start();
 
             int threads = App.Settings.HttpListenerThreads;
+
+            this.rateLimitManager.Reset();
 
             for (int i = 0; i < threads; i++)
             {
@@ -314,6 +385,8 @@ namespace LiveSounds.Service
 
                 this.listener?.Close();
 
+                this.audioManager?.Dispose();
+
                 if (this.soundId != null)
                 {
                     try
@@ -333,8 +406,9 @@ namespace LiveSounds.Service
             finally
             {
                 this.cancellationTokenSource = null;
-                this.listener = null;
-                this.zokmaApi = null;
+                this.listener     = null;
+                this.audioManager = null;
+                this.zokmaApi     = null;
 
                 this.IsRunning = false;
             }

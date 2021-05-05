@@ -66,7 +66,7 @@ namespace LiveSounds
         /// <summary>
         /// Play audio limits max.
         /// </summary>
-        public const int PLAY_AUDIO_LIMITS_MAX = 999;
+        public const int PLAY_AUDIO_LIMITS_MAX = 256;
 
         /// <summary>
         /// Play audio limits per app default.

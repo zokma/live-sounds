@@ -213,11 +213,13 @@ namespace LiveSounds
                 await InitApplicationAsync();
                 CompleteWindowInfo();
 
-                this.serviceManager = new ServiceManager(this.notification);
+                var settings = App.Settings;
+
+                this.serviceManager = new ServiceManager(this.notification, settings.PlayAudioLimitsPerMinutePerApp, settings.PlayAudioLimitsPerMinutePerUser);
 
                 this.notification.ShowNotification(LocalizedInfo.MessageAppStartSuccess, NotificationLevel.Success);
 
-                if(!App.Settings.HasEncryptedToken)
+                if(!settings.HasEncryptedToken)
                 {
                     this.notification.ShowNotification(LocalizedInfo.MessageTokenInfoNotFound, NotificationLevel.Warn, NOTIFICATION_DURATION_LONG,
                         () =>
@@ -1064,12 +1066,20 @@ namespace LiveSounds
 
         private void TextBoxPlayAudioLimitsPerApp_LostFocus(object sender, RoutedEventArgs e)
         {
-            this.TextBoxPlayAudioLimitsPerApp.Text = AppSettings.GetPlayAudioLimits(this.TextBoxPlayAudioLimitsPerApp.Text, AppSettings.PLAY_AUDIO_LIMITS_PER_APP_DEFAULT).ToString();
+            int value = AppSettings.GetPlayAudioLimits(this.TextBoxPlayAudioLimitsPerApp.Text, AppSettings.PLAY_AUDIO_LIMITS_PER_APP_DEFAULT);
+    
+            this.TextBoxPlayAudioLimitsPerApp.Text = value.ToString();
+
+            this.serviceManager.PlayAudioLimitsPerApp = value;
         }
 
         private void TextBoxPlayAudioLimitsPerUser_LostFocus(object sender, RoutedEventArgs e)
         {
-            this.TextBoxPlayAudioLimitsPerUser.Text = AppSettings.GetPlayAudioLimits(this.TextBoxPlayAudioLimitsPerUser.Text, AppSettings.PLAY_AUDIO_LIMITS_PER_USER_DEFAULT).ToString();
+            int value = AppSettings.GetPlayAudioLimits(this.TextBoxPlayAudioLimitsPerUser.Text, AppSettings.PLAY_AUDIO_LIMITS_PER_USER_DEFAULT);
+
+            this.TextBoxPlayAudioLimitsPerUser.Text = value.ToString();
+
+            this.serviceManager.PlayAudioLimitsPerUser = value;
         }
 
         private void TextBoxLocalPort_LostFocus(object sender, RoutedEventArgs e)
