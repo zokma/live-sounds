@@ -134,7 +134,7 @@ namespace LiveSounds.Service
         /// <summary>
         /// Sound id.
         /// </summary>
-        private string soundId;
+        public string SoundId { get; private set; }
 
         /// <summary>
         /// Secret.
@@ -209,7 +209,7 @@ namespace LiveSounds.Service
 
                                 var audioRenerings = JsonSerializer.Deserialize<AudioRendering>(body, AppSettings.JsonSerializerOptionsForHttpRead);
 
-                                if(audioRenerings.SoundId == this.soundId && 
+                                if(audioRenerings.SoundId == this.SoundId && 
                                    audioRenerings.Secret  == this.secretString &&
                                    !String.IsNullOrWhiteSpace(audioRenerings.Id) &&
                                    !String.IsNullOrWhiteSpace(audioRenerings.UserHash))
@@ -356,7 +356,7 @@ namespace LiveSounds.Service
                         if (sound != null)
                         {
                             this.audioPlayer = config.AudioPlayer;
-                            this.soundId     = sound.Id;
+                            this.SoundId     = sound.Id;
                             validitySeconds  = sound.ValiditySeconds;
 
                             StartListener(tunnelInfo.ForwardingInfo.Port, guid);
@@ -412,11 +412,11 @@ namespace LiveSounds.Service
 
                 this.audioManager?.Dispose();
 
-                if (this.zokmaApi != null && this.soundId != null)
+                if (this.zokmaApi != null && this.SoundId != null)
                 {
                     try
                     {
-                        await this.zokmaApi?.DeleteSound(this.soundId, CancellationToken.None);
+                        await this.zokmaApi?.DeleteSound(this.SoundId, CancellationToken.None);
                     }
                     catch(Exception ex)
                     {

@@ -88,6 +88,15 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CLOSE.
+        /// </summary>
+        public static string ButtonClose {
+            get {
+                return ResourceManager.GetString("ButtonClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OPEN DATA FOLDER.
         /// </summary>
         public static string ButtonOpenDataDirectory {
@@ -661,6 +670,15 @@ namespace LiveSounds.Localization {
         public static string UnexpectedErrorTitle {
             get {
                 return ResourceManager.GetString("UnexpectedErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Web Page Info.
+        /// </summary>
+        public static string UserWebInfoWindowTitle {
+            get {
+                return ResourceManager.GetString("UserWebInfoWindowTitle", resourceCulture);
             }
         }
     }

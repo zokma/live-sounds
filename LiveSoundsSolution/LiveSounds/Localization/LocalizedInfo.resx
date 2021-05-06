@@ -126,6 +126,9 @@
   <data name="ButtonCancel" xml:space="preserve">
     <value>CANCEL</value>
   </data>
+  <data name="ButtonClose" xml:space="preserve">
+    <value>CLOSE</value>
+  </data>
   <data name="ButtonOpenDataDirectory" xml:space="preserve">
     <value>OPEN DATA FOLDER</value>
   </data>
@@ -324,5 +327,8 @@ This application will stop.</value>
   </data>
   <data name="UnexpectedErrorTitle" xml:space="preserve">
     <value>Unexpected Error</value>
+  </data>
+  <data name="UserWebInfoWindowTitle" xml:space="preserve">
+    <value>User Web Page Info</value>
   </data>
 </root>

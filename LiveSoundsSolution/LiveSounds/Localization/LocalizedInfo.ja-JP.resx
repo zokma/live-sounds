@@ -126,6 +126,9 @@
   <data name="ButtonCancel" xml:space="preserve">
     <value>キャンセル</value>
   </data>
+  <data name="ButtonClose" xml:space="preserve">
+    <value>閉じる</value>
+  </data>
   <data name="ButtonOpenDataDirectory" xml:space="preserve">
     <value>データ格納先を開く</value>
   </data>
@@ -322,5 +325,8 @@ Ngrokが起動しているか確認してください。</value>
   </data>
   <data name="UnexpectedErrorTitle" xml:space="preserve">
     <value>予期しないエラー</value>
+  </data>
+  <data name="UserWebInfoWindowTitle" xml:space="preserve">
+    <value>ユーザ用 Webページ情報</value>
   </data>
 </root>

@@ -222,7 +222,7 @@
                                                     Margin="24,0,0,0"  Padding="24,4,24,4"
                                                     Style="{StaticResource MaterialDesignOutlinedButton}"
                                                     Content="{x:Static l10n:LocalizedInfo.ButtonUserWebPage}" 
-                                                    IsEnabled="False"/>
+                                                    IsEnabled="False" Click="ButtonUserWebPage_Click"/>
                                         </Grid>
                                     </StackPanel>
                                 </GroupBox>

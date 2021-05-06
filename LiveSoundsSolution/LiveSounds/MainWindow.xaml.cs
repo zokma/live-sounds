@@ -193,6 +193,11 @@ namespace LiveSounds
         /// </summary>
         private AudioPlayer audioPlayer;
 
+        /// <summary>
+        /// User Web Info Window.
+        /// </summary>
+        private UserWebInfoWindow userWebInfoWindow;
+
 
         public MainWindow()
         {
@@ -1123,6 +1128,8 @@ namespace LiveSounds
                             String.Format(LocalizedInfo.MessagePatternServiceStarted, info.ValidityPeriod.TotalHours),
                             NotificationLevel.Success);
 
+                        ShowUserWebPageInfo();
+
                         this.ComboBoxAudioRenderDevices.IsEnabled     = false;
                         this.ButtonReloadAudioRenderDevices.IsEnabled = false;
 
@@ -1166,6 +1173,8 @@ namespace LiveSounds
             }
             finally
             {
+                this.userWebInfoWindow?.Hide();
+
                 this.ButtonUserWebPage.IsEnabled = false;
 
                 this.ButtonTestPlay.IsEnabled = true;
@@ -1261,5 +1270,38 @@ namespace LiveSounds
             }
         }
 
+        private void ShowUserWebPageInfo()
+        {
+            if (this.userWebInfoWindow == null)
+            {
+                this.userWebInfoWindow = new UserWebInfoWindow();
+            }
+
+            double top = 0.0d;
+            double left = 0.0d;
+
+            if (this.WindowState == WindowState.Normal)
+            {
+                top = this.Top;
+                left = this.Left;
+            }
+
+            this.userWebInfoWindow.Top = (top + (this.Height / 2)) - (this.userWebInfoWindow.Height / 2);
+            this.userWebInfoWindow.Left = (left + (this.Width / 2)) - (this.userWebInfoWindow.Width / 2);
+
+            if (this.userWebInfoWindow.Visibility == Visibility.Visible)
+            {
+                this.userWebInfoWindow.Focus();
+            }
+            else
+            {
+                this.userWebInfoWindow.Show();
+            }
+        }
+
+        private void ButtonUserWebPage_Click(object sender, RoutedEventArgs e)
+        {
+            ShowUserWebPageInfo();
+        }
     }
 }
