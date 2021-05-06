@@ -204,11 +204,21 @@ Please check if Ngrok is started.</value>
   <data name="MessagePatternPlaying" xml:space="preserve">
     <value>Playing: {0}</value>
   </data>
+  <data name="MessagePatternServiceStarted" xml:space="preserve">
+    <value>Started successfully.
+It will stop automatically after {0:0.##} hours.</value>
+  </data>
   <data name="MessageServiceStartFailed" xml:space="preserve">
     <value>Failed to start.</value>
   </data>
+  <data name="MessageServiceStopped" xml:space="preserve">
+    <value>Stopped successfully.</value>
+  </data>
   <data name="MessageStartingService" xml:space="preserve">
     <value>Starting...</value>
+  </data>
+  <data name="MessageStoppingService" xml:space="preserve">
+    <value>Stopping...</value>
   </data>
   <data name="MessageTokenInfoNotFound" xml:space="preserve">
     <value>Token info not found. Please set token info from [TOKEN SETTING] button.</value>

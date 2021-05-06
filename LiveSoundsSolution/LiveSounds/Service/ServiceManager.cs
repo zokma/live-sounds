@@ -14,6 +14,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Zokma.Libs.Audio;
 using Zokma.Libs.Logging;
 
 namespace LiveSounds.Service
@@ -87,6 +88,11 @@ namespace LiveSounds.Service
         /// Audio manager.
         /// </summary>
         private AudioManager audioManager;
+
+        /// <summary>
+        /// Audio Player.
+        /// </summary>
+        private AudioPlayer audioPlayer;
 
         /// <summary>
         /// RateLimit manager.
@@ -185,12 +191,8 @@ namespace LiveSounds.Service
                         {
                             int retryAfter = this.rateLimitManager.CheckGlobalRetryAfterSecounds();
 
-                            if (retryAfter > 0)
-                            {
-                                status = HttpStatusCode.TooManyRequests;
-                                response.Headers.Add("Retry-After", retryAfter.ToString());
-                            }
-                            else if (request.RawUrl == validPath && 
+                            if (retryAfter <= 0 &&
+                                request.RawUrl == validPath && 
                                 request.HttpMethod == HttpMethod.Post.Method && 
                                 request.ContentType.StartsWith("application/json") && 
                                 request.ContentLength64 <= AppSettings.HTTP_LISTENER_LIMIT_REQUESTED_BYTES)
@@ -214,17 +216,35 @@ namespace LiveSounds.Service
                                 {
                                     retryAfter = this.rateLimitManager.CheckUserRetryAfterSecounds(audioRenerings.UserHash);
 
-                                    if (retryAfter > 0)
+                                    if (retryAfter <= 0)
                                     {
-                                        status = HttpStatusCode.TooManyRequests;
-                                        response.Headers.Add("Retry-After", retryAfter.ToString());
-                                    }
-                                    else
-                                    {
+                                        AudioData audioData;
 
+                                        if(this.audioManager.TryGetAudioData(audioRenerings.Id, out audioData))
+                                        {
+                                            this.audioPlayer?.Play(audioData, PlaybackMode.Once, audioRenerings.Volume);
+
+                                            status = HttpStatusCode.NoContent;
+                                        }
+                                        else
+                                        {
+                                            status = HttpStatusCode.NotFound;
+                                        }
                                     }
                                 }
                             }
+
+                            if (retryAfter > 0)
+                            {
+                                status = HttpStatusCode.TooManyRequests;
+                                response.Headers.Add("Retry-After", retryAfter.ToString());
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Error(ex, "Error on processing requested content.");
+
+                            status = HttpStatusCode.InternalServerError;
                         }
                         finally
                         {
@@ -234,7 +254,7 @@ namespace LiveSounds.Service
                     }
                     catch (Exception ex)
                     {
-                        Log.Error(ex, "Error on processing requested content.");
+                        Log.Error(ex, "Unexpected Error on receiving request.");
                     }
                 }
             }
@@ -335,8 +355,9 @@ namespace LiveSounds.Service
 
                         if (sound != null)
                         {
-                            this.soundId    = sound.Id;
-                            validitySeconds = sound.ValiditySeconds;
+                            this.audioPlayer = config.AudioPlayer;
+                            this.soundId     = sound.Id;
+                            validitySeconds  = sound.ValiditySeconds;
 
                             StartListener(tunnelInfo.ForwardingInfo.Port, guid);
 
@@ -350,6 +371,10 @@ namespace LiveSounds.Service
                     catch (HttpRequestException hre)
                     {
                         Log.Warning(hre, "Error on creating sound.");
+                    }
+                    catch(JsonException jex)
+                    {
+                        Log.Warning(jex, "Error on creating sound.");
                     }
                     catch (HttpPostSizeTooLargeException hpstlex)
                     {
@@ -387,7 +412,7 @@ namespace LiveSounds.Service
 
                 this.audioManager?.Dispose();
 
-                if (this.soundId != null)
+                if (this.zokmaApi != null && this.soundId != null)
                 {
                     try
                     {

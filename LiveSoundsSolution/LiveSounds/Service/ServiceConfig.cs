@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Zokma.Libs;
+using Zokma.Libs.Audio;
 
 namespace LiveSounds.Service
 {
@@ -23,5 +24,9 @@ namespace LiveSounds.Service
         /// </summary>
         public Pathfinder AudioDataDirectory;
 
+        /// <summary>
+        /// Audio player.
+        /// </summary>
+        public AudioPlayer AudioPlayer;
     }
 }

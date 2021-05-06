@@ -50,7 +50,7 @@ namespace LiveSounds.Service
         {
             get
             {
-                return ((Math.Max(Math.Min(this.VolumeNumber, VOLUME_INT_MAX), VOLUME_INT_MIN)) / 100);
+                return ((Math.Max(Math.Min(this.VolumeNumber, VOLUME_INT_MAX), VOLUME_INT_MIN)) / 100.0f);
             }
         }
 

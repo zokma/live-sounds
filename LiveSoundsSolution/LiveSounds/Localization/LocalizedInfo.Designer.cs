@@ -316,6 +316,16 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Started successfully.
+        ///It will stop automatically after {0:0.##} hours..
+        /// </summary>
+        public static string MessagePatternServiceStarted {
+            get {
+                return ResourceManager.GetString("MessagePatternServiceStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to start..
         /// </summary>
         public static string MessageServiceStartFailed {
@@ -325,11 +335,29 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stopped successfully..
+        /// </summary>
+        public static string MessageServiceStopped {
+            get {
+                return ResourceManager.GetString("MessageServiceStopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Starting....
         /// </summary>
         public static string MessageStartingService {
             get {
                 return ResourceManager.GetString("MessageStartingService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stopping....
+        /// </summary>
+        public static string MessageStoppingService {
+            get {
+                return ResourceManager.GetString("MessageStoppingService", resourceCulture);
             }
         }
         

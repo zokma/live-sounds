@@ -1098,25 +1098,49 @@ namespace LiveSounds
             {
                 this.GridApplicationMain.IsEnabled = false;
 
-                this.notification.ShowNotification(LocalizedInfo.MessageStartingService, NotificationLevel.Info);
+                var audioDeviceItem = (this.ComboBoxAudioRenderDevices.SelectedItem as AudioDeviceItem);
 
-                var settings = App.Settings;
-
-                var config = new ServiceConfig
+                if (await InitAudioPlayer(audioDeviceItem))
                 {
-                    AudioItems         = (this.ComboBoxDataPresets.SelectedItem as DataPresetItem)?.DataPreset?.AudioItems,
-                    AudioDataDirectory = this.audioDataDirectory,
-                };
+                    this.notification.ShowNotification(LocalizedInfo.MessageStartingService, NotificationLevel.Info);
 
-                var info = await this.serviceManager.StartService(config);
+                    SetAudioPlayerMasterVolume(this.audioPlayer);
 
-                if(info.IsRunning)
-                {
-                    this.TextBoxLocalPort.Text = info.TunnelInfo.ForwardingInfo.Port.ToString();
-                }
-                else
-                {
-                    this.notification.ShowNotification(LocalizedInfo.MessageServiceStartFailed, NotificationLevel.Error, NOTIFICATION_DURATION_LONG);
+                    var settings = App.Settings;
+
+                    var config = new ServiceConfig
+                    {
+                        AudioItems         = (this.ComboBoxDataPresets.SelectedItem as DataPresetItem)?.DataPreset?.AudioItems,
+                        AudioDataDirectory = this.audioDataDirectory,
+                        AudioPlayer        = this.audioPlayer,
+                    };
+
+                    var info = await this.serviceManager.StartService(config);
+
+                    if (info.IsRunning)
+                    {
+                        this.notification.ShowNotification(
+                            String.Format(LocalizedInfo.MessagePatternServiceStarted, info.ValidityPeriod.TotalHours),
+                            NotificationLevel.Success);
+
+                        this.ComboBoxAudioRenderDevices.IsEnabled     = false;
+                        this.ButtonReloadAudioRenderDevices.IsEnabled = false;
+
+                        this.ComboBoxDataPresets.IsEnabled     = false;
+                        this.ButtonReloadDataPresets.IsEnabled = false;
+
+                        this.ButtonStart.IsEnabled    = false;
+                        this.ButtonStop.IsEnabled     = true;
+                        this.ButtonTestPlay.IsEnabled = false;
+
+                        this.ButtonUserWebPage.IsEnabled = true;
+
+                        this.TextBoxLocalPort.Text = info.TunnelInfo.ForwardingInfo.Port.ToString();
+                    }
+                    else
+                    {
+                        this.notification.ShowNotification(LocalizedInfo.MessageServiceStartFailed, NotificationLevel.Error, NOTIFICATION_DURATION_LONG);
+                    }
                 }
             }
             finally
@@ -1124,6 +1148,42 @@ namespace LiveSounds
                 this.GridApplicationMain.IsEnabled = true;
             }
         }
+
+        private async void ButtonStop_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.GridApplicationMain.IsEnabled = false;
+
+                this.notification.ShowNotification(LocalizedInfo.MessageStoppingService, NotificationLevel.Info);
+
+                await this.serviceManager.Stop();
+                await DestroyAudioPlayer();
+            }
+            catch(Exception ex)
+            {
+                Log.Error(ex, "Error on stopping service.");
+            }
+            finally
+            {
+                this.ButtonUserWebPage.IsEnabled = false;
+
+                this.ButtonTestPlay.IsEnabled = true;
+                this.ButtonStop.IsEnabled     = false;
+                this.ButtonStart.IsEnabled    = true;
+
+                this.ButtonReloadDataPresets.IsEnabled = true;
+                this.ComboBoxDataPresets.IsEnabled     = true;
+
+                this.ButtonReloadAudioRenderDevices.IsEnabled = true;
+                this.ComboBoxAudioRenderDevices.IsEnabled     = true;
+
+                this.GridApplicationMain.IsEnabled = true;
+
+                this.notification.ShowNotification(LocalizedInfo.MessageServiceStopped, NotificationLevel.Info);
+            }
+        }
+
 
         private async Task StartTestPlay(AudioInfo[] audioInfoList)
         {
@@ -1200,5 +1260,6 @@ namespace LiveSounds
                 this.GridApplicationMain.IsEnabled = true;
             }
         }
+
     }
 }

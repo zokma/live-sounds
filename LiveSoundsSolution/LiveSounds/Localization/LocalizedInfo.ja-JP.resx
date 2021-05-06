@@ -201,11 +201,21 @@ Ngrokが起動しているか確認してください。</value>
   <data name="MessagePatternPlaying" xml:space="preserve">
     <value>再生中: {0}</value>
   </data>
+  <data name="MessagePatternServiceStarted" xml:space="preserve">
+    <value>正常に起動しました。
+{0:0.##}時間後に自動的に停止します。</value>
+  </data>
   <data name="MessageServiceStartFailed" xml:space="preserve">
     <value>開始に失敗しました。</value>
   </data>
+  <data name="MessageServiceStopped" xml:space="preserve">
+    <value>停止しました。</value>
+  </data>
   <data name="MessageStartingService" xml:space="preserve">
-    <value>開始中です...</value>
+    <value>開始処理中です...</value>
+  </data>
+  <data name="MessageStoppingService" xml:space="preserve">
+    <value>停止処理中です...</value>
   </data>
   <data name="MessageTokenInfoNotFound" xml:space="preserve">
     <value>トークン情報が設定されていません。
