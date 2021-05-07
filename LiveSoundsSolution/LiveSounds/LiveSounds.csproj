@@ -1,0 +1,84 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Authors>Zok MADAO</Authors>
+    <Company>ZOKMA LABS.</Company>
+    <Product>Live Sounds</Product>
+    <Version>0.4.0</Version>
+    <ApplicationIcon>IconFiles\app.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>DEBUG;TRACE;LOCAL_TEST_ENV</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="IconFiles\config.png" />
+    <None Remove="IconFiles\info.png" />
+    <None Remove="IconFiles\sounds.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MaterialDesignThemes" Version="4.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Zokma.Libs\Zokma.Libs.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Notifications.Wpf">
+      <HintPath>Dll\Notifications.Wpf.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Localization\LocalizedInfo.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LocalizedInfo.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Localization\LocalizedInfo.ja-JP.resx">
+      <Generator></Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Localization\LocalizedInfo.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LocalizedInfo.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="SampleData\AudioFiles\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="IconFiles\config.png" />
+    <Resource Include="IconFiles\info.png" />
+    <Resource Include="IconFiles\sounds.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="LicenseInfo.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SampleData\AudioFiles\Sample01.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SampleData\AudioFiles\Sample02.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SampleData\AudioFiles\Sample03.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SampleData\AudioFiles\Sample04.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

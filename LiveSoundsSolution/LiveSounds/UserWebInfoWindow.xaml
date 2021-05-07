@@ -1,0 +1,63 @@
+﻿<Window x:Class="LiveSounds.UserWebInfoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LiveSounds"
+        xmlns:l10n="clr-namespace:LiveSounds.Localization"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{x:Null}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="17"
+        mc:Ignorable="d"
+        Title="{x:Static l10n:LocalizedInfo.UserWebInfoWindowTitle}" Height="270" Width ="440" BorderThickness="14"
+        ResizeMode="NoResize" WindowStartupLocation="CenterOwner" WindowStyle="None" AllowsTransparency="True" Icon="/IconFiles/info.png">
+    <Window.Effect>
+        <DropShadowEffect Opacity="0.7" Direction="324" BlurRadius="4" ShadowDepth="7"/>
+    </Window.Effect>
+    <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderBrush="#44040404" BorderThickness="1">
+        <Grid Background="AliceBlue">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <materialDesign:ColorZone x:Name="ColorZoneTitle"
+                    Padding="1"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                    Mode="PrimaryMid" MouseLeftButtonDown="ColorZoneTitle_MouseLeftButtonDown" 
+                    Background="RoyalBlue">
+                <Button HorizontalAlignment="Right"
+                    Content="{materialDesign:PackIcon Kind=Close, Size=14}" 
+                    Click="ButtonClose_Click" Background="{x:Null}" BorderBrush="{x:Null}"/>
+            </materialDesign:ColorZone>
+
+            <StackPanel Grid.Row="1" Margin="14,14,14,0">
+                <TextBlock Text="{x:Static l10n:LocalizedInfo.TextBlockUserWebPage}" TextWrapping="Wrap" FontSize="11" />
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="AlertBox" Foreground="OrangeRed"/>
+                    <TextBlock Text="{x:Static l10n:LocalizedInfo.TextBlockUserWebPageCaution}" TextWrapping="Wrap" FontSize="11" Foreground="OrangeRed" />
+                </StackPanel>
+            </StackPanel>
+            
+            <Button x:Name="ButtonOpenUserWeb" Grid.Row="2"
+                        Style="{StaticResource MaterialDesignOutlinedButton}" 
+                        Content="{x:Static l10n:LocalizedInfo.ButtonOpenUserWebPage}" VerticalAlignment="Stretch" Background="LightSkyBlue" Margin="14,14,14,0" Click="ButtonOpenUserWeb_Click"/>
+
+            <Button x:Name="ButtonCopyToClipboard" Grid.Row="3"
+                        Style="{StaticResource MaterialDesignOutlinedButton}" 
+                        Content="{x:Static l10n:LocalizedInfo.ButtonCopyURLToClipboard}" VerticalAlignment="Stretch" Background="LightGoldenrodYellow" Margin="14,14,14,0" Click="ButtonCopyToClipboard_Click" Foreground="OrangeRed"/>
+
+            <Button x:Name="ButtonClose" Grid.Row="5"
+                        Style="{StaticResource MaterialDesignOutlinedButton}" 
+                        Content="{x:Static l10n:LocalizedInfo.ButtonClose}" VerticalAlignment="Stretch" 
+                        Click="ButtonClose_Click" Margin="0,24,0,0"/>
+
+        </Grid>
+    </Border>
+</Window>

@@ -1,0 +1,355 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ApplicationTitle" xml:space="preserve">
+    <value>Live Sounds</value>
+  </data>
+  <data name="ButtonApply" xml:space="preserve">
+    <value>APPLY</value>
+  </data>
+  <data name="ButtonCancel" xml:space="preserve">
+    <value>CANCEL</value>
+  </data>
+  <data name="ButtonClose" xml:space="preserve">
+    <value>CLOSE</value>
+  </data>
+  <data name="ButtonCopyURLToClipboard" xml:space="preserve">
+    <value>COPY URL TO CLIPBOARD</value>
+  </data>
+  <data name="ButtonOpenDataDirectory" xml:space="preserve">
+    <value>OPEN DATA FOLDER</value>
+  </data>
+  <data name="ButtonOpenUserWebPage" xml:space="preserve">
+    <value>OPEN USER WEB PAGE</value>
+  </data>
+  <data name="ButtonStart" xml:space="preserve">
+    <value>START</value>
+  </data>
+  <data name="ButtonStop" xml:space="preserve">
+    <value>STOP</value>
+  </data>
+  <data name="ButtonTestPlay" xml:space="preserve">
+    <value>PLAY TEST</value>
+  </data>
+  <data name="ButtonTokenSetting" xml:space="preserve">
+    <value>TOKEN SETTING</value>
+  </data>
+  <data name="ButtonURLCopiedToClipboard" xml:space="preserve">
+    <value>URL COPIED TO CLIPBOARD</value>
+  </data>
+  <data name="ButtonUserWebPage" xml:space="preserve">
+    <value>WEB PAGE INFO FOR USERS</value>
+  </data>
+  <data name="CloseApplication" xml:space="preserve">
+    <value>Close the Application</value>
+  </data>
+  <data name="DataGridDateTime" xml:space="preserve">
+    <value>DateTime</value>
+  </data>
+  <data name="DataGridLevel" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="DataGridMessage" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="GroupBoxApplicationControl" xml:space="preserve">
+    <value>Application Control</value>
+  </data>
+  <data name="GroupBoxAudioSettings" xml:space="preserve">
+    <value>Audio Settings</value>
+  </data>
+  <data name="MaximizeWindow" xml:space="preserve">
+    <value>Maximize the Window</value>
+  </data>
+  <data name="MenuItemNameForDataPreset" xml:space="preserve">
+    <value>{0} ({1})</value>
+  </data>
+  <data name="MenuItemNotFoundForAudioDevice" xml:space="preserve">
+    <value>Device not found</value>
+  </data>
+  <data name="MenuItemNotFoundForDataPreset" xml:space="preserve">
+    <value>Preset not found</value>
+  </data>
+  <data name="MessageAppStartSuccess" xml:space="preserve">
+    <value>Application started successfully.</value>
+  </data>
+  <data name="MessageAppStartWithError" xml:space="preserve">
+    <value>Application started with some errors.</value>
+  </data>
+  <data name="MessageAudioTestPlay" xml:space="preserve">
+    <value>Audio will be played 5 times randomly every second.
+Please check you can hear sounds.</value>
+  </data>
+  <data name="MessageExitingApplication" xml:space="preserve">
+    <value>Exiting application...</value>
+  </data>
+  <data name="MessageHttpPostSizeTooLarge" xml:space="preserve">
+    <value>The size of HTTP request is too large.
+Please contact the application developer.</value>
+  </data>
+  <data name="MessageInitAudioPlayerFailed" xml:space="preserve">
+    <value>Faild to init Audio Player.</value>
+  </data>
+  <data name="MessageInitAudioRenderDeviceFailed" xml:space="preserve">
+    <value>Failed to init Audio playback device.</value>
+  </data>
+  <data name="MessageNoNgrokDetected" xml:space="preserve">
+    <value>Ngrok could not be detected.
+Please check if Ngrok is started.</value>
+  </data>
+  <data name="MessagePatternFailedToLoadAudioFile" xml:space="preserve">
+    <value>Failed to load audio file "{0}".</value>
+  </data>
+  <data name="MessagePatternPlaying" xml:space="preserve">
+    <value>Playing: {0}</value>
+  </data>
+  <data name="MessagePatternServiceStarted" xml:space="preserve">
+    <value>Started successfully.
+It will stop automatically after {0:0.##} hours.</value>
+  </data>
+  <data name="MessageServiceStartFailed" xml:space="preserve">
+    <value>Failed to start.</value>
+  </data>
+  <data name="MessageServiceStopped" xml:space="preserve">
+    <value>Stopped successfully.</value>
+  </data>
+  <data name="MessageStartingService" xml:space="preserve">
+    <value>Starting...</value>
+  </data>
+  <data name="MessageStoppingService" xml:space="preserve">
+    <value>Stopping...</value>
+  </data>
+  <data name="MessageStopServiceWithUnexpectedError" xml:space="preserve">
+    <value>Stopping because of unexpected error.</value>
+  </data>
+  <data name="MessageTokenInfoNotFound" xml:space="preserve">
+    <value>Token info not found. Please set token info from [TOKEN SETTING] button.</value>
+  </data>
+  <data name="MessageTokenInfoUpdated" xml:space="preserve">
+    <value>Token info has been updated.</value>
+  </data>
+  <data name="MessageTokenInvalidError" xml:space="preserve">
+    <value>Token is invalid or expired.</value>
+  </data>
+  <data name="MessageValidAudioFileNotFound" xml:space="preserve">
+    <value>Valid Audio file not found.</value>
+  </data>
+  <data name="MessageValidAudioRenderDeviceNotFound" xml:space="preserve">
+    <value>Valid Audio playback device is not found.</value>
+  </data>
+  <data name="MinimizeWindow" xml:space="preserve">
+    <value>Minimize the Window</value>
+  </data>
+  <data name="NotificationDateTimeFormat" xml:space="preserve">
+    <value>yyyy/MM/dd HH:mm:ss.fff</value>
+  </data>
+  <data name="NotificationLevelError" xml:space="preserve">
+    <value>ERROR</value>
+  </data>
+  <data name="NotificationLevelInfo" xml:space="preserve">
+    <value>INFO</value>
+  </data>
+  <data name="NotificationLevelSuccess" xml:space="preserve">
+    <value>SUCCESS</value>
+  </data>
+  <data name="NotificationLevelWarn" xml:space="preserve">
+    <value>WARNING</value>
+  </data>
+  <data name="RestoreWindow" xml:space="preserve">
+    <value>Restore the Window size</value>
+  </data>
+  <data name="SampleAudioName01" xml:space="preserve">
+    <value>BOOM</value>
+  </data>
+  <data name="SampleAudioName02" xml:space="preserve">
+    <value>BOOM BOOM</value>
+  </data>
+  <data name="SampleAudioName03" xml:space="preserve">
+    <value>BOOM BOOM BOOM</value>
+  </data>
+  <data name="SampleAudioName04" xml:space="preserve">
+    <value>BOOM BOOM BOOM BOOM</value>
+  </data>
+  <data name="SamplePresetName01" xml:space="preserve">
+    <value>Sample A</value>
+  </data>
+  <data name="SamplePresetName02" xml:space="preserve">
+    <value>Sample B</value>
+  </data>
+  <data name="TextBlockCautionTokenInfo" xml:space="preserve">
+    <value>NEVER SHARE TOKEN INFO WITH OTHERS</value>
+  </data>
+  <data name="TextBlockNetworkSettings" xml:space="preserve">
+    <value>Network Settings</value>
+  </data>
+  <data name="TextBlockPlayAudioLimitsPerMinute" xml:space="preserve">
+    <value>Play Audio Limits per minute</value>
+  </data>
+  <data name="TextBlockPlaybackDevice" xml:space="preserve">
+    <value>Playback Device</value>
+  </data>
+  <data name="TextBlockPlaybackMuted" xml:space="preserve">
+    <value>MUTED</value>
+  </data>
+  <data name="TextBlockPlaybackVolume" xml:space="preserve">
+    <value>Volume</value>
+  </data>
+  <data name="TextBlockPreset" xml:space="preserve">
+    <value>Preset</value>
+  </data>
+  <data name="TextBlockUserWebPage" xml:space="preserve">
+    <value>You can share the URL to your viewers.</value>
+  </data>
+  <data name="TextBlockUserWebPageCaution" xml:space="preserve">
+    <value>Please take care you are sahring the right info before you share the URL.</value>
+  </data>
+  <data name="TextBoxPlayAudioLimitsPerAppSuffix" xml:space="preserve">
+    <value> times(per app)</value>
+  </data>
+  <data name="TextBoxPlayAudioLimitsPerUserSuffix" xml:space="preserve">
+    <value> times(per user)</value>
+  </data>
+  <data name="TextBoxPortNumberPrefix" xml:space="preserve">
+    <value>Port </value>
+  </data>
+  <data name="TextBoxTokenInfoHint" xml:space="preserve">
+    <value>Please paste token info you obtained.</value>
+  </data>
+  <data name="TokenSettingWindowTitle" xml:space="preserve">
+    <value>Token Setting</value>
+  </data>
+  <data name="UnexpectedErrorMessage" xml:space="preserve">
+    <value>Unexpected Error has occurred.
+If you observe this message over and over again, 
+please contact the developer.
+Do you want to continue this application?</value>
+  </data>
+  <data name="UnexpectedErrorStopMessage" xml:space="preserve">
+    <value>Unexpected Error has occurred.
+If you observe this message over and over again, 
+please contact the developer.
+This application will stop.</value>
+  </data>
+  <data name="UnexpectedErrorTitle" xml:space="preserve">
+    <value>Unexpected Error</value>
+  </data>
+  <data name="UserWebInfoWindowTitle" xml:space="preserve">
+    <value>User Web Page Info</value>
+  </data>
+</root>
