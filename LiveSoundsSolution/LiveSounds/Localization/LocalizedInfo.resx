@@ -196,6 +196,9 @@
     <value>Audio will be played 5 times randomly every second.
 Please check you can hear sounds.</value>
   </data>
+  <data name="MessageExitingApplication" xml:space="preserve">
+    <value>Exiting application...</value>
+  </data>
   <data name="MessageHttpPostSizeTooLarge" xml:space="preserve">
     <value>The size of HTTP request is too large.
 Please contact the application developer.</value>
@@ -231,6 +234,9 @@ It will stop automatically after {0:0.##} hours.</value>
   </data>
   <data name="MessageStoppingService" xml:space="preserve">
     <value>Stopping...</value>
+  </data>
+  <data name="MessageStopServiceWithUnexpectedError" xml:space="preserve">
+    <value>Stopping because of unexpected error.</value>
   </data>
   <data name="MessageTokenInfoNotFound" xml:space="preserve">
     <value>Token info not found. Please set token info from [TOKEN SETTING] button.</value>

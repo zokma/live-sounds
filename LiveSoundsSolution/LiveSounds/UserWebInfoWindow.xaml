@@ -51,7 +51,7 @@
 
             <Button x:Name="ButtonCopyToClipboard" Grid.Row="3"
                         Style="{StaticResource MaterialDesignOutlinedButton}" 
-                        Content="{x:Static l10n:LocalizedInfo.ButtonCopyURLToClipboard}" VerticalAlignment="Stretch" Background="LightGoldenrodYellow" Margin="14,14,14,0" Click="ButtonCopyToClipboard_Click"/>
+                        Content="{x:Static l10n:LocalizedInfo.ButtonCopyURLToClipboard}" VerticalAlignment="Stretch" Background="LightGoldenrodYellow" Margin="14,14,14,0" Click="ButtonCopyToClipboard_Click" Foreground="OrangeRed"/>
 
             <Button x:Name="ButtonClose" Grid.Row="5"
                         Style="{StaticResource MaterialDesignOutlinedButton}" 

@@ -220,7 +220,7 @@ namespace LiveSounds
 
                 var settings = App.Settings;
 
-                this.serviceManager = new ServiceManager(this.notification, settings.PlayAudioLimitsPerMinutePerApp, settings.PlayAudioLimitsPerMinutePerUser);
+                this.serviceManager = new ServiceManager(this.notification, settings.PlayAudioLimitsPerMinutePerApp, settings.PlayAudioLimitsPerMinutePerUser, this.Dispatcher, performStopService);
 
                 this.notification.ShowNotification(LocalizedInfo.MessageAppStartSuccess, NotificationLevel.Success);
 
@@ -980,6 +980,8 @@ namespace LiveSounds
 
         private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            this.notification.ShowNotification(LocalizedInfo.MessageExitingApplication, NotificationLevel.Info);
+
             await this.serviceManager?.Stop();
             await DestroyAudioPlayer();
 
@@ -1153,6 +1155,34 @@ namespace LiveSounds
             finally
             {
                 this.GridApplicationMain.IsEnabled = true;
+            }
+        }
+
+        /// <summary>
+        /// Performs clicking ButtonStop.
+        /// </summary>
+        private void performButtonStopClick()
+        {
+            if (this.ButtonStop.IsEnabled)
+            {
+                this.ButtonStop.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+        }
+
+        /// <summary>
+        /// Performs stopping service.
+        /// </summary>
+        private void performStopService()
+        {
+            if (this.Dispatcher.CheckAccess())
+            {
+                performButtonStopClick();
+            }
+            else
+            {
+                this.Dispatcher.Invoke(
+                    () => performButtonStopClick()
+                    );
             }
         }
 

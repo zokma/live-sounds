@@ -38,13 +38,12 @@ namespace LiveSounds.Service
         /// </summary>
         /// <param name="manager">ServiceManager.</param>
         /// <param name="tunnelInfo">Tunnel info.</param>
-        /// <param name="validitySeconds">Validity seconds.</param>
-        public ServiceInfo(ServiceManager manager, TunnelInfo tunnelInfo, int validitySeconds)
+        /// <param name="validityPeriod">Validity seconds.</param>
+        public ServiceInfo(ServiceManager manager, TunnelInfo tunnelInfo, TimeSpan validityPeriod)
         {
-            this.manager    = manager;
-            this.TunnelInfo = tunnelInfo;
-
-            this.ValidityPeriod = TimeSpan.FromSeconds(validitySeconds);
+            this.manager        = manager;
+            this.TunnelInfo     = tunnelInfo;
+            this.ValidityPeriod = validityPeriod;
         }
     }
 }

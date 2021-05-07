@@ -14,6 +14,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using Zokma.Libs.Audio;
 using Zokma.Libs.Logging;
 
@@ -142,6 +143,21 @@ namespace LiveSounds.Service
         private string secretString;
 
         /// <summary>
+        /// Dispatcher for events.
+        /// </summary>
+        private Dispatcher dispatcher;
+
+        /// <summary>
+        /// Auto close timer.
+        /// </summary>
+        private DispatcherTimer autoCloseTimer;
+
+        /// <summary>
+        /// Auto close action.
+        /// </summary>
+        private Action autoCloseAction;
+
+        /// <summary>
         /// HTTP Listener.
         /// </summary>
         private HttpListener listener;
@@ -152,7 +168,7 @@ namespace LiveSounds.Service
         /// <param name="notification">Notification manager.</param>
         /// <param name="playAudioLimitsPerApp">Play Audio Limit per application.</param>
         /// <param name="playAudioLimitsPerUser">Play Audio Limit per user.</param>
-        public ServiceManager(NotificationManager notification, int playAudioLimitsPerApp, int playAudioLimitsPerUser)
+        public ServiceManager(NotificationManager notification, int playAudioLimitsPerApp, int playAudioLimitsPerUser, Dispatcher dispatcher, Action autoCloseAction)
         {
             this.notification     = notification;
             this.rateLimitManager = new RateLimitManager()
@@ -160,6 +176,9 @@ namespace LiveSounds.Service
                 GlobalLimit = playAudioLimitsPerApp,
                 UserLimit   = playAudioLimitsPerUser,
             };
+
+            this.dispatcher      = dispatcher;
+            this.autoCloseAction = autoCloseAction;
 
             this.IsRunning = false;
         }
@@ -169,13 +188,16 @@ namespace LiveSounds.Service
         /// </summary>
         /// <param name="listener">HTTP listener.</param>
         /// <param name="validPath">Valid path.</param>
+        /// <param name="counter">Counter for HttpListener.</param>
         /// <returns>Task.</returns>
-        private async Task Listen(HttpListener listener, string validPath)
+        private async Task Listen(HttpListener listener, string validPath, HttpListenerCounter counter)
         {
             Log.Information("Start HTTP Listen: ThreadId = {ThreadId}", Thread.CurrentThread.ManagedThreadId);
 
             try
             {
+                counter.ReportListenerStarted();
+
                 while (listener.IsListening)
                 {
                     var context = await listener.GetContextAsync();
@@ -258,6 +280,10 @@ namespace LiveSounds.Service
                     }
                 }
             }
+            catch (ObjectDisposedException ode)
+            {
+                Log.Error(ode, "Error on closing listener.");
+            }
             catch (HttpListenerException hlex)
             {
                 if(hlex.ErrorCode != 995)
@@ -265,8 +291,28 @@ namespace LiveSounds.Service
                     Log.Error(hlex, "Unexpected Error on listening context.");
                 }
             }
+            finally
+            {
+                if (listener.IsListening)
+                {
+                    counter.ReportListenerTerminatedUnexpectedly();
+                }
+                else
+                {
+                    counter.ReportListenerStopped();
+                }
 
-            Log.Information("Exit HTTP Listen: ThreadId = {ThreadId}", Thread.CurrentThread.ManagedThreadId);
+                if(!counter.IsAlive)
+                {
+                    Log.Error("Service will be stopped automatically.");
+
+                    this.notification.ShowNotification(LocalizedInfo.MessageStopServiceWithUnexpectedError, NotificationLevel.Error);
+
+                    this.autoCloseAction();
+                }
+
+                Log.Information("Exit HTTP Listen: ThreadId = {ThreadId}", Thread.CurrentThread.ManagedThreadId);
+            }
         }
 
         /// <summary>
@@ -289,11 +335,14 @@ namespace LiveSounds.Service
 
             this.rateLimitManager.Reset();
 
+
+            var counter = new HttpListenerCounter(threads);
+
             for (int i = 0; i < threads; i++)
             {
                 Task.Run(
                     async () => {
-                           await Listen(this.listener, validPath);
+                           await Listen(this.listener, validPath, counter);
                         }
                     );
             }
@@ -318,7 +367,7 @@ namespace LiveSounds.Service
 
             var tunnelInfo = await NgrokManager.FindTunnel(settings.NgrokApiPort, this.cancellationToken);
 
-            int validitySeconds = 0;
+            TimeSpan validityPeriod = TimeSpan.Zero;
 
             if(tunnelInfo == null)
             {
@@ -357,7 +406,14 @@ namespace LiveSounds.Service
                         {
                             this.audioPlayer = config.AudioPlayer;
                             this.SoundId     = sound.Id;
-                            validitySeconds  = sound.ValiditySeconds;
+                            validityPeriod   = TimeSpan.FromSeconds(sound.ValiditySeconds);
+
+                            this.autoCloseTimer = new DispatcherTimer(DispatcherPriority.Background, this.dispatcher)
+                            {
+                                Interval = validityPeriod,
+                            };
+                            this.autoCloseTimer.Tick += AutoCloseTimer_Tick;
+                            this.autoCloseTimer.Start();
 
                             StartListener(tunnelInfo.ForwardingInfo.Port, guid);
 
@@ -385,7 +441,17 @@ namespace LiveSounds.Service
                 }
             }
 
-            return new ServiceInfo(this, tunnelInfo, validitySeconds);
+            return new ServiceInfo(this, tunnelInfo, validityPeriod);
+        }
+
+        private void AutoCloseTimer_Tick(object sender, EventArgs e)
+        {
+            this.autoCloseTimer?.Stop();
+
+            if (this.autoCloseAction != null)
+            {
+                this.autoCloseAction();
+            }
         }
 
         /// <summary>
@@ -412,6 +478,8 @@ namespace LiveSounds.Service
 
                 this.audioManager?.Dispose();
 
+                this.autoCloseTimer?.Stop();
+
                 if (this.zokmaApi != null && this.SoundId != null)
                 {
                     try
@@ -431,9 +499,10 @@ namespace LiveSounds.Service
             finally
             {
                 this.cancellationTokenSource = null;
-                this.listener     = null;
-                this.audioManager = null;
-                this.zokmaApi     = null;
+                this.listener       = null;
+                this.audioManager   = null;
+                this.autoCloseTimer = null;
+                this.zokmaApi       = null;
 
                 this.IsRunning = false;
             }

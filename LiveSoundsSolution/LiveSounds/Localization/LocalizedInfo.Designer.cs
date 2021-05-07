@@ -296,6 +296,15 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exiting application....
+        /// </summary>
+        public static string MessageExitingApplication {
+            get {
+                return ResourceManager.GetString("MessageExitingApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The size of HTTP request is too large.
         ///Please contact the application developer..
         /// </summary>
@@ -394,6 +403,15 @@ namespace LiveSounds.Localization {
         public static string MessageStoppingService {
             get {
                 return ResourceManager.GetString("MessageStoppingService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stopping because of unexpected error..
+        /// </summary>
+        public static string MessageStopServiceWithUnexpectedError {
+            get {
+                return ResourceManager.GetString("MessageStopServiceWithUnexpectedError", resourceCulture);
             }
         }
         

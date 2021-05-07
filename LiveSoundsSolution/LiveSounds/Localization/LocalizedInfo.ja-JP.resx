@@ -193,6 +193,9 @@
     <value>1秒おきに5回、ランダムに再生します。
 音が聞こえるか確認ください。</value>
   </data>
+  <data name="MessageExitingApplication" xml:space="preserve">
+    <value>アプリケーションを終了しています...</value>
+  </data>
   <data name="MessageHttpPostSizeTooLarge" xml:space="preserve">
     <value>HTTPリクエストのサイズが大きすぎます。
 このアプリケーションの開発元にお問い合わせください。</value>
@@ -228,6 +231,9 @@ Ngrokが起動しているか確認してください。</value>
   </data>
   <data name="MessageStoppingService" xml:space="preserve">
     <value>停止処理中です...</value>
+  </data>
+  <data name="MessageStopServiceWithUnexpectedError" xml:space="preserve">
+    <value>予期しないエラーのため終了します。</value>
   </data>
   <data name="MessageTokenInfoNotFound" xml:space="preserve">
     <value>トークン情報が設定されていません。
