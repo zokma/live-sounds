@@ -12,7 +12,7 @@
         TextElement.FontSize="17"
         mc:Ignorable="d"
         Title="{x:Static l10n:LocalizedInfo.UserWebInfoWindowTitle}" Height="270" Width ="440" BorderThickness="14"
-        ResizeMode="NoResize" WindowStartupLocation="CenterOwner" WindowStyle="None" AllowsTransparency="True">
+        ResizeMode="NoResize" WindowStartupLocation="CenterOwner" WindowStyle="None" AllowsTransparency="True" Icon="/IconFiles/info.png">
     <Window.Effect>
         <DropShadowEffect Opacity="0.7" Direction="324" BlurRadius="4" ShadowDepth="7"/>
     </Window.Effect>

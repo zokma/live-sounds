@@ -12,7 +12,7 @@
         TextElement.FontSize="17"
         mc:Ignorable="d"
         Title="{x:Static l10n:LocalizedInfo.TokenSettingWindowTitle}" Height="240" Width="440" BorderThickness="14"
-        ResizeMode="NoResize" WindowStartupLocation="CenterOwner" WindowStyle="None" AllowsTransparency="True" Loaded="Window_Loaded">
+        ResizeMode="NoResize" WindowStartupLocation="CenterOwner" WindowStyle="None" AllowsTransparency="True" Loaded="Window_Loaded" Icon="/IconFiles/config.png">
     <Window.Effect>
         <DropShadowEffect Opacity="0.7" Direction="324" BlurRadius="4" ShadowDepth="7"/>
     </Window.Effect>
