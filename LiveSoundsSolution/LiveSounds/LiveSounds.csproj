@@ -64,6 +64,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="LicenseInfo.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="SampleData\AudioFiles\Sample01.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
