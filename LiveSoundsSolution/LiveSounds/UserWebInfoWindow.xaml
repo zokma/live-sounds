@@ -11,7 +11,7 @@
         TextElement.FontWeight="Medium"
         TextElement.FontSize="17"
         mc:Ignorable="d"
-        Title="{x:Static l10n:LocalizedInfo.UserWebInfoWindowTitle}" Height="240" Width="440" BorderThickness="14"
+        Title="{x:Static l10n:LocalizedInfo.UserWebInfoWindowTitle}" Height="270" Width ="440" BorderThickness="14"
         ResizeMode="NoResize" WindowStartupLocation="CenterOwner" WindowStyle="None" AllowsTransparency="True">
     <Window.Effect>
         <DropShadowEffect Opacity="0.7" Direction="324" BlurRadius="4" ShadowDepth="7"/>
@@ -19,6 +19,9 @@
     <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderBrush="#44040404" BorderThickness="1">
         <Grid Background="AliceBlue">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
@@ -34,12 +37,26 @@
                     Click="ButtonClose_Click" Background="{x:Null}" BorderBrush="{x:Null}"/>
             </materialDesign:ColorZone>
 
+            <StackPanel Grid.Row="1" Margin="14,14,14,0">
+                <TextBlock Text="{x:Static l10n:LocalizedInfo.TextBlockUserWebPage}" TextWrapping="Wrap" FontSize="11" />
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="AlertBox" Foreground="OrangeRed"/>
+                    <TextBlock Text="{x:Static l10n:LocalizedInfo.TextBlockUserWebPageCaution}" TextWrapping="Wrap" FontSize="11" Foreground="OrangeRed" />
+                </StackPanel>
+            </StackPanel>
             
-            
-            <Button x:Name="ButtonClose" Grid.Row="2"
+            <Button x:Name="ButtonOpenUserWeb" Grid.Row="2"
+                        Style="{StaticResource MaterialDesignOutlinedButton}" 
+                        Content="{x:Static l10n:LocalizedInfo.ButtonOpenUserWebPage}" VerticalAlignment="Stretch" Background="LightSkyBlue" Margin="14,14,14,0" Click="ButtonOpenUserWeb_Click"/>
+
+            <Button x:Name="ButtonCopyToClipboard" Grid.Row="3"
+                        Style="{StaticResource MaterialDesignOutlinedButton}" 
+                        Content="{x:Static l10n:LocalizedInfo.ButtonCopyURLToClipboard}" VerticalAlignment="Stretch" Background="LightGoldenrodYellow" Margin="14,14,14,0" Click="ButtonCopyToClipboard_Click"/>
+
+            <Button x:Name="ButtonClose" Grid.Row="5"
                         Style="{StaticResource MaterialDesignOutlinedButton}" 
                         Content="{x:Static l10n:LocalizedInfo.ButtonClose}" VerticalAlignment="Stretch" 
-                        Click="ButtonClose_Click"/>
+                        Click="ButtonClose_Click" Margin="0,24,0,0"/>
 
         </Grid>
     </Border>

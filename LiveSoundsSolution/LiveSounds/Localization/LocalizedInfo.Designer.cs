@@ -97,11 +97,29 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to COPY URL TO CLIPBOARD.
+        /// </summary>
+        public static string ButtonCopyURLToClipboard {
+            get {
+                return ResourceManager.GetString("ButtonCopyURLToClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OPEN DATA FOLDER.
         /// </summary>
         public static string ButtonOpenDataDirectory {
             get {
                 return ResourceManager.GetString("ButtonOpenDataDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OPEN USER WEB PAGE.
+        /// </summary>
+        public static string ButtonOpenUserWebPage {
+            get {
+                return ResourceManager.GetString("ButtonOpenUserWebPage", resourceCulture);
             }
         }
         
@@ -138,6 +156,15 @@ namespace LiveSounds.Localization {
         public static string ButtonTokenSetting {
             get {
                 return ResourceManager.GetString("ButtonTokenSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to URL COPIED TO CLIPBOARD.
+        /// </summary>
+        public static string ButtonURLCopiedToClipboard {
+            get {
+                return ResourceManager.GetString("ButtonURLCopiedToClipboard", resourceCulture);
             }
         }
         
@@ -592,6 +619,24 @@ namespace LiveSounds.Localization {
         public static string TextBlockPreset {
             get {
                 return ResourceManager.GetString("TextBlockPreset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can share the URL to your viewers..
+        /// </summary>
+        public static string TextBlockUserWebPage {
+            get {
+                return ResourceManager.GetString("TextBlockUserWebPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please take care you are sahring the right info before you share the URL..
+        /// </summary>
+        public static string TextBlockUserWebPageCaution {
+            get {
+                return ResourceManager.GetString("TextBlockUserWebPageCaution", resourceCulture);
             }
         }
         

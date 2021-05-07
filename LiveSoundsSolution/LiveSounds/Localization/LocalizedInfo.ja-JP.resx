@@ -129,8 +129,14 @@
   <data name="ButtonClose" xml:space="preserve">
     <value>閉じる</value>
   </data>
+  <data name="ButtonCopyURLToClipboard" xml:space="preserve">
+    <value>URLをクリップボードにコピーする</value>
+  </data>
   <data name="ButtonOpenDataDirectory" xml:space="preserve">
     <value>データ格納先を開く</value>
+  </data>
+  <data name="ButtonOpenUserWebPage" xml:space="preserve">
+    <value>ユーザ用 Webページを開く</value>
   </data>
   <data name="ButtonStart" xml:space="preserve">
     <value>開始</value>
@@ -143,6 +149,9 @@
   </data>
   <data name="ButtonTokenSetting" xml:space="preserve">
     <value>トークン設定</value>
+  </data>
+  <data name="ButtonURLCopiedToClipboard" xml:space="preserve">
+    <value>URLがクリップボードにコピーされました</value>
   </data>
   <data name="ButtonUserWebPage" xml:space="preserve">
     <value>ユーザ用 Webページ情報</value>
@@ -295,6 +304,12 @@ Ngrokが起動しているか確認してください。</value>
   </data>
   <data name="TextBlockPreset" xml:space="preserve">
     <value>プリセット</value>
+  </data>
+  <data name="TextBlockUserWebPage" xml:space="preserve">
+    <value>視聴者にこのURLを共有することができます。</value>
+  </data>
+  <data name="TextBlockUserWebPageCaution" xml:space="preserve">
+    <value>URLを共有する前に共有する情報が正しいか確認ください。</value>
   </data>
   <data name="TextBoxPlayAudioLimitsPerAppSuffix" xml:space="preserve">
     <value> 回(アプリごと)</value>

@@ -20,12 +20,62 @@ namespace LiveSounds
     {
 
 #if   LOCAL_TEST_ENV
+
+        /// <summary>
+        /// URI for API service.
+        /// </summary>
         public const string ZOKMA_API_URI = "http://localhost";
+
+        /// <summary>
+        /// Web app base URI.
+        /// </summary>
+        private const string ZOKMA_WEB_APP_BASE_URI = "http://localhost";
+
+        /// <summary>
+        /// URI Scheme.
+        /// </summary>
+        public const string ZOKMA_URI_STARTS_WITH = "http://";
+
 #elif SANDBOX_ENV
+
+        /// <summary>
+        /// URI for API service.
+        /// </summary>
         public const string ZOKMA_API_URI = "https://api-sandbox.zokma.net";
+
+        /// <summary>
+        /// Web app base URI.
+        /// </summary>
+        private const string ZOKMA_WEB_APP_BASE_URI = "https://sandbox.zokma.net";
+
+        /// <summary>
+        /// URI Scheme.
+        /// </summary>
+        public const string ZOKMA_URI_STARTS_WITH = "https://";
+
 #else
+
+        /// <summary>
+        /// URI for API service.
+        /// </summary>
         public const string ZOKMA_API_URI = "https://api.zokma.net";
+
+        /// <summary>
+        /// Web app base URI.
+        /// </summary>
+        private const string ZOKMA_WEB_APP_BASE_URI = "https://karakuri.zokma.net";
+
+        /// <summary>
+        /// URI Scheme.
+        /// </summary>
+        public const string ZOKMA_URI_STARTS_WITH = "https://";
+
 #endif
+
+        /// <summary>
+        /// Web app uri pattern.
+        /// </summary>
+        public const string ZOKMA_WEB_APP_URI_PATTERN = ZOKMA_WEB_APP_BASE_URI + "/livesounds/{0}";
 
         /// <summary>
         /// Audio sample rate min.

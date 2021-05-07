@@ -129,8 +129,14 @@
   <data name="ButtonClose" xml:space="preserve">
     <value>CLOSE</value>
   </data>
+  <data name="ButtonCopyURLToClipboard" xml:space="preserve">
+    <value>COPY URL TO CLIPBOARD</value>
+  </data>
   <data name="ButtonOpenDataDirectory" xml:space="preserve">
     <value>OPEN DATA FOLDER</value>
+  </data>
+  <data name="ButtonOpenUserWebPage" xml:space="preserve">
+    <value>OPEN USER WEB PAGE</value>
   </data>
   <data name="ButtonStart" xml:space="preserve">
     <value>START</value>
@@ -143,6 +149,9 @@
   </data>
   <data name="ButtonTokenSetting" xml:space="preserve">
     <value>TOKEN SETTING</value>
+  </data>
+  <data name="ButtonURLCopiedToClipboard" xml:space="preserve">
+    <value>URL COPIED TO CLIPBOARD</value>
   </data>
   <data name="ButtonUserWebPage" xml:space="preserve">
     <value>WEB PAGE INFO FOR USERS</value>
@@ -297,6 +306,12 @@ It will stop automatically after {0:0.##} hours.</value>
   </data>
   <data name="TextBlockPreset" xml:space="preserve">
     <value>Preset</value>
+  </data>
+  <data name="TextBlockUserWebPage" xml:space="preserve">
+    <value>You can share the URL to your viewers.</value>
+  </data>
+  <data name="TextBlockUserWebPageCaution" xml:space="preserve">
+    <value>Please take care you are sahring the right info before you share the URL.</value>
   </data>
   <data name="TextBoxPlayAudioLimitsPerAppSuffix" xml:space="preserve">
     <value> times(per app)</value>

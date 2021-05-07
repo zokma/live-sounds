@@ -1277,17 +1277,19 @@ namespace LiveSounds
                 this.userWebInfoWindow = new UserWebInfoWindow();
             }
 
-            double top = 0.0d;
+            this.userWebInfoWindow.Reset(this.serviceManager?.SoundId);
+
+            double top  = 0.0d;
             double left = 0.0d;
 
             if (this.WindowState == WindowState.Normal)
             {
-                top = this.Top;
+                top  = this.Top;
                 left = this.Left;
             }
 
-            this.userWebInfoWindow.Top = (top + (this.Height / 2)) - (this.userWebInfoWindow.Height / 2);
-            this.userWebInfoWindow.Left = (left + (this.Width / 2)) - (this.userWebInfoWindow.Width / 2);
+            this.userWebInfoWindow.Top  = (top + (this.Height / 2)) - (this.userWebInfoWindow.Height / 2);
+            this.userWebInfoWindow.Left = (left + (this.Width / 2)) - (this.userWebInfoWindow.Width  / 2);
 
             if (this.userWebInfoWindow.Visibility == Visibility.Visible)
             {
