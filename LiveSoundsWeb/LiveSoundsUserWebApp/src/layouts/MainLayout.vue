@@ -1,106 +1,59 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="leftDrawerOpen = !leftDrawerOpen"
-        />
+  <q-layout view="hHh lpR fFf">
 
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
+    <q-header reveal elevated class="bg-primary text-white">
+      <q-btn
+        flat
+        dense
+        round
+        icon="speaker"
+      />
 
-        <div>Quasar v{{ $q.version }}</div>
-      </q-toolbar>
+      {{$t('appTitle')}}
     </q-header>
-
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-      content-class="bg-grey-1"
-    >
-      <q-list>
-        <q-item-label
-          header
-          class="text-grey-8"
-        >
-          Essential Links
-        </q-item-label>
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
-    </q-drawer>
 
     <q-page-container>
       <router-view />
     </q-page-container>
+
+    <q-footer reveal elevated class="bg-grey-8 text-white">
+      <div class="q-pa-sm q-gutter-sm text-right">
+        <q-btn type="a" :href="$t('zokmaNetLink')"      target="_blank" :label="$t('zokmaNetInfo')"  icon-right="open_in_new" color="indigo" size="sm"/>
+        <q-btn type="a" :href="$t('termsOfUseLink')"    target="_blank" :label="$t('termsOfUse')"    icon-right="open_in_new" color="purple" size="sm"/>
+        <q-btn type="a" :href="$t('privacyPolicyLink')" target="_blank" :label="$t('privacyPolicy')" icon-right="open_in_new" color="pink"   size="sm"/>
+      </div>
+      <div class="q-pa-sm q-gutter-md text-right text-caption">
+        {{this.developingYear}} {{$t('developedByZokmaLabs')}}
+      </div>
+    </q-footer>
+
   </q-layout>
 </template>
 
 <script>
-import EssentialLink from 'components/EssentialLink.vue'
 
-const linksData = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-];
+const DEVELOPED_YEAR = 2021;
 
 export default {
-  name: 'MainLayout',
-  components: { EssentialLink },
+  created () {
+
+    this.$i18n.locale = this.$q.lang.getLocale();
+
+    document.title = this.$t('appTitle');
+
+    var year = (new Date()).getFullYear();
+
+    if(year > DEVELOPED_YEAR) {
+      this.developingYear = DEVELOPED_YEAR.toString() + ' - ' + year;
+    }
+    else {
+      this.developingYear = DEVELOPED_YEAR.toString();
+    }
+
+  },
   data () {
     return {
-      leftDrawerOpen: false,
-      essentialLinks: linksData
+      developingYear: '',
     }
   }
 }

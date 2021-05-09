@@ -2,12 +2,12 @@
 // so you can safely delete all default props below
 
 export default {
-  appTitle: 'LIVE SOUNDS',
-  zokmaNetInfo: 'ZOKMA.NET',
+  appTitle: 'リモート DE ポン!',
+  zokmaNetInfo: '運用: ZOKMA.NET',
   zokmaNetLink: 'https://zokma.net/',
-  termsOfUse: 'Terms of Use',
+  termsOfUse: '利用規約',
   termsOfUseLink: 'https://zokma.net/terms-of-use/',
-  privacyPolicy: 'Privacy Policy',
+  privacyPolicy: 'プライバシーポリシー',
   privacyPolicyLink: 'https://zokma.net/privacy-policy/',
   developedByZokmaLabs: 'DEVELOPED BY ZOKMA LABS.',
 }
