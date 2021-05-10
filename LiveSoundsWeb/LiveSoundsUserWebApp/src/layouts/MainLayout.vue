@@ -41,7 +41,7 @@ export default {
 
     document.title = this.$t('appTitle');
 
-    var year = (new Date()).getFullYear();
+    const year = (new Date()).getFullYear();
 
     if(year > DEVELOPED_YEAR) {
       this.developingYear = DEVELOPED_YEAR.toString() + ' - ' + year;
