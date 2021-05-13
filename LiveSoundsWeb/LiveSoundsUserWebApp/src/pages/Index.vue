@@ -37,6 +37,33 @@
             allowfullscreen></iframe>
         </div>
       </div>
+      <div class="q-ma-md">
+        <q-knob
+          show-value
+          :max="100"
+          :min="1"
+          class="text-white q-ma-md"
+          v-model="audioRenderVolume"
+          size="94px"
+          :thickness="0.2"
+          color="purple-4"
+          center-color="grey-8"
+          track-color="transparent">
+          <q-icon name="volume_up" />
+          {{audioRenderVolume}}
+        </q-knob>
+        <div class="q-pa-md q-gutter-md">
+          <q-btn v-for="item in resouces" :key="item.id" 
+            :label="item.name" 
+            @click="audioRenderButtonClicked(item.id)"
+            :disable="!audioRenderEnabled"
+            icon-right="play_circle_outline"
+            align="between"
+            color="purple-6"
+            class="glossy"
+            style="width: 240px" />
+        </div>
+      </div>
     </div>
     <div v-else-if="isLoadFailed">
       <div class="q-mt-md q-ml-md q-mr-md text-h4 text-weight-bolder" style="opacity:.4">
@@ -66,6 +93,11 @@ const SPINNERS_LOADING = [
   QSpinnerIos,
 ];
 
+const SPINNERS_AUDIO_RENDERING = [
+  QSpinnerAudio,
+  QSpinnerBars,
+];
+
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
@@ -92,6 +124,10 @@ function sendApiGet(url, headers, successStatus) {
   return sendApiRequest(url, 'get', headers, undefined, successStatus);
 }
 
+function sendApiPost(url, headers, data, successStatus) {
+  return sendApiRequest(url, 'post', headers, data, successStatus);
+}
+
 export default {
   name: 'PageIndex',
   created() {
@@ -110,6 +146,8 @@ export default {
       isLoadFailed:       false,
       resouceId:          null,
       resouces:           null,
+      audioRenderVolume:  100,
+      audioRenderEnabled: true,
       canLiveEmbedded:    false,
       canStreamEmbedded:  false,
       canCommentEmbedded: false,
@@ -204,6 +242,108 @@ export default {
       }
 
       this.embedProp = prop;
+    },
+    async audioRenderButtonClicked(id) {
+
+      this.audioRenderEnabled = false;
+
+      const render = {
+        audioId: id,
+        soundId: this.resouceId,
+        volume: this.audioRenderVolume,
+      }
+
+
+      let isAudioRenderBlocked = false;
+      let res;
+
+      try {
+        res = await sendApiPost(
+          Settings.API_RENDER_AUDIO,
+          {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Accept': 'application/json',
+          },
+          render,
+          204
+        );
+
+        this.$q.notify({
+          spinner: SPINNERS_AUDIO_RENDERING[getRandomInt(SPINNERS_AUDIO_RENDERING.length)],
+          message: this.$t('nowAudioRendering'),
+          color: 'indigo-9',
+          timeout: Settings.NOW_PLAYING_DURATION_MS,
+        });
+
+      } catch (error) {
+        console.error(error);
+
+        res = error.response;
+
+        if(res && res.status === 429) {
+          isAudioRenderBlocked = true;
+
+          let retryAfter = parseInt(res.headers['retry-after'], 10);
+
+          if(retryAfter !== NaN && retryAfter > 0 && retryAfter <= 60) {
+            retryAfter *= 1000;
+          }
+          else {
+            retryAfter = Settings.RETRY_AFTER_DEFALT_MS;
+          }
+
+          const message = this.$t('audioRenderRetryAfter');
+          const prefix  = this.$t('prefixWaitForSeconds');
+          const postfix = this.$t('postfixWaitForSeconds');
+
+          const retryNotif = this.$q.notify({
+            group: false,
+            timeout: 0,
+            spinner: QSpinnerClock,
+            message: message,
+            caption: prefix + (retryAfter / 1000) + postfix,
+            color:   'red-13'
+          });
+
+          const interval = setInterval(() => {
+            retryAfter -= Settings.RETRY_AFTER_NOTIFY_INTERVAL_MS;
+
+            if(retryAfter <= 0) {
+
+              this.audioRenderEnabled = true;
+
+              retryNotif({
+                icon: 'done',
+                spinner: false,
+                message: this.$t('audioRenderRetryAfterDone'),
+                caption: prefix + 0 + postfix,
+                color: 'blue-14',
+                timeout: Settings.RETRY_AFTER_DONE_NOTIFY_MS,
+              });
+
+              clearInterval(interval);
+            }
+            else {
+              retryNotif({
+                caption: prefix + (retryAfter / 1000) + postfix,
+              });
+            }
+          }, Settings.RETRY_AFTER_NOTIFY_INTERVAL_MS);
+        }
+        else {
+          this.$q.notify({
+            icon: 'report_problem',
+            message: this.$t('audioRenderFailed'),
+            color: 'deep-orange-7',
+            timeout: Settings.ERROR_NOTIFY_DURATION_MS,
+          });
+        }
+      }
+      finally {
+        if(!isAudioRenderBlocked) {
+          this.audioRenderEnabled = true;
+        }
+      }
     },
   }
 }
