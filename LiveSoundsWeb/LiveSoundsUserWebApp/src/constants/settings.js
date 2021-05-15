@@ -18,69 +18,102 @@ export default Object.freeze({
     EMBEDDED_PROPS: 
     [
         {
-            threshold: 1680,
+            threshold: 2560,
+            stream: {
+                width:  1920,
+                height: 1080,
+            },
+            comment: {
+                width:  640,
+                height: 1080,
+            },
+        },
+        {
+            threshold: 2218,
+            stream: {
+                width:  1664,
+                height: 936,
+            },
+            comment: {
+                width:  554,
+                height: 936,
+            },
+        },
+        {
+            threshold: 1878,
+            stream: {
+                width:  1408,
+                height: 792,
+            },
+            comment: {
+                width:  470,
+                height: 792,
+            },
+        },
+        {
+            threshold: 1707,
             stream: {
                 width:  1280,
                 height: 720,
             },
             comment: {
-                width:  400,
+                width:  427,
                 height: 720,
             },
         },
         {
-            threshold: 1424,
+            threshold: 1536,
             stream: {
-                width:  1024,
-                height: 576,
+                width:  1152,
+                height: 648,
             },
             comment: {
-                width:  400,
-                height: 576,
+                width:  384,
+                height: 648,
             },
         },
         {
-            threshold: 1360,
+            threshold: 1024,
             stream: {
-                width:  960,
-                height: 540,
+                width:  768,
+                height: 432,
             },
             comment: {
-                width:  400,
-                height: 540,
+                width:  256,
+                height: 432,
             },
         },
         {
-            threshold: 1136,
-            stream: {
-                width:  736,
-                height: 414,
-            },
-            comment: {
-                width:  400,
-                height: 414,
-            },
-        },
-        {
-            threshold: 1040,
+            threshold: 640,
             stream: {
                 width:  640,
                 height: 360,
             },
             comment: {
-                width:  400,
+                width:  256,
                 height: 360,
             },
         },
         {
-            threshold: 480,
+            threshold: 512,
             stream: {
-                width:  480,
-                height: 270,
+                width:  512,
+                height: 288,
             },
             comment: {
-                width:  300,
-                height: 270,
+                width:  256,
+                height: 360,
+            },
+        },
+        {
+            threshold: 384,
+            stream: {
+                width:  384,
+                height: 216,
+            },
+            comment: {
+                width:  256,
+                height: 360,
             },
         },
         {
@@ -91,7 +124,7 @@ export default Object.freeze({
             },
             comment: {
                 width:  256,
-                height: 270,
+                height: 360,
             },
         },
     ],

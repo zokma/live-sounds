@@ -8,7 +8,8 @@
         <div>
           <q-toggle
             v-if="canStreamEmbedded"
-            v-model="isStreamEmbedded"
+            :value="isStreamEmbedded"
+            @input="streamEmbeddedChanged"
             icon="live_tv"
             color="pink"
             :label="$t('embeddedLiveStream')"
@@ -16,7 +17,8 @@
           />
           <q-toggle
             v-if="canCommentEmbedded"
-            v-model="isCommentEmbedded"
+            :value="isCommentEmbedded"
+            @input="commentEmbeddedChanged"
             icon="comment"
             color="green"
             :label="$t('embeddedLiveComment')"
@@ -134,10 +136,11 @@ export default {
     this.init();
   },
   mounted() {
-    this.changeEmbeddedProp();
+
     window.addEventListener('resize', this.changeEmbeddedProp);
   },
   beforeDestroy() {
+    
     window.removeEventListener('resize', this.changeEmbeddedProp);
   },
   data () {
@@ -227,21 +230,62 @@ export default {
     },
     changeEmbeddedProp() {
 
+      if(!this.isStreamEmbedded && !this.isCommentEmbedded) {
+        return;
+      }
+
       const width = window.innerWidth - Settings.EMBEDDED_MARGIN;
       const count = Settings.EMBEDDED_PROPS.length;
 
+      const isStreamChecked  = this.isStreamEmbedded;
+      const isCommentChecked = this.isCommentEmbedded;
+      const isBothChecked    = (isStreamChecked && isCommentChecked)
+
       let prop = Settings.EMBEDDED_PROPS[count - 1];
+
+      let checkedWitdh;
 
       for (let i = 0; i < count; i++) {
         const item = Settings.EMBEDDED_PROPS[i];
 
-        if(width >= item.threshold) {
+        if(isBothChecked) {
+          checkedWitdh = item.threshold;
+        }
+        else if(isStreamChecked) {
+          checkedWitdh = item.stream.width;
+        }
+        else if(isCommentCheckedChecked) {
+          checkedWitdh = item.comment.width;
+        }
+        else {
+          // This code block will NEVER be entered.
+          // But this is safety switch.
+          checkedWitdh = Number.MAX_SAFE_INTEGER;
+        }
+
+        if(width >= checkedWitdh) {
           prop = item;
           break;
         }
       }
 
       this.embedProp = prop;
+    },
+    streamEmbeddedChanged(value, evt) {
+
+      this.isStreamEmbedded = value;
+
+      if(value) {
+        this.changeEmbeddedProp();
+      }
+    },
+    commentEmbeddedChanged(value, evt) {
+
+      this.isCommentEmbedded = value;
+
+      if(value) {
+        this.changeEmbeddedProp();
+      }
     },
     async audioRenderButtonClicked(id) {
 
