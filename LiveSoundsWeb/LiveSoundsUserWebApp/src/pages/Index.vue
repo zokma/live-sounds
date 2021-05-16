@@ -65,6 +65,12 @@
             class="glossy"
             style="width: 240px" />
         </div>
+        <div v-if="isChannelLinkEnabled">
+          <q-separator color="deep-purple-4" size="4px" inset class="q-mt-xl" />
+          <div v-if="channelType === 'YouTube'" class="q-ma-md">
+            <div ref="youtube_channel_link"></div>
+          </div>
+        </div>
       </div>
     </div>
     <div v-else-if="isLoadFailed">
@@ -104,7 +110,7 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
-function sleep(ms) {
+function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
@@ -132,10 +138,13 @@ function sendApiPost(url, headers, data, successStatus) {
 
 export default {
   name: 'PageIndex',
-  created() {
-    this.init();
-  },
-  mounted() {
+  async mounted() {
+
+    await this.init();
+
+    if(this.isChannelLinkEnabled) {
+      this.renderYouTubeChannelLink();
+    }
 
     window.addEventListener('resize', this.changeEmbeddedProp);
   },
@@ -145,20 +154,25 @@ export default {
   },
   data () {
     return {
-      isLoadSucceeded:    false,
-      isLoadFailed:       false,
-      resouceId:          null,
-      resouces:           null,
-      audioRenderVolume:  100,
-      audioRenderEnabled: true,
-      canLiveEmbedded:    false,
-      canStreamEmbedded:  false,
-      canCommentEmbedded: false,
-      isStreamEmbedded:   false,
-      isCommentEmbedded:  false,
-      embedStream:        null,
-      embedComment:       null,
-      embedProp:          null,
+      isLoadSucceeded:       false,
+      isLoadFailed:          false,
+      resouceId:             null,
+      resouces:              null,
+      channelType:           null,
+      channelId:             null,
+      isChannelLinkEnabled:  false,
+      channelLinkLayoutMode: null,
+      channelLinkCountMode:  null,
+      audioRenderVolume:     100,
+      audioRenderEnabled:    true,
+      canLiveEmbedded:       false,
+      canStreamEmbedded:     false,
+      canCommentEmbedded:    false,
+      isStreamEmbedded:      false,
+      isCommentEmbedded:     false,
+      embedStream:           null,
+      embedComment:          null,
+      embedProp:             null,
     }
   },
   methods: {
@@ -185,13 +199,18 @@ export default {
             {'Accept': 'application/json'},
             200
           );
-          
+         
           this.resouceId = res.data.id;
           this.resouces  = res.data.items;
 
+          this.channelType = res.data.channelType;
+
+          this.isChannelLinkEnabled = res.data.channelLinkEnabled;
+          this.channelId            = res.data.channelId;
+
           // For now, embedded "YouTube" is tested.
-          // Twitch to be added, shortly.
-          if(res.data.channelType === 'YouTube') {
+          // "Twitch" to be added, shortly.
+          if(this.channelType === 'YouTube') {
 
             if(res.data.streamingId) {
               this.embedStream  = 'https://www.youtube.com/embed/'       + encodeURIComponent(res.data.streamingId) + '?autoplay=1&mute=1';
@@ -200,12 +219,16 @@ export default {
               this.canStreamEmbedded  = true;
               this.canCommentEmbedded = true;
             }
-            else if(res.data.channelId) {
-              this.embedStream = 'https://www.youtube.com/embed/live_stream?channel=' + encodeURIComponent(res.data.channelId) + '&autoplay=1&mute=1';
+            else if(res.data.channelEmbedded && res.data.channelId) {
+              this.embedStream = 'https://www.youtube.com/embed/live_stream?channel=' + encodeURIComponent(this.channelId) + '&autoplay=1&mute=1';
               
               this.canStreamEmbedded = true;
             }
 
+            if(this.isChannelLinkEnabled) {
+              this.channelLinkLayoutMode = res.data.channelLinkLayoutMode;
+              this.channelLinkCountMode  = res.data.channelLinkCountMode;
+            }
           }
 
           this.canLiveEmbedded = (this.canStreamEmbedded || this.canCommentEmbedded);
@@ -220,13 +243,28 @@ export default {
       const diff = Settings.APP_LOADING_MIN_MS - (Date.now() - offset);
 
       if(diff > 0) {
-        await sleep(diff);
+        await delay(diff);
       }
 
       this.isLoadSucceeded = isSucceeded;
       this.isLoadFailed    = !isSucceeded;
 
       this.$q.loading.hide();
+    },
+    renderYouTubeChannelLink() {
+
+      if(!this.$refs.youtube_channel_link) {
+        return;
+      }
+
+      const options = {
+        'channelid': this.channelId,
+        'layout':    this.channelLinkLayoutMode,
+        'count':     this.channelLinkCountMode,
+      };
+
+      gapi.ytsubscribe.render(this.$refs.youtube_channel_link, options);
+
     },
     changeEmbeddedProp() {
 
