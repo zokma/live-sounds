@@ -132,8 +132,17 @@
   <data name="ButtonCopyURLToClipboard" xml:space="preserve">
     <value>COPY URL TO CLIPBOARD</value>
   </data>
+  <data name="ButtonInitialSetup" xml:space="preserve">
+    <value>Initial Setup</value>
+  </data>
   <data name="ButtonOpenDataDirectory" xml:space="preserve">
     <value>OPEN DATA FOLDER</value>
+  </data>
+  <data name="ButtonOpenNgrokWeb" xml:space="preserve">
+    <value>Open ngrok Web site with Web Browser</value>
+  </data>
+  <data name="ButtonOpenToolsDirectory" xml:space="preserve">
+    <value>Open Tools Folder (location to copy ngrok)</value>
   </data>
   <data name="ButtonOpenUserWebPage" xml:space="preserve">
     <value>OPEN USER WEB PAGE</value>
@@ -173,6 +182,9 @@
   </data>
   <data name="GroupBoxAudioSettings" xml:space="preserve">
     <value>Audio Settings</value>
+  </data>
+  <data name="InitialSetupWindowTitle" xml:space="preserve">
+    <value>Initial Settup</value>
   </data>
   <data name="MaximizeWindow" xml:space="preserve">
     <value>Maximize the Window</value>
@@ -295,6 +307,24 @@ It will stop automatically after {0:0.##} hours.</value>
   <data name="TextBlockCautionTokenInfo" xml:space="preserve">
     <value>NEVER SHARE TOKEN INFO WITH OTHERS</value>
   </data>
+  <data name="TextBlockInitialSetupDesc" xml:space="preserve">
+    <value>This is an Initial Setup procedure.</value>
+  </data>
+  <data name="TextBlockInitialSetupInfo" xml:space="preserve">
+    <value>This application uses ngrok. If you have not yet used ngrok, you will need to get free account and setup to use this application.</value>
+  </data>
+  <data name="TextBlockInitialSetupStep01" xml:space="preserve">
+    <value>Step1. Create Account(Sign up) and Download ngrok.</value>
+  </data>
+  <data name="TextBlockInitialSetupStep02" xml:space="preserve">
+    <value>Step2. Extract the downloaded file and locate "ngrok.exe" or "ngrok" into "Tools" folder.</value>
+  </data>
+  <data name="TextBlockInitialSetupStep03" xml:space="preserve">
+    <value>Step3. Copy and Paste "Auth Token" of ngrok and Press "Apply".</value>
+  </data>
+  <data name="TextBlockInitialSetupStep03Warning" xml:space="preserve">
+    <value>This will override the current Auth Token of ngrok in this PC user, if you have already set up a ngrok Auth Token.</value>
+  </data>
   <data name="TextBlockNetworkSettings" xml:space="preserve">
     <value>Network Settings</value>
   </data>
@@ -313,11 +343,20 @@ It will stop automatically after {0:0.##} hours.</value>
   <data name="TextBlockPreset" xml:space="preserve">
     <value>Preset</value>
   </data>
+  <data name="TextBlockSetupNgrokAuthTokenFailed" xml:space="preserve">
+    <value>Failed to setup ngrok Auth Token.</value>
+  </data>
+  <data name="TextBlockSetupNgrokAuthTokenSucceeded" xml:space="preserve">
+    <value>ngrok Auth Token was setup.</value>
+  </data>
   <data name="TextBlockUserWebPage" xml:space="preserve">
     <value>You can share the URL to your viewers.</value>
   </data>
   <data name="TextBlockUserWebPageCaution" xml:space="preserve">
     <value>Please take care you are sahring the right info before you share the URL.</value>
+  </data>
+  <data name="TextBoxHintNgrokAuthToken" xml:space="preserve">
+    <value>Your ngrok Auth Token</value>
   </data>
   <data name="TextBoxPlayAudioLimitsPerAppSuffix" xml:space="preserve">
     <value> times(per app)</value>

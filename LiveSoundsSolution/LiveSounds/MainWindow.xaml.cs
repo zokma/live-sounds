@@ -1342,5 +1342,23 @@ namespace LiveSounds
         {
             ShowUserWebPageInfo();
         }
+
+        private void ButtonInitialSetup_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.GridApplicationMain.IsEnabled = false;
+
+                var initialSetupWindow = new InitialSetupWindow();
+
+                initialSetupWindow.Owner = this;
+
+                initialSetupWindow.ShowDialog();
+            }
+            finally
+            {
+                this.GridApplicationMain.IsEnabled = true;
+            }
+        }
     }
 }

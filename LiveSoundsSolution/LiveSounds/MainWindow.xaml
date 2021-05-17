@@ -127,7 +127,7 @@
                                         </Grid>
                                     </StackPanel>
                                 </GroupBox>
-                                <GroupBox Header="{x:Static l10n:LocalizedInfo.GroupBoxApplicationControl}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,24,0,24" Width="540" FontSize="14">
+                                <GroupBox Header="{x:Static l10n:LocalizedInfo.GroupBoxApplicationControl}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="24,24,0,0" Width="540" FontSize="14">
                                     <StackPanel>
                                         <Grid>
                                             <Grid.ColumnDefinitions>
@@ -226,6 +226,12 @@
                                         </Grid>
                                     </StackPanel>
                                 </GroupBox>
+                                <Grid Margin="24,14,0,24" Width="540" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                    <Button x:Name="ButtonInitialSetup" 
+                                        Margin="0,0,4,0" Padding="24,4,24,4"
+                                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                                        Content="{x:Static l10n:LocalizedInfo.ButtonInitialSetup}" HorizontalAlignment="Right" VerticalAlignment="Top" Click="ButtonInitialSetup_Click"/>
+                                </Grid>
                                 <Grid Margin="0,0,0,24">
                                     <DataGrid x:Name="DataGridHistory" 
                                               ItemsSource="{Binding}" 

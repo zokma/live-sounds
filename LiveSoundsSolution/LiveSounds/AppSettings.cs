@@ -213,7 +213,10 @@ namespace LiveSounds
         /// </summary>
         public const int SERVICE_VALIDITY_SECONDS_DEFAULT = 1 * 24 * 60 * 60;
 
-
+        /// <summary>
+        /// Regex timeout normal in millisecounds.
+        /// </summary>
+        public const int REGEX_TIMEOUT_NORMAL_IN_MILLISECONDS = 1500;
 
         /// <summary>
         /// Json encoder.
