@@ -997,7 +997,14 @@ namespace LiveSounds
 
         private void ButtonOpenDataDirectory_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start("EXPLORER.EXE", this.dataDirectory.BaseDirectory);
+            var info = new ProcessStartInfo()
+            {
+                FileName        = "EXPLORER.EXE",
+                Arguments       = $"\"{this.dataDirectory.BaseDirectory}\"",
+                UseShellExecute = false,
+            };
+
+            using var process = Process.Start(info);
         }
 
         private async void ButtonReloadDataPresets_Click(object sender, RoutedEventArgs e)
