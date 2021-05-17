@@ -27,14 +27,14 @@
         </div>
         <div class="q-ma-md">
           <iframe v-if="isStreamEmbedded"
-            :src="embedStream" 
-            :width="embedProp.stream.width" :height="embedProp.stream.height" 
+            :src="embeddedStream" 
+            :width="embeddedProp.stream.width" :height="embeddedProp.stream.height" 
             frameborder="0" 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
             allowfullscreen></iframe>
           <iframe v-if="isCommentEmbedded" 
-            :src="embedComment" 
-            :width="embedProp.comment.width" :height="embedProp.comment.height" 
+            :src="embeddedComment" 
+            :width="embeddedProp.comment.width" :height="embeddedProp.comment.height" 
             frameborder="0"
             allowfullscreen></iframe>
         </div>
@@ -170,9 +170,9 @@ export default {
       canCommentEmbedded:    false,
       isStreamEmbedded:      false,
       isCommentEmbedded:     false,
-      embedStream:           null,
-      embedComment:          null,
-      embedProp:             null,
+      embeddedStream:        null,
+      embeddedComment:       null,
+      embeddedProp:          null,
     }
   },
   methods: {
@@ -213,14 +213,14 @@ export default {
           if(this.channelType === 'YouTube') {
 
             if(res.data.streamingId) {
-              this.embedStream  = 'https://www.youtube.com/embed/'       + encodeURIComponent(res.data.streamingId) + '?autoplay=1&mute=1';
-              this.embedComment = 'https://www.youtube.com/live_chat?v=' + encodeURIComponent(res.data.streamingId) + '&embed_domain=' + encodeURIComponent(window.location.hostname);
+              this.embeddedStream  = 'https://www.youtube.com/embed/'       + encodeURIComponent(res.data.streamingId) + '?autoplay=1&mute=1';
+              this.embeddedComment = 'https://www.youtube.com/live_chat?v=' + encodeURIComponent(res.data.streamingId) + '&embed_domain=' + encodeURIComponent(window.location.hostname);
 
               this.canStreamEmbedded  = true;
               this.canCommentEmbedded = true;
             }
             else if(res.data.channelEmbedded && res.data.channelId) {
-              this.embedStream = 'https://www.youtube.com/embed/live_stream?channel=' + encodeURIComponent(this.channelId) + '&autoplay=1&mute=1';
+              this.embeddedStream = 'https://www.youtube.com/embed/live_stream?channel=' + encodeURIComponent(this.channelId) + '&autoplay=1&mute=1';
               
               this.canStreamEmbedded = true;
             }
@@ -307,7 +307,7 @@ export default {
         }
       }
 
-      this.embedProp = prop;
+      this.embeddedProp = prop;
     },
     streamEmbeddedChanged(value, evt) {
 
