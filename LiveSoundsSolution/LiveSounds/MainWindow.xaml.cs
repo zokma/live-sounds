@@ -198,6 +198,16 @@ namespace LiveSounds
         /// </summary>
         private UserWebInfoWindow userWebInfoWindow;
 
+        /// <summary>
+        /// Saved width to restore size.
+        /// </summary>
+        private double savedWidth;
+
+        /// <summary>
+        /// Saved height to restore size.
+        /// </summary>
+        private double savedHeight;
+
 
         public MainWindow()
         {
@@ -598,10 +608,18 @@ namespace LiveSounds
         {
             var settings = App.Settings;
 
-            settings.WindowWidth  = (int)this.Width;
-            settings.WindowHeight = (int)this.Height;
+            if (this.WindowState == WindowState.Normal)
+            {
+                settings.WindowWidth  = (int)this.Width;
+                settings.WindowHeight = (int)this.Height;
+            }
+            else
+            {
+                settings.WindowWidth  = (int)this.savedWidth;
+                settings.WindowHeight = (int)this.savedHeight;
+            }
 
-            if(settings.WindowStartupLocationName != null)
+            if (settings.WindowStartupLocationName != null)
             {
                 settings.WindowStartupLocation = this.WindowStartupLocation;
             }
@@ -685,12 +703,29 @@ namespace LiveSounds
         {
             if (this.WindowState != WindowState.Maximized)
             {
+                // Save the size to restore;
+                this.savedWidth  = this.Width;
+                this.savedHeight = this.Height;
+
                 this.WindowState = WindowState.Maximized;
             }
             else
             {
                 this.WindowState = WindowState.Normal;
             }
+        }
+
+
+        /// <summary>
+        /// Minimized the Window.
+        /// </summary>
+        private void MinimizeWindow()
+        {
+            // Save the size to restore;
+            this.savedWidth  = this.Width;
+            this.savedHeight = this.Height;
+
+            this.WindowState = WindowState.Minimized;
         }
 
         /// <summary>
@@ -912,7 +947,7 @@ namespace LiveSounds
 
         private void ButtonWindowMinimize_Click(object sender, RoutedEventArgs e)
         {
-            this.WindowState = WindowState.Minimized;
+            MinimizeWindow();
         }
 
         private void ButtonWindowMaximize_Click(object sender, RoutedEventArgs e)
@@ -942,7 +977,7 @@ namespace LiveSounds
 
         private void MenuItemMinimizeWindow_Click(object sender, RoutedEventArgs e)
         {
-            this.WindowState = WindowState.Minimized;
+            MinimizeWindow();
         }
 
         private void ButtonTitleIcon_Click(object sender, RoutedEventArgs e)
