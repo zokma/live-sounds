@@ -220,7 +220,7 @@ namespace LiveSounds
 
                 var settings = App.Settings;
 
-                this.serviceManager = new ServiceManager(this.notification, settings.PlayAudioLimitsPerMinutePerApp, settings.PlayAudioLimitsPerMinutePerUser, this.Dispatcher, performStopService);
+                this.serviceManager = new ServiceManager(this.notification, settings.PlayAudioLimitsPerMinutePerApp, settings.PlayAudioLimitsPerMinutePerUser, this.Dispatcher, PerformStopService);
 
                 this.notification.ShowNotification(LocalizedInfo.MessageAppStartSuccess, NotificationLevel.Success);
 
@@ -520,8 +520,6 @@ namespace LiveSounds
         /// <param name="selectedId">Id for the selected item.</param>
         private void LoadDataPresetMenuItems(string selectedId)
         {
-            var settings = App.Settings;
-
             this.dataPresetSelectedIndex = 0;
 
             var dataPresets = new List<DataPresetItem>();
@@ -860,9 +858,10 @@ namespace LiveSounds
             {
                 this.GridApplicationMain.IsEnabled = false;
 
-                var tokenSettingWindow = new TokenSettingWindow();
-
-                tokenSettingWindow.Owner = this;
+                var tokenSettingWindow = new TokenSettingWindow
+                {
+                    Owner = this
+                };
 
                 bool? result = tokenSettingWindow.ShowDialog();
 
@@ -884,9 +883,7 @@ namespace LiveSounds
 
         private void ButtonWindowClose_MouseEnter(object sender, MouseEventArgs e)
         {
-            var button = sender as Button;
-
-            if(button != null)
+            if (sender is Button button)
             {
                 button.Background = SOLID_COLOR_BRUSH_RED;
             }
@@ -894,9 +891,7 @@ namespace LiveSounds
 
         private void ButtonWindow_MouseLeave(object sender, MouseEventArgs e)
         {
-            var button = sender as Button;
-
-            if (button != null)
+            if (sender is Button button)
             {
                 button.Background = SOLID_COLOR_BRUSH_TRANSPARENT;
             }
@@ -904,9 +899,7 @@ namespace LiveSounds
 
         private void ButtonWindow_MouseEnter(object sender, MouseEventArgs e)
         {
-            var button = sender as Button;
-
-            if (button != null)
+            if (sender is Button button)
             {
                 button.Background = SOLID_COLOR_BRUSH_GRAY;
             }
@@ -1168,7 +1161,7 @@ namespace LiveSounds
         /// <summary>
         /// Performs clicking ButtonStop.
         /// </summary>
-        private void performButtonStopClick()
+        private void PerformButtonStopClick()
         {
             if (this.ButtonStop.IsEnabled)
             {
@@ -1179,16 +1172,16 @@ namespace LiveSounds
         /// <summary>
         /// Performs stopping service.
         /// </summary>
-        private void performStopService()
+        private void PerformStopService()
         {
             if (this.Dispatcher.CheckAccess())
             {
-                performButtonStopClick();
+                PerformButtonStopClick();
             }
             else
             {
                 this.Dispatcher.Invoke(
-                    () => performButtonStopClick()
+                    () => PerformButtonStopClick()
                     );
             }
         }
@@ -1349,9 +1342,10 @@ namespace LiveSounds
             {
                 this.GridApplicationMain.IsEnabled = false;
 
-                var initialSetupWindow = new InitialSetupWindow();
-
-                initialSetupWindow.Owner = this;
+                var initialSetupWindow = new InitialSetupWindow
+                {
+                    Owner = this
+                };
 
                 initialSetupWindow.ShowDialog();
             }
