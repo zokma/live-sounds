@@ -437,6 +437,8 @@ namespace LiveSounds.Service
                     catch (HttpRequestException hre)
                     {
                         Log.Warning(hre, "Error on creating sound.");
+
+                        this.notification.ShowNotification(LocalizedInfo.MessageHttpRequestFailed, Notification.NotificationLevel.Error);
                     }
                     catch(JsonException jex)
                     {

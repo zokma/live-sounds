@@ -215,6 +215,9 @@ Please check you can hear sounds.</value>
     <value>The size of HTTP request is too large.
 Please contact the application developer.</value>
   </data>
+  <data name="MessageHttpRequestFailed" xml:space="preserve">
+    <value>Failed to communicate with server. Please check network connectivity. Maybe the server is down.</value>
+  </data>
   <data name="MessageInitAudioPlayerFailed" xml:space="preserve">
     <value>Faild to init Audio Player.</value>
   </data>

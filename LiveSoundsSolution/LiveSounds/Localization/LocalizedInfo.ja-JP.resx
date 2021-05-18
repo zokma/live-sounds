@@ -212,6 +212,9 @@
     <value>HTTPリクエストのサイズが大きすぎます。
 このアプリケーションの開発元にお問い合わせください。</value>
   </data>
+  <data name="MessageHttpRequestFailed" xml:space="preserve">
+    <value>サーバとの通信に失敗しました。ネットワークを確認ください。サーバがダウンしているかもしれません。</value>
+  </data>
   <data name="MessageInitAudioPlayerFailed" xml:space="preserve">
     <value>オーディオプレイヤーの初期化に失敗しました。</value>
   </data>

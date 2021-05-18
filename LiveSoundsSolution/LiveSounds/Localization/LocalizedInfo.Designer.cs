@@ -351,6 +351,15 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to communicate with server. Please check network connectivity. Maybe the server is down..
+        /// </summary>
+        public static string MessageHttpRequestFailed {
+            get {
+                return ResourceManager.GetString("MessageHttpRequestFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Faild to init Audio Player..
         /// </summary>
         public static string MessageInitAudioPlayerFailed {
