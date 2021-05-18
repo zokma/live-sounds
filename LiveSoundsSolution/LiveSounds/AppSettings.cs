@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LiveSounds.Localization;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -141,7 +142,7 @@ namespace LiveSounds
         /// <summary>
         /// Network port default.
         /// </summary>
-        public const int LOCAL_PORT_DEFAULT = 8080;
+        public const int LOCAL_PORT_DEFAULT = 8780;
 
         /// <summary>
         /// Ngrok api port default.
@@ -839,6 +840,12 @@ namespace LiveSounds
                 this.RenderModeName = value.ToString();
             }
         }
+
+        /// <summary>
+        /// Ngrok region name.
+        /// </summary>
+        [JsonInclude]
+        public string NgrokRegion = LocalizedInfo.NgrokRegion;
 
         /// <summary>
         /// Port for Ngrok api.

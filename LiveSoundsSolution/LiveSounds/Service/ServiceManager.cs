@@ -23,7 +23,7 @@ namespace LiveSounds.Service
     /// <summary>
     /// Service Manager.
     /// </summary>
-    internal class ServiceManager
+    internal class ServiceManager : IDisposable
     {
         /// <summary>
         /// Secret length;
@@ -101,6 +101,11 @@ namespace LiveSounds.Service
         private RateLimitManager rateLimitManager;
 
         /// <summary>
+        /// Ngrok manager.
+        /// </summary>
+        private NgrokManager ngrokManager;
+
+        /// <summary>
         /// Play Audio Limit per application.
         /// </summary>
         public int PlayAudioLimitsPerApp 
@@ -161,16 +166,21 @@ namespace LiveSounds.Service
         /// HTTP Listener.
         /// </summary>
         private HttpListener listener;
+        private bool disposedValue;
 
         /// <summary>
         /// Creates ServiceManager.
         /// </summary>
         /// <param name="notification">Notification manager.</param>
+        /// <param name="ngrokApiPort">Ngrok Api port.</param>
         /// <param name="playAudioLimitsPerApp">Play Audio Limit per application.</param>
         /// <param name="playAudioLimitsPerUser">Play Audio Limit per user.</param>
-        public ServiceManager(NotificationManager notification, int playAudioLimitsPerApp, int playAudioLimitsPerUser, Dispatcher dispatcher, Action autoCloseAction)
+        /// <param name="dispatcher">Dispather.</param>
+        /// <param name="autoCloseAction">Action for auto close.</param>
+        public ServiceManager(NotificationManager notification, int ngrokApiPort, int playAudioLimitsPerApp, int playAudioLimitsPerUser, Dispatcher dispatcher, Action autoCloseAction)
         {
             this.notification     = notification;
+            this.ngrokManager     = new NgrokManager(ngrokApiPort);
             this.rateLimitManager = new RateLimitManager()
             {
                 GlobalLimit = playAudioLimitsPerApp,
@@ -365,7 +375,7 @@ namespace LiveSounds.Service
             this.cancellationTokenSource = new CancellationTokenSource();
             this.cancellationToken       = this.cancellationTokenSource.Token;
 
-            var tunnelInfo = await NgrokManager.FindTunnel(settings.NgrokApiPort, this.cancellationToken);
+            var tunnelInfo = await this.ngrokManager.FindTunnel(config.ForwardingPort.Value, settings.NgrokRegion, this.cancellationToken);
 
             TimeSpan validityPeriod = TimeSpan.Zero;
 
@@ -506,6 +516,36 @@ namespace LiveSounds.Service
 
                 this.IsRunning = false;
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    this.ngrokManager?.Dispose();
+                    this.ngrokManager = null;
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                disposedValue = true;
+            }
+        }
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~ServiceManager()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

@@ -220,7 +220,7 @@ namespace LiveSounds
 
                 var settings = App.Settings;
 
-                this.serviceManager = new ServiceManager(this.notification, settings.PlayAudioLimitsPerMinutePerApp, settings.PlayAudioLimitsPerMinutePerUser, this.Dispatcher, PerformStopService);
+                this.serviceManager = new ServiceManager(this.notification, settings.NgrokApiPort, settings.PlayAudioLimitsPerMinutePerApp, settings.PlayAudioLimitsPerMinutePerUser, this.Dispatcher, PerformStopService);
 
                 this.notification.ShowNotification(LocalizedInfo.MessageAppStartSuccess, NotificationLevel.Success);
 
@@ -973,9 +973,13 @@ namespace LiveSounds
 
         private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            this.GridApplicationMain.IsEnabled = false;
+
             this.notification.ShowNotification(LocalizedInfo.MessageExitingApplication, NotificationLevel.Info);
 
             await this.serviceManager?.Stop();
+            this.serviceManager?.Dispose();
+
             await DestroyAudioPlayer();
 
             Log.Information("Window Closing.");
@@ -1120,6 +1124,7 @@ namespace LiveSounds
                         AudioItems         = (this.ComboBoxDataPresets.SelectedItem as DataPresetItem)?.DataPreset?.AudioItems,
                         AudioDataDirectory = this.audioDataDirectory,
                         AudioPlayer        = this.audioPlayer,
+                        ForwardingPort     = AppSettings.GetNetworkPort(this.TextBoxLocalPort.Text, AppSettings.LOCAL_PORT_DEFAULT),
                     };
 
                     var info = await this.serviceManager.StartService(config);

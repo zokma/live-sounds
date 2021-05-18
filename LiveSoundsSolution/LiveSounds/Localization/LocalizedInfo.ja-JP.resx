@@ -266,6 +266,9 @@ Ngrokが起動しているか確認してください。</value>
   <data name="MinimizeWindow" xml:space="preserve">
     <value>ウィンドウを最小化する</value>
   </data>
+  <data name="NgrokRegion" xml:space="preserve">
+    <value>jp</value>
+  </data>
   <data name="NotificationDateTimeFormat" xml:space="preserve">
     <value>yyyy/MM/dd HH:mm:ss.fff</value>
   </data>

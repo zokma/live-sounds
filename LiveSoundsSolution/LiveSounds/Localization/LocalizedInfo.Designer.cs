@@ -506,6 +506,15 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to us.
+        /// </summary>
+        public static string NgrokRegion {
+            get {
+                return ResourceManager.GetString("NgrokRegion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to yyyy/MM/dd HH:mm:ss.fff.
         /// </summary>
         public static string NotificationDateTimeFormat {

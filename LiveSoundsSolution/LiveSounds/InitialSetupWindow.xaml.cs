@@ -1,4 +1,5 @@
 ﻿using LiveSounds.Localization;
+using LiveSounds.Ngrok;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -31,29 +32,9 @@ namespace LiveSounds
         private const string NGROK_WEB_SITE = "https://ngrok.com/";
 
         /// <summary>
-        /// Tools Directory name.
-        /// </summary>
-        private const string TOOLS_DIRECTORY_NAME = "Tools";
-
-        /// <summary>
         /// Regex to get ngrok auth token.
         /// </summary>
         private const string REGEX_TO_GET_NGROK_AUTH_TOKEN = "(^|(ngrok authtoken ))(?<AUTHTOKEN>[0-9a-zA-Z_-]{16,100})";
-
-        /// <summary>
-        /// ngrok exe name.
-        /// </summary>
-        internal const string NGROK_EXE_NAME = "ngrok.exe";
-
-        /// <summary>
-        /// Tools Directory.
-        /// </summary>
-        internal static readonly Pathfinder TOOLS_DIRECTORY;
-
-        static InitialSetupWindow()
-        {
-            TOOLS_DIRECTORY = App.UserDirectory.GetSubPathfinder(TOOLS_DIRECTORY_NAME);
-        }
 
         public InitialSetupWindow()
         {
@@ -78,26 +59,32 @@ namespace LiveSounds
 
         private void ButtonOpenToolsDirectory_Click(object sender, RoutedEventArgs e)
         {
-            if(!Directory.Exists(TOOLS_DIRECTORY.BaseDirectory))
+            string toolsDirectory = NgrokProcess.ToolsDirectory.BaseDirectory;
+
+            if(!Directory.Exists(toolsDirectory))
             {
-                Directory.CreateDirectory(TOOLS_DIRECTORY.BaseDirectory);
+                Directory.CreateDirectory(toolsDirectory);
             }
 
             var info = new ProcessStartInfo()
             {
-                FileName = "EXPLORER.EXE",
-                Arguments = $"\"{TOOLS_DIRECTORY.BaseDirectory}\"",
+                FileName  = "EXPLORER.EXE",
+                Arguments = $"\"{toolsDirectory}\"",
                 UseShellExecute = false,
             };
 
             using var process = Process.Start(info);
         }
 
-        private void SetupNgrokAuthToken(string authtoken)
+        /// <summary>
+        /// Sets up authtoken for ngrok.
+        /// </summary>
+        /// <param name="authtoken">authtoken for ngrok.</param>
+        private static void SetupNgrokAuthToken(string authtoken)
         {
             var info = new ProcessStartInfo()
             {
-                FileName = TOOLS_DIRECTORY.FindPathName(NGROK_EXE_NAME),
+                FileName  = NgrokProcess.NgrokExePath,
                 Arguments = $"authtoken {authtoken}",
                 UseShellExecute = false,
             };

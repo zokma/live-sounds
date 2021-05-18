@@ -268,6 +268,9 @@ It will stop automatically after {0:0.##} hours.</value>
   <data name="MinimizeWindow" xml:space="preserve">
     <value>Minimize the Window</value>
   </data>
+  <data name="NgrokRegion" xml:space="preserve">
+    <value>us</value>
+  </data>
   <data name="NotificationDateTimeFormat" xml:space="preserve">
     <value>yyyy/MM/dd HH:mm:ss.fff</value>
   </data>
