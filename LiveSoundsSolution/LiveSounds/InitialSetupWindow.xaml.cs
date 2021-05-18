@@ -34,7 +34,7 @@ namespace LiveSounds
         /// <summary>
         /// Regex to get ngrok auth token.
         /// </summary>
-        private const string REGEX_TO_GET_NGROK_AUTH_TOKEN = "(^|(ngrok authtoken ))(?<AUTHTOKEN>[0-9a-zA-Z_-]{16,100})";
+        private const string REGEX_TO_GET_NGROK_AUTH_TOKEN = "(^|(ngrok authtoken ))(?<AUTHTOKEN>[0-9a-zA-Z_-]{16,100})$";
 
         public InitialSetupWindow()
         {
