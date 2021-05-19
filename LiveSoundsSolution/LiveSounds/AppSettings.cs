@@ -76,7 +76,7 @@ namespace LiveSounds
         /// <summary>
         /// Web app uri pattern.
         /// </summary>
-        public const string ZOKMA_WEB_APP_URI_PATTERN = ZOKMA_WEB_APP_BASE_URI + "/livesounds/{0}";
+        public const string ZOKMA_WEB_APP_URI_PATTERN = ZOKMA_WEB_APP_BASE_URI + "/a/{0}";
 
         /// <summary>
         /// Audio sample rate min.
