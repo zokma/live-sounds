@@ -104,7 +104,7 @@ namespace LiveSounds
                 {
                     authtoken = authtoken.Trim();
 
-                    var regex = new Regex(REGEX_TO_GET_NGROK_AUTH_TOKEN, RegexOptions.None, TimeSpan.FromMilliseconds(AppSettings.REGEX_TIMEOUT_NORMAL_IN_MILLISECONDS));
+                    var regex = new Regex(REGEX_TO_GET_NGROK_AUTH_TOKEN, RegexOptions.None, AppSettings.REGEX_TIMEOUT_NORMAL);
 
                     var match = regex.Match(authtoken);
 

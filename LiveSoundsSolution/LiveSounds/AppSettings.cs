@@ -217,7 +217,7 @@ namespace LiveSounds
         /// <summary>
         /// Regex timeout normal in millisecounds.
         /// </summary>
-        public const int REGEX_TIMEOUT_NORMAL_IN_MILLISECONDS = 1500;
+        private const int REGEX_TIMEOUT_NORMAL_IN_MILLISECONDS = 5000;
 
         /// <summary>
         /// Json encoder.
@@ -286,6 +286,10 @@ namespace LiveSounds
         /// </summary>
         public static readonly TimeSpan HTTP_CLIENT_TIMEOUT = TimeSpan.FromSeconds(90.0f);
 
+        /// <summary>
+        /// Regex timeout normal.
+        /// </summary>
+        public static readonly TimeSpan REGEX_TIMEOUT_NORMAL = TimeSpan.FromMilliseconds(REGEX_TIMEOUT_NORMAL_IN_MILLISECONDS);
 
         /// <summary>
         /// Internal ETP.
