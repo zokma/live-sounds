@@ -950,13 +950,16 @@ namespace LiveSounds
 
                 bool? result = tokenSettingWindow.ShowDialog();
 
-                if (result == true)
+                if (!tokenSettingWindow.IsCancelled)
                 {
-                    this.notification.ShowNotification(LocalizedInfo.MessageTokenInfoUpdated, NotificationLevel.Info);
-                }
-                else
-                {
-                    this.notification.ShowNotification(LocalizedInfo.MessageTokenInfoUpdateError, NotificationLevel.Warn);
+                    if (result == true)
+                    {
+                        this.notification.ShowNotification(LocalizedInfo.MessageTokenInfoUpdated, NotificationLevel.Info);
+                    }
+                    else
+                    {
+                        this.notification.ShowNotification(LocalizedInfo.MessageTokenInfoUpdateError, NotificationLevel.Warn);
+                    }
                 }
             }
             finally

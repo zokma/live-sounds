@@ -21,6 +21,11 @@ namespace LiveSounds
     public partial class TokenSettingWindow : Window
     {
 
+        /// <summary>
+        /// true if the operation is cancelled.
+        /// </summary>
+        public bool IsCancelled { get; private set; }
+
         public TokenSettingWindow()
         {
             InitializeComponent();
@@ -58,6 +63,8 @@ namespace LiveSounds
         /// </summary>
         private void Cancel()
         {
+            this.IsCancelled = true;
+
             this.Close();
         }
 
