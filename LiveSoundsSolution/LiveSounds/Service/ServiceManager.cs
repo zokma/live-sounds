@@ -12,6 +12,7 @@ using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
@@ -49,6 +50,21 @@ namespace LiveSounds.Service
         /// Valid url pattern.
         /// </summary>
         private const string VALID_URL_PATTERN = "/{0}" + AUDIO_RENDERINGS_RESOURCE;
+
+        /// <summary>
+        /// Regex to capture stream id.
+        /// For now, only YouTube is supported.
+        /// </summary>
+        private const string REGEX_TO_CAPTURE_STREAM_ID = @"^https://(youtu\.be/|www\.youtube\.com/(embed/|watch\?(v=|.*&v=)))(?<STREAMID>[0-9a-zA-Z_-]{10,24})($|&|\?)";
+
+        /// <summary>
+        /// Regex to capture stream id.
+        /// For now, only YouTube is supported.
+        /// This regex is compiled and cached as static field for reuse.
+        /// However, it may be called a few times and may be better to instanciate before using.
+        /// For now, compiled and cached are adopted.
+        /// </summary>
+        public static readonly Regex RegexToCaptureStreamId = new Regex(REGEX_TO_CAPTURE_STREAM_ID, RegexOptions.Compiled, AppSettings.REGEX_TIMEOUT_NORMAL);
 
         /// <summary>
         /// Random generator.
@@ -325,6 +341,7 @@ namespace LiveSounds.Service
             }
         }
 
+
         /// <summary>
         /// Starts listening.
         /// </summary>
@@ -358,6 +375,38 @@ namespace LiveSounds.Service
             }
         }
 
+
+        /// <summary>
+        /// Gets StreamingId from Live Url.
+        /// </summary>
+        /// <param name="liveUrl">Stream Url.</param>
+        /// <returns>StreamingId.</returns>
+        private static string GetStreamingId(string liveUrl)
+        {
+            if (String.IsNullOrWhiteSpace(liveUrl))
+            {
+                return null;
+            }
+
+            string result = null;
+
+            try
+            {
+                var match = RegexToCaptureStreamId.Match(liveUrl);
+
+                if (match.Success)
+                {
+                    result = match.Groups["STREAMID"].Value;
+                }
+            }
+            catch (RegexMatchTimeoutException rmte)
+            {
+                Log.Error(rmte, "Error on parsing Live Stream Url.");
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Starts service.
         /// </summary>
@@ -368,6 +417,18 @@ namespace LiveSounds.Service
             if(this.IsRunning)
             {
                 await this.Stop();
+            }
+
+            string streamingId = null;
+
+            if(!String.IsNullOrWhiteSpace(config.LiveUrl))
+            {
+                streamingId = GetStreamingId(config.LiveUrl.Trim());
+
+                if(streamingId == null)
+                {
+                    this.notification.ShowNotification(LocalizedInfo.MessageLiveUrlNotSupportedWarning, Notification.NotificationLevel.Warn);
+                }
             }
 
             var settings = App.Settings;
@@ -409,7 +470,8 @@ namespace LiveSounds.Service
                                                 this.audioManager.AudioItems.ToArray(),
                                                 this.secretString,
                                                 settings.ServiceValiditySeconds,
-                                                null, null,
+                                                null, 
+                                                streamingId,
                                                 this.cancellationToken);
 
                         if (sound != null)

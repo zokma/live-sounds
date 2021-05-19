@@ -378,6 +378,15 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Live URL you specified is not supported. Live Embed may not work..
+        /// </summary>
+        public static string MessageLiveUrlNotSupportedWarning {
+            get {
+                return ResourceManager.GetString("MessageLiveUrlNotSupportedWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ngrok could not be detected.
         ///Please check if Ngrok is started..
         /// </summary>
@@ -700,6 +709,24 @@ namespace LiveSounds.Localization {
         public static string TextBlockInitialSetupStep03Warning {
             get {
                 return ResourceManager.GetString("TextBlockInitialSetupStep03Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Live URL.
+        /// </summary>
+        public static string TextBlockLiveUrl {
+            get {
+                return ResourceManager.GetString("TextBlockLiveUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Option) Your Live URL to embed Live in user web page..
+        /// </summary>
+        public static string TextBlockLiveUrlHint {
+            get {
+                return ResourceManager.GetString("TextBlockLiveUrlHint", resourceCulture);
             }
         }
         

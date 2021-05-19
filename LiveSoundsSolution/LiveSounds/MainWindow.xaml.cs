@@ -1214,6 +1214,7 @@ namespace LiveSounds
                         AudioDataDirectory = this.audioDataDirectory,
                         AudioPlayer        = this.audioPlayer,
                         ForwardingPort     = AppSettings.GetNetworkPort(this.TextBoxLocalPort.Text, AppSettings.LOCAL_PORT_DEFAULT),
+                        LiveUrl            = this.TextBoxLiveUrl.Text,
                     };
 
                     var info = await this.serviceManager.StartService(config);

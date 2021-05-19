@@ -175,6 +175,17 @@
                                         <Grid Margin="0,14,0,14">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <TextBlock Text="{x:Static l10n:LocalizedInfo.TextBlockLiveUrl}" FontSize="12" VerticalAlignment="Bottom"/>
+                                            <TextBox x:Name="TextBoxLiveUrl" Grid.Column="1" Margin="14,0,4,0" 
+                                                     MaxLength="256" MaxLines="1"
+                                                     materialDesign:TextFieldAssist.HasClearButton="True"
+                                                     materialDesign:HintAssist.Hint="{x:Static l10n:LocalizedInfo.TextBlockLiveUrlHint}"/>                                        </Grid>
+                                        <Grid Margin="0,4,0,14">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>

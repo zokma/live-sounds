@@ -221,6 +221,9 @@
   <data name="MessageInitAudioRenderDeviceFailed" xml:space="preserve">
     <value>オーディオ再生デバイスの初期化に失敗しました。</value>
   </data>
+  <data name="MessageLiveUrlNotSupportedWarning" xml:space="preserve">
+    <value>ご指定のライブURLはサポートされません。ライブの埋め込みは動作しないかもしれません。</value>
+  </data>
   <data name="MessageNoNgrokDetected" xml:space="preserve">
     <value>Ngrokの起動が検知できませんでした。
 Ngrokが起動しているか確認してください。</value>
@@ -331,6 +334,12 @@ Ngrokが起動しているか確認してください。</value>
   </data>
   <data name="TextBlockInitialSetupStep03Warning" xml:space="preserve">
     <value>既にngrokのAuth Tokenを設定している場合は、この操作によって、このPCユーザのngrokのAuth Tokenが上書きされます。</value>
+  </data>
+  <data name="TextBlockLiveUrl" xml:space="preserve">
+    <value>ライブURL</value>
+  </data>
+  <data name="TextBlockLiveUrlHint" xml:space="preserve">
+    <value>(オプション) ユーザ用 Webページにライブを埋め込むためのライブのURL</value>
   </data>
   <data name="TextBlockNetworkSettings" xml:space="preserve">
     <value>ネットワーク設定</value>

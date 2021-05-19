@@ -33,5 +33,10 @@ namespace LiveSounds.Service
         /// Forwarding port.
         /// </summary>
         public int? ForwardingPort;
+
+        /// <summary>
+        /// Live Url.
+        /// </summary>
+        public string LiveUrl;
     }
 }

@@ -224,6 +224,9 @@ Please contact the application developer.</value>
   <data name="MessageInitAudioRenderDeviceFailed" xml:space="preserve">
     <value>Failed to init Audio playback device.</value>
   </data>
+  <data name="MessageLiveUrlNotSupportedWarning" xml:space="preserve">
+    <value>Live URL you specified is not supported. Live Embed may not work.</value>
+  </data>
   <data name="MessageNoNgrokDetected" xml:space="preserve">
     <value>Ngrok could not be detected.
 Please check if Ngrok is started.</value>
@@ -333,6 +336,12 @@ It will stop automatically after {0:0.##} hours.</value>
   </data>
   <data name="TextBlockInitialSetupStep03Warning" xml:space="preserve">
     <value>This will override the current Auth Token of ngrok in this PC user, if you have already set up a ngrok Auth Token.</value>
+  </data>
+  <data name="TextBlockLiveUrl" xml:space="preserve">
+    <value>Live URL</value>
+  </data>
+  <data name="TextBlockLiveUrlHint" xml:space="preserve">
+    <value>(Option) Your Live URL to embed Live in user web page.</value>
   </data>
   <data name="TextBlockNetworkSettings" xml:space="preserve">
     <value>Network Settings</value>
