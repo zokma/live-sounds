@@ -904,6 +904,10 @@ namespace LiveSounds
                 {
                     this.notification.ShowNotification(LocalizedInfo.MessageTokenInfoUpdated, NotificationLevel.Info);
                 }
+                else
+                {
+                    this.notification.ShowNotification(LocalizedInfo.MessageTokenInfoUpdateError, NotificationLevel.Warn);
+                }
             }
             finally
             {

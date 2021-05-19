@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LiveSounds.Api;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,7 @@ namespace LiveSounds
     /// </summary>
     public partial class TokenSettingWindow : Window
     {
+
         public TokenSettingWindow()
         {
             InitializeComponent();
@@ -39,7 +41,10 @@ namespace LiveSounds
 
                     App.Settings.Token = token;
 
-                    this.DialogResult = true;
+                    if (ZokmaApi.CheckTokenValid(token))
+                    {
+                        this.DialogResult = true;
+                    }
                 }
             }
             finally

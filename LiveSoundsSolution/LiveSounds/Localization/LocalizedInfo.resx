@@ -259,6 +259,9 @@ It will stop automatically after {0:0.##} hours.</value>
   <data name="MessageTokenInfoUpdated" xml:space="preserve">
     <value>Token info has been updated.</value>
   </data>
+  <data name="MessageTokenInfoUpdateError" xml:space="preserve">
+    <value>Token info you applied is invalid.</value>
+  </data>
   <data name="MessageTokenInvalidError" xml:space="preserve">
     <value>Token is invalid or expired.</value>
   </data>

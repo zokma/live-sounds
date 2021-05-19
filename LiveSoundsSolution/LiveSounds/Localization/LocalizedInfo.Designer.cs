@@ -479,6 +479,15 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Token info you applied is invalid..
+        /// </summary>
+        public static string MessageTokenInfoUpdateError {
+            get {
+                return ResourceManager.GetString("MessageTokenInfoUpdateError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Token is invalid or expired..
         /// </summary>
         public static string MessageTokenInvalidError {

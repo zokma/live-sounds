@@ -257,6 +257,9 @@ Ngrokが起動しているか確認してください。</value>
   <data name="MessageTokenInfoUpdated" xml:space="preserve">
     <value>トークン情報が更新されました。</value>
   </data>
+  <data name="MessageTokenInfoUpdateError" xml:space="preserve">
+    <value>設定したトークン情報が正しくありません。</value>
+  </data>
   <data name="MessageTokenInvalidError" xml:space="preserve">
     <value>トークンが無効か期限がきれています。</value>
   </data>
