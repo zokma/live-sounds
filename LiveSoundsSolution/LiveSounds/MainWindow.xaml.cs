@@ -158,6 +158,41 @@ namespace LiveSounds
         private static readonly TimeSpan NOTIFICATION_DURATION_INFINITE = TimeSpan.MaxValue;
 
 
+        static MainWindow()
+        {
+
+            // Freeze Solid Color Brushes.
+            if(SolidColorBrushTransparent.CanFreeze)
+            {
+                SolidColorBrushTransparent.Freeze();
+            }
+
+            if (SolidColorBrushGray.CanFreeze)
+            {
+                SolidColorBrushGray.Freeze();
+            }
+
+            if (SolidColorBrushRed.CanFreeze)
+            {
+                SolidColorBrushRed.Freeze();
+            }
+
+            if (SolidColorBrushDeepSkyBlue.CanFreeze)
+            {
+                SolidColorBrushDeepSkyBlue.Freeze();
+            }
+
+            if (SolidColorBrushRoyalBlue.CanFreeze)
+            {
+                SolidColorBrushRoyalBlue.Freeze();
+            }
+
+            if (SolidColorBrushOrangeRed.CanFreeze)
+            {
+                SolidColorBrushOrangeRed.Freeze();
+            }
+        }
+
         /// <summary>
         /// true if audio playback is muted. 
         /// </summary>
