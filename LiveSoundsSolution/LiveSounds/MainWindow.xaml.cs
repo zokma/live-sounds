@@ -78,28 +78,43 @@ namespace LiveSounds
         /// <summary>
         /// SolidColorBrush for Transparent.
         /// </summary>
-        private static readonly Brush SOLID_COLOR_BRUSH_TRANSPARENT = new SolidColorBrush(Colors.Transparent);
+        public static readonly Brush SolidColorBrushTransparent = new SolidColorBrush(Colors.Transparent);
 
         /// <summary>
-        /// SolidColorBrush for Transparent.
+        /// SolidColorBrush for Gray.
         /// </summary>
-        private static readonly Brush SOLID_COLOR_BRUSH_GRAY = new SolidColorBrush(Colors.Gray);
+        public static readonly Brush SolidColorBrushGray = new SolidColorBrush(Colors.Gray);
 
         /// <summary>
         /// SolidColorBrush for Red.
         /// </summary>
-        private static readonly Brush SOLID_COLOR_BRUSH_RED = new SolidColorBrush(Colors.Red);
+        public static readonly Brush SolidColorBrushRed = new SolidColorBrush(Colors.Red);
+
+        /// <summary>
+        /// SolidColorBrush for Deep Sky Blue.
+        /// </summary>
+        public static readonly Brush SolidColorBrushDeepSkyBlue = new SolidColorBrush(Colors.DeepSkyBlue);
+
+        /// <summary>
+        /// SolidColorBrush for Royal Blue.
+        /// </summary>
+        public static readonly Brush SolidColorBrushRoyalBlue = new SolidColorBrush(Colors.RoyalBlue);
+
+        /// <summary>
+        /// SolidColorBrush for Orange Red.
+        /// </summary>
+        public static readonly Brush SolidColorBrushOrangeRed = new SolidColorBrush(Colors.OrangeRed);
 
 
         /// <summary>
         /// SolidColorBrush for Unmuted.
         /// </summary>
-        private static readonly Brush SOLID_COLOR_BRUSH_UNMUTED = new SolidColorBrush(Colors.DeepSkyBlue);
+        private static readonly Brush SOLID_COLOR_BRUSH_UNMUTED = SolidColorBrushDeepSkyBlue;
 
         /// <summary>
         /// SolidColorBrush for muted.
         /// </summary>
-        private static readonly Brush SOLID_COLOR_BRUSH_MUTED = new SolidColorBrush(Colors.OrangeRed);
+        private static readonly Brush SOLID_COLOR_BRUSH_MUTED = SolidColorBrushOrangeRed;
 
 
         /// <summary>
@@ -924,7 +939,7 @@ namespace LiveSounds
         {
             if (sender is Button button)
             {
-                button.Background = SOLID_COLOR_BRUSH_RED;
+                button.Background = SolidColorBrushRed;
             }
         }
 
@@ -932,7 +947,7 @@ namespace LiveSounds
         {
             if (sender is Button button)
             {
-                button.Background = SOLID_COLOR_BRUSH_TRANSPARENT;
+                button.Background = SolidColorBrushTransparent;
             }
         }
 
@@ -940,7 +955,7 @@ namespace LiveSounds
         {
             if (sender is Button button)
             {
-                button.Background = SOLID_COLOR_BRUSH_GRAY;
+                button.Background = SolidColorBrushGray;
             }
         }
 

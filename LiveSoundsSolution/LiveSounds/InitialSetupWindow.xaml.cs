@@ -133,12 +133,12 @@ namespace LiveSounds
             if(result)
             {
                 resultText      = LocalizedInfo.TextBlockSetupNgrokAuthTokenSucceeded;
-                resultTextBrush = new SolidColorBrush(Colors.RoyalBlue);
+                resultTextBrush = MainWindow.SolidColorBrushRoyalBlue;
             }
             else
             {
                 resultText      = LocalizedInfo.TextBlockSetupNgrokAuthTokenFailed;
-                resultTextBrush = new SolidColorBrush(Colors.OrangeRed);
+                resultTextBrush = MainWindow.SolidColorBrushOrangeRed;
             }
 
             this.TextBlockSetupNgrokAuthTokenResult.Text       = resultText;
