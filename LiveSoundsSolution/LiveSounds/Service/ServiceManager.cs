@@ -266,11 +266,15 @@ namespace LiveSounds.Service
 
                                     if (retryAfter <= 0)
                                     {
-                                        AudioData audioData;
+                                        AudioItem audioItem;
 
-                                        if(this.audioManager.TryGetAudioData(audioRenerings.Id, out audioData))
+                                        if(this.audioManager.TryGetAudioItem(audioRenerings.Id, out audioItem))
                                         {
-                                            this.audioPlayer?.Play(audioData, PlaybackMode.Once, audioRenerings.Volume);
+                                            this.audioPlayer?.Play(audioItem.Data, PlaybackMode.Once, audioRenerings.Volume);
+
+                                            this.notification.Notify(
+                                                String.Format(LocalizedInfo.MessagePatternPlaying, audioItem.Name),
+                                                Notification.NotificationLevel.Info);
 
                                             status = HttpStatusCode.NoContent;
                                         }

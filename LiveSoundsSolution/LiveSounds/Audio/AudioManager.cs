@@ -19,9 +19,10 @@ namespace LiveSounds.Audio
     internal class AudioManager : IDisposable
     {
         /// <summary>
-        /// Dictionary for AudioData.
+        /// Dictionary for AudioItem.
         /// </summary>
-        private Dictionary<string, AudioData> audios;
+        private Dictionary<string, AudioItem> audios;
+
         private bool disposedValue;
 
         /// <summary>
@@ -34,7 +35,7 @@ namespace LiveSounds.Audio
         /// </summary>
         private AudioManager()
         {
-            this.audios     = new Dictionary<string, AudioData>();
+            this.audios     = new Dictionary<string, AudioItem>();
         }
 
 
@@ -76,8 +77,10 @@ namespace LiveSounds.Audio
 
                         string guid = Guid.NewGuid().ToString("N");
 
-                        audioManager.audios.Add(guid, data);
-                        audioItems.Add(new AudioItem { Id = guid, Name = item.Name, Data = data });
+                        var audioItem = new AudioItem { Id = guid, Name = item.Name, Data = data };
+
+                        audioManager.audios.Add(guid, audioItem);
+                        audioItems.Add(audioItem);
 
                         itemsLimit--;
                         if(itemsLimit <= 0)
@@ -102,14 +105,14 @@ namespace LiveSounds.Audio
         }
 
         /// <summary>
-        /// Tries to get AudioData corresponds with the key.
+        /// Tries to get AudioItem corresponds with the key.
         /// </summary>
         /// <param name="key">key for the audio.</param>
-        /// <param name="audioData">Audio data.</param>
+        /// <param name="audioItem">Audio item.</param>
         /// <returns>true if the data is got successfully.</returns>
-        public bool TryGetAudioData(string key, out AudioData audioData)
+        public bool TryGetAudioItem(string key, out AudioItem audioItem)
         {
-            return this.audios.TryGetValue(key, out audioData);
+            return this.audios.TryGetValue(key, out audioItem);
         }
 
         protected virtual void Dispose(bool disposing)
