@@ -153,6 +153,11 @@ namespace LiveSounds.Service
         {
             using var wl = this.globalLock.EnterWriteLock();
 
+            if(this.globalLimit <= 0)
+            {
+                return 60;
+            }
+
             int result = 0;
 
             this.globalCounter++;
@@ -200,6 +205,11 @@ namespace LiveSounds.Service
         public int CheckUserRetryAfterSecounds(string userHash)
         {
             using var wl = this.userLock.EnterWriteLock();
+
+            if(this.userLimit <= 0)
+            {
+                return 60;
+            }
 
             UserCounter counter;
 
