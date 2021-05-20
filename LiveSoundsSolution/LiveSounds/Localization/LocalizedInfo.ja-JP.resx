@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ApplicationTitle" xml:space="preserve">
-    <value>リモートからポン！</value>
+    <value>リモート DE ポン！</value>
   </data>
   <data name="ButtonApply" xml:space="preserve">
     <value>適用</value>
@@ -132,8 +132,17 @@
   <data name="ButtonCopyURLToClipboard" xml:space="preserve">
     <value>URLをクリップボードにコピーする</value>
   </data>
+  <data name="ButtonInitialSetup" xml:space="preserve">
+    <value>初期設定</value>
+  </data>
   <data name="ButtonOpenDataDirectory" xml:space="preserve">
     <value>データ格納先を開く</value>
+  </data>
+  <data name="ButtonOpenNgrokWeb" xml:space="preserve">
+    <value>WebブラウザでngrokのWebサイトを開く</value>
+  </data>
+  <data name="ButtonOpenToolsDirectory" xml:space="preserve">
+    <value>Toolsフォルダを開く(ngrokのコピー先)</value>
   </data>
   <data name="ButtonOpenUserWebPage" xml:space="preserve">
     <value>ユーザ用 Webページを開く</value>
@@ -174,6 +183,9 @@
   <data name="GroupBoxAudioSettings" xml:space="preserve">
     <value>オーディオ設定</value>
   </data>
+  <data name="InitialSetupWindowTitle" xml:space="preserve">
+    <value>初期設定</value>
+  </data>
   <data name="MaximizeWindow" xml:space="preserve">
     <value>ウィンドウを最大化する</value>
   </data>
@@ -200,11 +212,17 @@
     <value>HTTPリクエストのサイズが大きすぎます。
 このアプリケーションの開発元にお問い合わせください。</value>
   </data>
+  <data name="MessageHttpRequestFailed" xml:space="preserve">
+    <value>サーバとの通信に失敗しました。ネットワークを確認ください。サーバがダウンしているかもしれません。</value>
+  </data>
   <data name="MessageInitAudioPlayerFailed" xml:space="preserve">
     <value>オーディオプレイヤーの初期化に失敗しました。</value>
   </data>
   <data name="MessageInitAudioRenderDeviceFailed" xml:space="preserve">
     <value>オーディオ再生デバイスの初期化に失敗しました。</value>
+  </data>
+  <data name="MessageLiveUrlNotSupportedWarning" xml:space="preserve">
+    <value>ご指定のライブURLはサポートされません。ライブの埋め込みは動作しないかもしれません。</value>
   </data>
   <data name="MessageNoNgrokDetected" xml:space="preserve">
     <value>Ngrokの起動が検知できませんでした。
@@ -242,6 +260,9 @@ Ngrokが起動しているか確認してください。</value>
   <data name="MessageTokenInfoUpdated" xml:space="preserve">
     <value>トークン情報が更新されました。</value>
   </data>
+  <data name="MessageTokenInfoUpdateError" xml:space="preserve">
+    <value>設定したトークン情報が正しくありません。</value>
+  </data>
   <data name="MessageTokenInvalidError" xml:space="preserve">
     <value>トークンが無効か期限がきれています。</value>
   </data>
@@ -253,6 +274,9 @@ Ngrokが起動しているか確認してください。</value>
   </data>
   <data name="MinimizeWindow" xml:space="preserve">
     <value>ウィンドウを最小化する</value>
+  </data>
+  <data name="NgrokRegion" xml:space="preserve">
+    <value>jp</value>
   </data>
   <data name="NotificationDateTimeFormat" xml:space="preserve">
     <value>yyyy/MM/dd HH:mm:ss.fff</value>
@@ -293,6 +317,30 @@ Ngrokが起動しているか確認してください。</value>
   <data name="TextBlockCautionTokenInfo" xml:space="preserve">
     <value>トークン情報は他の人に教えないでください</value>
   </data>
+  <data name="TextBlockInitialSetupDesc" xml:space="preserve">
+    <value>初期設定手順です。</value>
+  </data>
+  <data name="TextBlockInitialSetupInfo" xml:space="preserve">
+    <value>このアプリは、ngrokを利用します。これまでngrokを利用したことがない場合は、このアプリを利用するためには、無償アカウントを作成して設定する必要があります。</value>
+  </data>
+  <data name="TextBlockInitialSetupStep01" xml:space="preserve">
+    <value>手順1. ngrokのアカウントの作成(Sing up)して、ダウンロードします。</value>
+  </data>
+  <data name="TextBlockInitialSetupStep02" xml:space="preserve">
+    <value>手順2. ダウンロードしたファイルを解凍して、「Tools」フォルダへ「ngrok.exe」または、「ngrok」をコピーします。</value>
+  </data>
+  <data name="TextBlockInitialSetupStep03" xml:space="preserve">
+    <value>手順3. ngrokの「Auth Token」をコピペして、「適用ボタン」を押します。</value>
+  </data>
+  <data name="TextBlockInitialSetupStep03Warning" xml:space="preserve">
+    <value>既にngrokのAuth Tokenを設定している場合は、この操作によって、このPCユーザのngrokのAuth Tokenが上書きされます。</value>
+  </data>
+  <data name="TextBlockLiveUrl" xml:space="preserve">
+    <value>ライブURL</value>
+  </data>
+  <data name="TextBlockLiveUrlHint" xml:space="preserve">
+    <value>(オプション) ユーザ用 Webページにライブを埋め込むためのライブのURL</value>
+  </data>
   <data name="TextBlockNetworkSettings" xml:space="preserve">
     <value>ネットワーク設定</value>
   </data>
@@ -311,11 +359,20 @@ Ngrokが起動しているか確認してください。</value>
   <data name="TextBlockPreset" xml:space="preserve">
     <value>プリセット</value>
   </data>
+  <data name="TextBlockSetupNgrokAuthTokenFailed" xml:space="preserve">
+    <value>ngrok Auth Tokenの設定に失敗しました。</value>
+  </data>
+  <data name="TextBlockSetupNgrokAuthTokenSucceeded" xml:space="preserve">
+    <value>ngrok Auth Tokenを設定しました。</value>
+  </data>
   <data name="TextBlockUserWebPage" xml:space="preserve">
     <value>視聴者にこのURLを共有することができます。</value>
   </data>
   <data name="TextBlockUserWebPageCaution" xml:space="preserve">
     <value>URLを共有する前に共有する情報が正しいか確認ください。</value>
+  </data>
+  <data name="TextBoxHintNgrokAuthToken" xml:space="preserve">
+    <value>取得したngrok Auth Token</value>
   </data>
   <data name="TextBoxPlayAudioLimitsPerAppSuffix" xml:space="preserve">
     <value> 回(アプリごと)</value>

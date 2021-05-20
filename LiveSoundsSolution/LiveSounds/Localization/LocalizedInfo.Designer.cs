@@ -106,11 +106,38 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Initial Setup.
+        /// </summary>
+        public static string ButtonInitialSetup {
+            get {
+                return ResourceManager.GetString("ButtonInitialSetup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OPEN DATA FOLDER.
         /// </summary>
         public static string ButtonOpenDataDirectory {
             get {
                 return ResourceManager.GetString("ButtonOpenDataDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open ngrok Web site with Web Browser.
+        /// </summary>
+        public static string ButtonOpenNgrokWeb {
+            get {
+                return ResourceManager.GetString("ButtonOpenNgrokWeb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Tools Folder (location to copy ngrok).
+        /// </summary>
+        public static string ButtonOpenToolsDirectory {
+            get {
+                return ResourceManager.GetString("ButtonOpenToolsDirectory", resourceCulture);
             }
         }
         
@@ -232,6 +259,15 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Initial Settup.
+        /// </summary>
+        public static string InitialSetupWindowTitle {
+            get {
+                return ResourceManager.GetString("InitialSetupWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Maximize the Window.
         /// </summary>
         public static string MaximizeWindow {
@@ -315,6 +351,15 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to communicate with server. Please check network connectivity. Maybe the server is down..
+        /// </summary>
+        public static string MessageHttpRequestFailed {
+            get {
+                return ResourceManager.GetString("MessageHttpRequestFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Faild to init Audio Player..
         /// </summary>
         public static string MessageInitAudioPlayerFailed {
@@ -329,6 +374,15 @@ namespace LiveSounds.Localization {
         public static string MessageInitAudioRenderDeviceFailed {
             get {
                 return ResourceManager.GetString("MessageInitAudioRenderDeviceFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Live URL you specified is not supported. Live Embed may not work..
+        /// </summary>
+        public static string MessageLiveUrlNotSupportedWarning {
+            get {
+                return ResourceManager.GetString("MessageLiveUrlNotSupportedWarning", resourceCulture);
             }
         }
         
@@ -434,6 +488,15 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Token info you applied is invalid..
+        /// </summary>
+        public static string MessageTokenInfoUpdateError {
+            get {
+                return ResourceManager.GetString("MessageTokenInfoUpdateError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Token is invalid or expired..
         /// </summary>
         public static string MessageTokenInvalidError {
@@ -466,6 +529,15 @@ namespace LiveSounds.Localization {
         public static string MinimizeWindow {
             get {
                 return ResourceManager.GetString("MinimizeWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to us.
+        /// </summary>
+        public static string NgrokRegion {
+            get {
+                return ResourceManager.GetString("NgrokRegion", resourceCulture);
             }
         }
         
@@ -587,6 +659,78 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This is an Initial Setup procedure..
+        /// </summary>
+        public static string TextBlockInitialSetupDesc {
+            get {
+                return ResourceManager.GetString("TextBlockInitialSetupDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This application uses ngrok. If you have not yet used ngrok, you will need to get free account and setup to use this application..
+        /// </summary>
+        public static string TextBlockInitialSetupInfo {
+            get {
+                return ResourceManager.GetString("TextBlockInitialSetupInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step1. Create Account(Sign up) and Download ngrok..
+        /// </summary>
+        public static string TextBlockInitialSetupStep01 {
+            get {
+                return ResourceManager.GetString("TextBlockInitialSetupStep01", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step2. Extract the downloaded file and locate &quot;ngrok.exe&quot; or &quot;ngrok&quot; into &quot;Tools&quot; folder..
+        /// </summary>
+        public static string TextBlockInitialSetupStep02 {
+            get {
+                return ResourceManager.GetString("TextBlockInitialSetupStep02", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step3. Copy and Paste &quot;Auth Token&quot; of ngrok and Press &quot;Apply&quot;..
+        /// </summary>
+        public static string TextBlockInitialSetupStep03 {
+            get {
+                return ResourceManager.GetString("TextBlockInitialSetupStep03", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This will override the current Auth Token of ngrok in this PC user, if you have already set up a ngrok Auth Token..
+        /// </summary>
+        public static string TextBlockInitialSetupStep03Warning {
+            get {
+                return ResourceManager.GetString("TextBlockInitialSetupStep03Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Live URL.
+        /// </summary>
+        public static string TextBlockLiveUrl {
+            get {
+                return ResourceManager.GetString("TextBlockLiveUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Option) Your Live URL to embed Live in user web page..
+        /// </summary>
+        public static string TextBlockLiveUrlHint {
+            get {
+                return ResourceManager.GetString("TextBlockLiveUrlHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Network Settings.
         /// </summary>
         public static string TextBlockNetworkSettings {
@@ -641,6 +785,24 @@ namespace LiveSounds.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to setup ngrok Auth Token..
+        /// </summary>
+        public static string TextBlockSetupNgrokAuthTokenFailed {
+            get {
+                return ResourceManager.GetString("TextBlockSetupNgrokAuthTokenFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ngrok Auth Token was setup..
+        /// </summary>
+        public static string TextBlockSetupNgrokAuthTokenSucceeded {
+            get {
+                return ResourceManager.GetString("TextBlockSetupNgrokAuthTokenSucceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You can share the URL to your viewers..
         /// </summary>
         public static string TextBlockUserWebPage {
@@ -655,6 +817,15 @@ namespace LiveSounds.Localization {
         public static string TextBlockUserWebPageCaution {
             get {
                 return ResourceManager.GetString("TextBlockUserWebPageCaution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your ngrok Auth Token.
+        /// </summary>
+        public static string TextBoxHintNgrokAuthToken {
+            get {
+                return ResourceManager.GetString("TextBoxHintNgrokAuthToken", resourceCulture);
             }
         }
         

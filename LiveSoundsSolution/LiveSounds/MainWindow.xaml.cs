@@ -78,28 +78,43 @@ namespace LiveSounds
         /// <summary>
         /// SolidColorBrush for Transparent.
         /// </summary>
-        private static readonly Brush SOLID_COLOR_BRUSH_TRANSPARENT = new SolidColorBrush(Colors.Transparent);
+        public static readonly Brush SolidColorBrushTransparent = new SolidColorBrush(Colors.Transparent);
 
         /// <summary>
-        /// SolidColorBrush for Transparent.
+        /// SolidColorBrush for Gray.
         /// </summary>
-        private static readonly Brush SOLID_COLOR_BRUSH_GRAY = new SolidColorBrush(Colors.Gray);
+        public static readonly Brush SolidColorBrushGray = new SolidColorBrush(Colors.Gray);
 
         /// <summary>
         /// SolidColorBrush for Red.
         /// </summary>
-        private static readonly Brush SOLID_COLOR_BRUSH_RED = new SolidColorBrush(Colors.Red);
+        public static readonly Brush SolidColorBrushRed = new SolidColorBrush(Colors.Red);
+
+        /// <summary>
+        /// SolidColorBrush for Deep Sky Blue.
+        /// </summary>
+        public static readonly Brush SolidColorBrushDeepSkyBlue = new SolidColorBrush(Colors.DeepSkyBlue);
+
+        /// <summary>
+        /// SolidColorBrush for Royal Blue.
+        /// </summary>
+        public static readonly Brush SolidColorBrushRoyalBlue = new SolidColorBrush(Colors.RoyalBlue);
+
+        /// <summary>
+        /// SolidColorBrush for Orange Red.
+        /// </summary>
+        public static readonly Brush SolidColorBrushOrangeRed = new SolidColorBrush(Colors.OrangeRed);
 
 
         /// <summary>
         /// SolidColorBrush for Unmuted.
         /// </summary>
-        private static readonly Brush SOLID_COLOR_BRUSH_UNMUTED = new SolidColorBrush(Colors.DeepSkyBlue);
+        private static readonly Brush SOLID_COLOR_BRUSH_UNMUTED = SolidColorBrushDeepSkyBlue;
 
         /// <summary>
         /// SolidColorBrush for muted.
         /// </summary>
-        private static readonly Brush SOLID_COLOR_BRUSH_MUTED = new SolidColorBrush(Colors.OrangeRed);
+        private static readonly Brush SOLID_COLOR_BRUSH_MUTED = SolidColorBrushOrangeRed;
 
 
         /// <summary>
@@ -142,6 +157,41 @@ namespace LiveSounds
         /// </summary>
         private static readonly TimeSpan NOTIFICATION_DURATION_INFINITE = TimeSpan.MaxValue;
 
+
+        static MainWindow()
+        {
+
+            // Freeze Solid Color Brushes.
+            if(SolidColorBrushTransparent.CanFreeze)
+            {
+                SolidColorBrushTransparent.Freeze();
+            }
+
+            if (SolidColorBrushGray.CanFreeze)
+            {
+                SolidColorBrushGray.Freeze();
+            }
+
+            if (SolidColorBrushRed.CanFreeze)
+            {
+                SolidColorBrushRed.Freeze();
+            }
+
+            if (SolidColorBrushDeepSkyBlue.CanFreeze)
+            {
+                SolidColorBrushDeepSkyBlue.Freeze();
+            }
+
+            if (SolidColorBrushRoyalBlue.CanFreeze)
+            {
+                SolidColorBrushRoyalBlue.Freeze();
+            }
+
+            if (SolidColorBrushOrangeRed.CanFreeze)
+            {
+                SolidColorBrushOrangeRed.Freeze();
+            }
+        }
 
         /// <summary>
         /// true if audio playback is muted. 
@@ -198,6 +248,16 @@ namespace LiveSounds
         /// </summary>
         private UserWebInfoWindow userWebInfoWindow;
 
+        /// <summary>
+        /// Saved width to restore size.
+        /// </summary>
+        private double savedWidth;
+
+        /// <summary>
+        /// Saved height to restore size.
+        /// </summary>
+        private double savedHeight;
+
 
         public MainWindow()
         {
@@ -220,7 +280,7 @@ namespace LiveSounds
 
                 var settings = App.Settings;
 
-                this.serviceManager = new ServiceManager(this.notification, settings.PlayAudioLimitsPerMinutePerApp, settings.PlayAudioLimitsPerMinutePerUser, this.Dispatcher, performStopService);
+                this.serviceManager = new ServiceManager(this.notification, settings.NgrokApiPort, settings.PlayAudioLimitsPerMinutePerApp, settings.PlayAudioLimitsPerMinutePerUser, this.Dispatcher, PerformStopService);
 
                 this.notification.ShowNotification(LocalizedInfo.MessageAppStartSuccess, NotificationLevel.Success);
 
@@ -520,8 +580,6 @@ namespace LiveSounds
         /// <param name="selectedId">Id for the selected item.</param>
         private void LoadDataPresetMenuItems(string selectedId)
         {
-            var settings = App.Settings;
-
             this.dataPresetSelectedIndex = 0;
 
             var dataPresets = new List<DataPresetItem>();
@@ -600,10 +658,18 @@ namespace LiveSounds
         {
             var settings = App.Settings;
 
-            settings.WindowWidth  = (int)this.Width;
-            settings.WindowHeight = (int)this.Height;
+            if (this.WindowState == WindowState.Normal)
+            {
+                settings.WindowWidth  = (int)this.Width;
+                settings.WindowHeight = (int)this.Height;
+            }
+            else
+            {
+                settings.WindowWidth  = (int)this.savedWidth;
+                settings.WindowHeight = (int)this.savedHeight;
+            }
 
-            if(settings.WindowStartupLocationName != null)
+            if (settings.WindowStartupLocationName != null)
             {
                 settings.WindowStartupLocation = this.WindowStartupLocation;
             }
@@ -687,12 +753,29 @@ namespace LiveSounds
         {
             if (this.WindowState != WindowState.Maximized)
             {
+                // Save the size to restore;
+                this.savedWidth  = this.Width;
+                this.savedHeight = this.Height;
+
                 this.WindowState = WindowState.Maximized;
             }
             else
             {
                 this.WindowState = WindowState.Normal;
             }
+        }
+
+
+        /// <summary>
+        /// Minimized the Window.
+        /// </summary>
+        private void MinimizeWindow()
+        {
+            // Save the size to restore;
+            this.savedWidth  = this.Width;
+            this.savedHeight = this.Height;
+
+            this.WindowState = WindowState.Minimized;
         }
 
         /// <summary>
@@ -860,15 +943,23 @@ namespace LiveSounds
             {
                 this.GridApplicationMain.IsEnabled = false;
 
-                var tokenSettingWindow = new TokenSettingWindow();
-
-                tokenSettingWindow.Owner = this;
+                var tokenSettingWindow = new TokenSettingWindow
+                {
+                    Owner = this
+                };
 
                 bool? result = tokenSettingWindow.ShowDialog();
 
-                if (result == true)
+                if (!tokenSettingWindow.IsCancelled)
                 {
-                    this.notification.ShowNotification(LocalizedInfo.MessageTokenInfoUpdated, NotificationLevel.Info);
+                    if (result == true)
+                    {
+                        this.notification.ShowNotification(LocalizedInfo.MessageTokenInfoUpdated, NotificationLevel.Info);
+                    }
+                    else
+                    {
+                        this.notification.ShowNotification(LocalizedInfo.MessageTokenInfoUpdateError, NotificationLevel.Warn);
+                    }
                 }
             }
             finally
@@ -884,31 +975,25 @@ namespace LiveSounds
 
         private void ButtonWindowClose_MouseEnter(object sender, MouseEventArgs e)
         {
-            var button = sender as Button;
-
-            if(button != null)
+            if (sender is Button button)
             {
-                button.Background = SOLID_COLOR_BRUSH_RED;
+                button.Background = SolidColorBrushRed;
             }
         }
 
         private void ButtonWindow_MouseLeave(object sender, MouseEventArgs e)
         {
-            var button = sender as Button;
-
-            if (button != null)
+            if (sender is Button button)
             {
-                button.Background = SOLID_COLOR_BRUSH_TRANSPARENT;
+                button.Background = SolidColorBrushTransparent;
             }
         }
 
         private void ButtonWindow_MouseEnter(object sender, MouseEventArgs e)
         {
-            var button = sender as Button;
-
-            if (button != null)
+            if (sender is Button button)
             {
-                button.Background = SOLID_COLOR_BRUSH_GRAY;
+                button.Background = SolidColorBrushGray;
             }
         }
 
@@ -919,7 +1004,7 @@ namespace LiveSounds
 
         private void ButtonWindowMinimize_Click(object sender, RoutedEventArgs e)
         {
-            this.WindowState = WindowState.Minimized;
+            MinimizeWindow();
         }
 
         private void ButtonWindowMaximize_Click(object sender, RoutedEventArgs e)
@@ -949,7 +1034,7 @@ namespace LiveSounds
 
         private void MenuItemMinimizeWindow_Click(object sender, RoutedEventArgs e)
         {
-            this.WindowState = WindowState.Minimized;
+            MinimizeWindow();
         }
 
         private void ButtonTitleIcon_Click(object sender, RoutedEventArgs e)
@@ -980,9 +1065,13 @@ namespace LiveSounds
 
         private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            this.GridApplicationMain.IsEnabled = false;
+
             this.notification.ShowNotification(LocalizedInfo.MessageExitingApplication, NotificationLevel.Info);
 
             await this.serviceManager?.Stop();
+            this.serviceManager?.Dispose();
+
             await DestroyAudioPlayer();
 
             Log.Information("Window Closing.");
@@ -997,7 +1086,14 @@ namespace LiveSounds
 
         private void ButtonOpenDataDirectory_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start("EXPLORER.EXE", this.dataDirectory.BaseDirectory);
+            var info = new ProcessStartInfo()
+            {
+                FileName        = "EXPLORER.EXE",
+                Arguments       = $"\"{this.dataDirectory.BaseDirectory}\"",
+                UseShellExecute = false,
+            };
+
+            using var process = Process.Start(info);
         }
 
         private async void ButtonReloadDataPresets_Click(object sender, RoutedEventArgs e)
@@ -1120,6 +1216,8 @@ namespace LiveSounds
                         AudioItems         = (this.ComboBoxDataPresets.SelectedItem as DataPresetItem)?.DataPreset?.AudioItems,
                         AudioDataDirectory = this.audioDataDirectory,
                         AudioPlayer        = this.audioPlayer,
+                        ForwardingPort     = AppSettings.GetNetworkPort(this.TextBoxLocalPort.Text, AppSettings.LOCAL_PORT_DEFAULT),
+                        LiveUrl            = this.TextBoxLiveUrl.Text,
                     };
 
                     var info = await this.serviceManager.StartService(config);
@@ -1161,7 +1259,7 @@ namespace LiveSounds
         /// <summary>
         /// Performs clicking ButtonStop.
         /// </summary>
-        private void performButtonStopClick()
+        private void PerformButtonStopClick()
         {
             if (this.ButtonStop.IsEnabled)
             {
@@ -1172,16 +1270,16 @@ namespace LiveSounds
         /// <summary>
         /// Performs stopping service.
         /// </summary>
-        private void performStopService()
+        private void PerformStopService()
         {
             if (this.Dispatcher.CheckAccess())
             {
-                performButtonStopClick();
+                PerformButtonStopClick();
             }
             else
             {
                 this.Dispatcher.Invoke(
-                    () => performButtonStopClick()
+                    () => PerformButtonStopClick()
                     );
             }
         }
@@ -1334,6 +1432,25 @@ namespace LiveSounds
         private void ButtonUserWebPage_Click(object sender, RoutedEventArgs e)
         {
             ShowUserWebPageInfo();
+        }
+
+        private void ButtonInitialSetup_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.GridApplicationMain.IsEnabled = false;
+
+                var initialSetupWindow = new InitialSetupWindow
+                {
+                    Owner = this
+                };
+
+                initialSetupWindow.ShowDialog();
+            }
+            finally
+            {
+                this.GridApplicationMain.IsEnabled = true;
+            }
         }
     }
 }

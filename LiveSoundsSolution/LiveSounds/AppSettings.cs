@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LiveSounds.Localization;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -75,7 +76,7 @@ namespace LiveSounds
         /// <summary>
         /// Web app uri pattern.
         /// </summary>
-        public const string ZOKMA_WEB_APP_URI_PATTERN = ZOKMA_WEB_APP_BASE_URI + "/livesounds/{0}";
+        public const string ZOKMA_WEB_APP_URI_PATTERN = ZOKMA_WEB_APP_BASE_URI + "/a/{0}";
 
         /// <summary>
         /// Audio sample rate min.
@@ -141,7 +142,7 @@ namespace LiveSounds
         /// <summary>
         /// Network port default.
         /// </summary>
-        public const int LOCAL_PORT_DEFAULT = 8080;
+        public const int LOCAL_PORT_DEFAULT = 8780;
 
         /// <summary>
         /// Ngrok api port default.
@@ -213,7 +214,10 @@ namespace LiveSounds
         /// </summary>
         public const int SERVICE_VALIDITY_SECONDS_DEFAULT = 1 * 24 * 60 * 60;
 
-
+        /// <summary>
+        /// Regex timeout normal in millisecounds.
+        /// </summary>
+        private const int REGEX_TIMEOUT_NORMAL_IN_MILLISECONDS = 5000;
 
         /// <summary>
         /// Json encoder.
@@ -282,6 +286,10 @@ namespace LiveSounds
         /// </summary>
         public static readonly TimeSpan HTTP_CLIENT_TIMEOUT = TimeSpan.FromSeconds(90.0f);
 
+        /// <summary>
+        /// Regex timeout normal.
+        /// </summary>
+        public static readonly TimeSpan REGEX_TIMEOUT_NORMAL = TimeSpan.FromMilliseconds(REGEX_TIMEOUT_NORMAL_IN_MILLISECONDS);
 
         /// <summary>
         /// Internal ETP.
@@ -836,6 +844,12 @@ namespace LiveSounds
                 this.RenderModeName = value.ToString();
             }
         }
+
+        /// <summary>
+        /// Ngrok region name.
+        /// </summary>
+        [JsonInclude]
+        public string NgrokRegion = LocalizedInfo.NgrokRegion;
 
         /// <summary>
         /// Port for Ngrok api.

@@ -33,6 +33,7 @@
             </StackPanel>
             <TextBox x:Name="TextBoxTokenInfo" Grid.Row="2" Margin="14,4,14,24" Padding="11" 
                      TextWrapping="Wrap" 
+                     MaxLength="256" 
                      Background="LightGoldenrodYellow"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:TextFieldAssist.HasClearButton="True"

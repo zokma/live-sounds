@@ -12,6 +12,7 @@ using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
@@ -23,7 +24,7 @@ namespace LiveSounds.Service
     /// <summary>
     /// Service Manager.
     /// </summary>
-    internal class ServiceManager
+    internal class ServiceManager : IDisposable
     {
         /// <summary>
         /// Secret length;
@@ -49,6 +50,21 @@ namespace LiveSounds.Service
         /// Valid url pattern.
         /// </summary>
         private const string VALID_URL_PATTERN = "/{0}" + AUDIO_RENDERINGS_RESOURCE;
+
+        /// <summary>
+        /// Regex to capture stream id.
+        /// For now, only YouTube is supported.
+        /// </summary>
+        private const string REGEX_TO_CAPTURE_STREAM_ID = @"^https://(youtu\.be/|www\.youtube\.com/(embed/|watch\?(v=|.*&v=)))(?<STREAMID>[0-9a-zA-Z_-]{10,24})($|&|\?)";
+
+        /// <summary>
+        /// Regex to capture stream id.
+        /// For now, only YouTube is supported.
+        /// This regex is compiled and cached as static field for reuse.
+        /// However, it may be called a few times and may be better to instanciate before using.
+        /// For now, compiled and cached are adopted.
+        /// </summary>
+        public static readonly Regex RegexToCaptureStreamId = new Regex(REGEX_TO_CAPTURE_STREAM_ID, RegexOptions.Compiled, AppSettings.REGEX_TIMEOUT_NORMAL);
 
         /// <summary>
         /// Random generator.
@@ -99,6 +115,11 @@ namespace LiveSounds.Service
         /// RateLimit manager.
         /// </summary>
         private RateLimitManager rateLimitManager;
+
+        /// <summary>
+        /// Ngrok manager.
+        /// </summary>
+        private NgrokManager ngrokManager;
 
         /// <summary>
         /// Play Audio Limit per application.
@@ -161,16 +182,21 @@ namespace LiveSounds.Service
         /// HTTP Listener.
         /// </summary>
         private HttpListener listener;
+        private bool disposedValue;
 
         /// <summary>
         /// Creates ServiceManager.
         /// </summary>
         /// <param name="notification">Notification manager.</param>
+        /// <param name="ngrokApiPort">Ngrok Api port.</param>
         /// <param name="playAudioLimitsPerApp">Play Audio Limit per application.</param>
         /// <param name="playAudioLimitsPerUser">Play Audio Limit per user.</param>
-        public ServiceManager(NotificationManager notification, int playAudioLimitsPerApp, int playAudioLimitsPerUser, Dispatcher dispatcher, Action autoCloseAction)
+        /// <param name="dispatcher">Dispather.</param>
+        /// <param name="autoCloseAction">Action for auto close.</param>
+        public ServiceManager(NotificationManager notification, int ngrokApiPort, int playAudioLimitsPerApp, int playAudioLimitsPerUser, Dispatcher dispatcher, Action autoCloseAction)
         {
             this.notification     = notification;
+            this.ngrokManager     = new NgrokManager(ngrokApiPort);
             this.rateLimitManager = new RateLimitManager()
             {
                 GlobalLimit = playAudioLimitsPerApp,
@@ -240,11 +266,15 @@ namespace LiveSounds.Service
 
                                     if (retryAfter <= 0)
                                     {
-                                        AudioData audioData;
+                                        AudioItem audioItem;
 
-                                        if(this.audioManager.TryGetAudioData(audioRenerings.Id, out audioData))
+                                        if(this.audioManager.TryGetAudioItem(audioRenerings.Id, out audioItem))
                                         {
-                                            this.audioPlayer?.Play(audioData, PlaybackMode.Once, audioRenerings.Volume);
+                                            this.audioPlayer?.Play(audioItem.Data, PlaybackMode.Once, audioRenerings.Volume);
+
+                                            this.notification.Notify(
+                                                String.Format(LocalizedInfo.MessagePatternPlaying, audioItem.Name),
+                                                Notification.NotificationLevel.Info);
 
                                             status = HttpStatusCode.NoContent;
                                         }
@@ -315,6 +345,7 @@ namespace LiveSounds.Service
             }
         }
 
+
         /// <summary>
         /// Starts listening.
         /// </summary>
@@ -348,6 +379,38 @@ namespace LiveSounds.Service
             }
         }
 
+
+        /// <summary>
+        /// Gets StreamingId from Live Url.
+        /// </summary>
+        /// <param name="liveUrl">Stream Url.</param>
+        /// <returns>StreamingId.</returns>
+        private static string GetStreamingId(string liveUrl)
+        {
+            if (String.IsNullOrWhiteSpace(liveUrl))
+            {
+                return null;
+            }
+
+            string result = null;
+
+            try
+            {
+                var match = RegexToCaptureStreamId.Match(liveUrl);
+
+                if (match.Success)
+                {
+                    result = match.Groups["STREAMID"].Value;
+                }
+            }
+            catch (RegexMatchTimeoutException rmte)
+            {
+                Log.Error(rmte, "Error on parsing Live Stream Url.");
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Starts service.
         /// </summary>
@@ -360,12 +423,24 @@ namespace LiveSounds.Service
                 await this.Stop();
             }
 
+            string streamingId = null;
+
+            if(!String.IsNullOrWhiteSpace(config.LiveUrl))
+            {
+                streamingId = GetStreamingId(config.LiveUrl.Trim());
+
+                if(streamingId == null)
+                {
+                    this.notification.ShowNotification(LocalizedInfo.MessageLiveUrlNotSupportedWarning, Notification.NotificationLevel.Warn);
+                }
+            }
+
             var settings = App.Settings;
 
             this.cancellationTokenSource = new CancellationTokenSource();
             this.cancellationToken       = this.cancellationTokenSource.Token;
 
-            var tunnelInfo = await NgrokManager.FindTunnel(settings.NgrokApiPort, this.cancellationToken);
+            var tunnelInfo = await this.ngrokManager.FindTunnel(config.ForwardingPort.Value, settings.NgrokRegion, this.cancellationToken);
 
             TimeSpan validityPeriod = TimeSpan.Zero;
 
@@ -399,7 +474,8 @@ namespace LiveSounds.Service
                                                 this.audioManager.AudioItems.ToArray(),
                                                 this.secretString,
                                                 settings.ServiceValiditySeconds,
-                                                null, null,
+                                                null, 
+                                                streamingId,
                                                 this.cancellationToken);
 
                         if (sound != null)
@@ -427,6 +503,8 @@ namespace LiveSounds.Service
                     catch (HttpRequestException hre)
                     {
                         Log.Warning(hre, "Error on creating sound.");
+
+                        this.notification.ShowNotification(LocalizedInfo.MessageHttpRequestFailed, Notification.NotificationLevel.Error);
                     }
                     catch(JsonException jex)
                     {
@@ -506,6 +584,36 @@ namespace LiveSounds.Service
 
                 this.IsRunning = false;
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    this.ngrokManager?.Dispose();
+                    this.ngrokManager = null;
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                disposedValue = true;
+            }
+        }
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~ServiceManager()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

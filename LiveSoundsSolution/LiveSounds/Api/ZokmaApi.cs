@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,14 +18,27 @@ namespace LiveSounds.Api
     internal class ZokmaApi
     {
         /// <summary>
+        /// Regex to check token.
+        /// </summary>
+        private const string REGEX_TO_CHECK_TOKEN = "^[0-9a-zA-Z]{131,256}$";
+
+        /// <summary>
         /// Sounds api.
         /// </summary>
         private static readonly string SOUNDS_API = $"{AppSettings.ZOKMA_API_URI}/live/v1/sounds";
 
         /// <summary>
+        /// Regex to check token.
+        /// This regex is compiled and cached as static field for reuse.
+        /// However, it may be called a few times and may be better to instanciate before using.
+        /// For now, compiled and cached are adopted.
+        /// </summary>
+        public static readonly Regex RegexToCheckToken = new Regex(REGEX_TO_CHECK_TOKEN, RegexOptions.Compiled, AppSettings.REGEX_TIMEOUT_NORMAL);
+
+        /// <summary>
         /// Http client.
         /// </summary>
-        private static HttpClient httpClient;
+        private static readonly HttpClient httpClient;
 
         /// <summary>
         /// Token.
@@ -54,6 +68,28 @@ namespace LiveSounds.Api
             this.token = token;
         }
 
+        /// <summary>
+        /// Checks if a token is valid.
+        /// </summary>
+        /// <param name="token">Token to be checked.</param>
+        /// <returns>true if the token is valid.</returns>
+        public static bool CheckTokenValid(string token)
+        {
+            return (!String.IsNullOrEmpty(token) && RegexToCheckToken.IsMatch(token));
+        }
+
+
+        /// <summary>
+        /// Validates token.
+        /// </summary>
+        /// <exception cref="AuthenticationException">Unauthorized.</exception>
+        private void ValidateToken()
+        {
+            if(!CheckTokenValid(this.token))
+            {
+                throw new AuthenticationException();
+            }
+        }
 
         /// <summary>
         /// Creates Sound.
@@ -65,9 +101,12 @@ namespace LiveSounds.Api
         /// <param name="streamingTitle">Streaming title.</param>
         /// <param name="streamingId">Streaming id.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>Created Sound.</returns>
+        /// <exception cref="AuthenticationException">Unauthorized.</exception>
         public async Task<Sound> CreateSound(string url, AudioItem[] audioItems, string secret, int validitySeconds, string streamingTitle, string streamingId, CancellationToken cancellationToken)
         {
+            ValidateToken();
+
             var sound = new Sound { Url = url, Items = audioItems, Secret = secret, ValiditySeconds = validitySeconds, StreamingTitle = streamingTitle, StreamingId = streamingId };
             var utf8  = new UTF8Encoding(false);
             var json  = utf8.GetBytes(JsonSerializer.Serialize(sound, AppSettings.JsonSerializerOptionsForHttpWrite));
@@ -117,8 +156,11 @@ namespace LiveSounds.Api
         /// <param name="id">Resouce id.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>true if successfully deleted.</returns>
+        /// <exception cref="AuthenticationException">Unauthorized.</exception>
         public async Task<bool> DeleteSound(string id, CancellationToken cancellationToken)
         {
+            ValidateToken();
+
             using var request = new HttpRequestMessage(HttpMethod.Delete, SOUNDS_API + $"/{Uri.EscapeDataString(id)}");
 
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.token);

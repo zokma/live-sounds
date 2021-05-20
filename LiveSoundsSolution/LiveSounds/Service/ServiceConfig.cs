@@ -28,5 +28,15 @@ namespace LiveSounds.Service
         /// Audio player.
         /// </summary>
         public AudioPlayer AudioPlayer;
+
+        /// <summary>
+        /// Forwarding port.
+        /// </summary>
+        public int? ForwardingPort;
+
+        /// <summary>
+        /// Live Url.
+        /// </summary>
+        public string LiveUrl;
     }
 }

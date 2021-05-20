@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LiveSounds.Api;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,12 @@ namespace LiveSounds
     /// </summary>
     public partial class TokenSettingWindow : Window
     {
+
+        /// <summary>
+        /// true if the operation is cancelled.
+        /// </summary>
+        public bool IsCancelled { get; private set; }
+
         public TokenSettingWindow()
         {
             InitializeComponent();
@@ -39,7 +46,10 @@ namespace LiveSounds
 
                     App.Settings.Token = token;
 
-                    this.DialogResult = true;
+                    if (ZokmaApi.CheckTokenValid(token))
+                    {
+                        this.DialogResult = true;
+                    }
                 }
             }
             finally
@@ -53,6 +63,8 @@ namespace LiveSounds
         /// </summary>
         private void Cancel()
         {
+            this.IsCancelled = true;
+
             this.Close();
         }
 
