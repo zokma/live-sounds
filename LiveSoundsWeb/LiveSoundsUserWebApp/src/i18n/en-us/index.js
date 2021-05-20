@@ -22,4 +22,8 @@ export default {
   audioRenderRetryAfterDone: 'You can send request again. But You may receive an error again because of heavy workloads on server.',
   prefixWaitForSeconds:      'Wait for ',
   postfixWaitForSeconds:     ' sec.',
+  notFoundMessage:           'Oops. Nothing here...',
+  goHomeButton:              'Go Home',
+  notFoundAppLink:           'https://karakuri.zokma.net/notfound/',
+  notFoundAppButton:         'Go to Punishment',
 }
