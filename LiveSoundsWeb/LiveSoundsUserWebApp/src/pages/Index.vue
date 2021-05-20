@@ -313,17 +313,13 @@ export default {
 
       this.isStreamEmbedded = value;
 
-      if(value) {
-        this.changeEmbeddedProp();
-      }
+      this.changeEmbeddedProp();
     },
     commentEmbeddedChanged(value, evt) {
 
       this.isCommentEmbedded = value;
 
-      if(value) {
-        this.changeEmbeddedProp();
-      }
+      this.changeEmbeddedProp();
     },
     async audioRenderButtonClicked(id) {
 
