@@ -1250,6 +1250,8 @@ namespace LiveSounds
                     }
                     else
                     {
+                        await DestroyAudioPlayer();
+
                         this.notification.ShowNotification(LocalizedInfo.MessageServiceStartFailed, NotificationLevel.Error, NOTIFICATION_DURATION_LONG);
                     }
                 }
@@ -1373,25 +1375,30 @@ namespace LiveSounds
 
                 if(await InitAudioPlayer(audioDeviceItem))
                 {
-                    this.GridApplicationMain.IsEnabled = true;
+                    try
+                    {
+                        this.GridApplicationMain.IsEnabled = true;
 
-                    this.ComboBoxAudioRenderDevices.IsEnabled     = false;
-                    this.ButtonReloadAudioRenderDevices.IsEnabled = false;
+                        this.ComboBoxAudioRenderDevices.IsEnabled     = false;
+                        this.ButtonReloadAudioRenderDevices.IsEnabled = false;
 
-                    this.ButtonStart.IsEnabled    = false;
-                    this.ButtonTestPlay.IsEnabled = false;
+                        this.ButtonStart.IsEnabled    = false;
+                        this.ButtonTestPlay.IsEnabled = false;
 
-                    SetAudioPlayerMasterVolume(this.audioPlayer);
+                        SetAudioPlayerMasterVolume(this.audioPlayer);
 
-                    var audioItems = (this.ComboBoxDataPresets.SelectedItem as DataPresetItem)?.DataPreset?.AudioItems;
+                        var audioItems = (this.ComboBoxDataPresets.SelectedItem as DataPresetItem)?.DataPreset?.AudioItems;
 
-                    await Task.Run(
-                        async () =>
-                        {
-                            await StartTestPlay(audioItems);
-                        });
-
-                    await DestroyAudioPlayer();
+                        await Task.Run(
+                            async () =>
+                            {
+                                await StartTestPlay(audioItems);
+                            });
+                    }
+                    finally
+                    {
+                        await DestroyAudioPlayer();
+                    }
                 }
             }
             finally
