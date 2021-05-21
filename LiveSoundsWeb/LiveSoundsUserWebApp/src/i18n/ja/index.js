@@ -22,4 +22,8 @@ export default {
   audioRenderRetryAfterDone: '再度リクエストできます。サーバーの負荷状況によっては、またエラーになる場合もあります。',
   prefixWaitForSeconds:      'あと ',
   postfixWaitForSeconds:     ' 秒',
+  notFoundMessage:           'おっと、ここには何もないよ。。。',
+  goHomeButton:              'ホームに戻る',
+  notFoundAppLink:           'https://karakuri.zokma.net/notfound/',
+  notFoundAppButton:         'お仕置きを受ける',
 }
