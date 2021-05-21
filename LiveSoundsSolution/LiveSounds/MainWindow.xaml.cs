@@ -1236,11 +1236,15 @@ namespace LiveSounds
                         this.ComboBoxDataPresets.IsEnabled     = false;
                         this.ButtonReloadDataPresets.IsEnabled = false;
 
+                        this.TextBoxLiveUrl.IsEnabled = false;
+
                         this.ButtonStart.IsEnabled    = false;
                         this.ButtonStop.IsEnabled     = true;
                         this.ButtonTestPlay.IsEnabled = false;
 
                         this.ButtonUserWebPage.IsEnabled = true;
+
+                        this.ButtonInitialSetup.IsEnabled = false;
 
                         this.TextBoxLocalPort.Text = info.TunnelInfo.ForwardingInfo.Port.ToString();
                     }
@@ -1303,11 +1307,15 @@ namespace LiveSounds
             {
                 this.userWebInfoWindow?.Hide();
 
+                this.ButtonInitialSetup.IsEnabled = true;
+
                 this.ButtonUserWebPage.IsEnabled = false;
 
                 this.ButtonTestPlay.IsEnabled = true;
                 this.ButtonStop.IsEnabled     = false;
                 this.ButtonStart.IsEnabled    = true;
+
+                this.TextBoxLiveUrl.IsEnabled = true;
 
                 this.ButtonReloadDataPresets.IsEnabled = true;
                 this.ComboBoxDataPresets.IsEnabled     = true;
