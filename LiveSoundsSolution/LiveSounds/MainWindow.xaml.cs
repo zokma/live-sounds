@@ -258,6 +258,11 @@ namespace LiveSounds
         /// </summary>
         private double savedHeight;
 
+        /// <summary>
+        /// true if Window_Closing is processed.
+        /// </summary>
+        private bool isWindowClosingProcessed = false;
+
 
         public MainWindow()
         {
@@ -1063,18 +1068,56 @@ namespace LiveSounds
             ResetPlaybackMuteTextBlock();
         }
 
-        private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+
+        /// <summary>
+        /// Performs Window_Closing.
+        /// </summary>
+        private void PerformWindowClosing()
+        {
+            Task.Run(async () =>
+            {
+                try
+                {
+                    await this.serviceManager?.Stop();
+                    await DestroyAudioPlayer();
+                }
+                catch(Exception ex)
+                {
+                    Log.Error(ex, "Error on closing Window.");
+                }
+                finally
+                {
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        try
+                        {
+                            this.serviceManager?.Dispose();
+                        }
+                        finally
+                        {
+                            this.isWindowClosingProcessed = true;
+                            this.Close();
+                        }
+                    });
+                }
+            });
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             this.GridApplicationMain.IsEnabled = false;
 
             this.notification.ShowNotification(LocalizedInfo.MessageExitingApplication, NotificationLevel.Info);
 
-            await this.serviceManager?.Stop();
-            this.serviceManager?.Dispose();
-
-            await DestroyAudioPlayer();
-
-            Log.Information("Window Closing.");
+            if(!this.isWindowClosingProcessed)
+            {
+                e.Cancel = true;
+                PerformWindowClosing();
+            }
+            else
+            {
+                Log.Information("Window Closing.");
+            }
         }
 
         private void Window_Closed(object sender, EventArgs e)
