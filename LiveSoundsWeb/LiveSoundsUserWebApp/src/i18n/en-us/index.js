@@ -25,5 +25,5 @@ export default {
   notFoundMessage:           'Oops. Nothing here...',
   goHomeButton:              'Go Home',
   notFoundAppLink:           'https://karakuri.zokma.net/notfound/',
-  notFoundAppButton:         'Go to Punishment',
+  notFoundAppButton:         'Go to Unknown Area',
 }
