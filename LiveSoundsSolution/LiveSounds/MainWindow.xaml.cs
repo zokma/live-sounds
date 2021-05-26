@@ -1265,34 +1265,42 @@ namespace LiveSounds
 
                     var info = await this.serviceManager.StartService(config);
 
+                    this.Activate();
+
                     if (info.IsRunning)
                     {
-                        this.notification.ShowNotification(
-                            String.Format(LocalizedInfo.MessagePatternServiceStarted, info.ValidityPeriod.TotalHours),
-                            NotificationLevel.Success);
+                        try
+                        {
+                            this.notification.ShowNotification(
+                                String.Format(LocalizedInfo.MessagePatternServiceStarted, info.ValidityPeriod.TotalHours),
+                                NotificationLevel.Success);
 
-                        ShowUserWebPageInfo();
+                            ShowUserWebPageInfo();
+                        }
+                        finally
+                        {
+                            this.TextBoxLocalPort.Text = info.TunnelInfo.ForwardingInfo.Port.ToString();
 
-                        this.ComboBoxAudioRenderDevices.IsEnabled     = false;
-                        this.ButtonReloadAudioRenderDevices.IsEnabled = false;
+                            this.ComboBoxAudioRenderDevices.IsEnabled     = false;
+                            this.ButtonReloadAudioRenderDevices.IsEnabled = false;
 
-                        this.ComboBoxDataPresets.IsEnabled     = false;
-                        this.ButtonReloadDataPresets.IsEnabled = false;
+                            this.ComboBoxDataPresets.IsEnabled     = false;
+                            this.ButtonReloadDataPresets.IsEnabled = false;
 
-                        this.TextBoxLiveUrl.IsEnabled = false;
+                            this.TextBoxLiveUrl.IsEnabled = false;
 
-                        this.ButtonStart.IsEnabled    = false;
-                        this.ButtonStop.IsEnabled     = true;
-                        this.ButtonTestPlay.IsEnabled = false;
+                            this.ButtonStart.IsEnabled    = false;
+                            this.ButtonStop.IsEnabled     = true;
+                            this.ButtonTestPlay.IsEnabled = false;
 
-                        this.ButtonUserWebPage.IsEnabled = true;
+                            this.ButtonUserWebPage.IsEnabled  = true;
 
-                        this.ButtonInitialSetup.IsEnabled = false;
-
-                        this.TextBoxLocalPort.Text = info.TunnelInfo.ForwardingInfo.Port.ToString();
+                            this.ButtonInitialSetup.IsEnabled = false;
+                        }
                     }
                     else
                     {
+                        await this.serviceManager?.Stop();
                         await DestroyAudioPlayer();
 
                         this.notification.ShowNotification(LocalizedInfo.MessageServiceStartFailed, NotificationLevel.Error, NOTIFICATION_DURATION_LONG);
