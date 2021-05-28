@@ -22,6 +22,8 @@ export default {
   audioRenderRetryAfterDone: 'You can send request again. But You may receive an error again because of heavy workloads on server.',
   prefixWaitForSeconds:      'Wait for ',
   postfixWaitForSeconds:     ' sec.',
+  howToUse:                  'HOW TO USE',
+  howToUseLink:              'https://channel.zokma.net/karakuri/how-to-use-livesounds-user-web/',
   notFoundMessage:           'Oops. Nothing here...',
   goHomeButton:              'Go Home',
   notFoundAppLink:           'https://karakuri.zokma.net/notfound/',
