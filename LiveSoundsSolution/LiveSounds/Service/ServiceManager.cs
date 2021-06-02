@@ -541,6 +541,19 @@ namespace LiveSounds.Service
             {
                 try
                 {
+                    this.listener?.Stop();
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning(ex, "Error on stopping listener.");
+                }
+                finally
+                {
+                    this.listener?.Close();
+                }
+
+                try
+                {
                     this.cancellationTokenSource?.Cancel();
                 }
                 catch (Exception ex)
@@ -551,8 +564,6 @@ namespace LiveSounds.Service
                 {
                     this.cancellationTokenSource?.Dispose();
                 }
-
-                this.listener?.Close();
 
                 this.audioManager?.Dispose();
 
