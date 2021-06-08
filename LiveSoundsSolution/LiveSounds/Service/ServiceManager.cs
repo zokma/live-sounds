@@ -92,6 +92,11 @@ namespace LiveSounds.Service
         public bool IsRunning { get; private set; }
 
         /// <summary>
+        /// true if service stop is processing.
+        /// </summary>
+        private bool isStopProcessing;
+
+        /// <summary>
         /// Notification Manager.
         /// </summary>
         private NotificationManager notification;
@@ -207,6 +212,7 @@ namespace LiveSounds.Service
             this.autoCloseAction = autoCloseAction;
 
             this.IsRunning = false;
+            this.isStopProcessing = false;
         }
 
         /// <summary>
@@ -326,13 +332,15 @@ namespace LiveSounds.Service
                 if (listener.IsListening)
                 {
                     counter.ReportListenerTerminatedUnexpectedly();
+
+                    Log.Warning("HttpListener was stopped while listening.");
                 }
                 else
                 {
                     counter.ReportListenerStopped();
                 }
 
-                if(!counter.IsAlive)
+                if(!this.isStopProcessing && !counter.IsAlive)
                 {
                     Log.Error("Service will be stopped automatically.");
 
@@ -422,6 +430,8 @@ namespace LiveSounds.Service
             {
                 await this.Stop();
             }
+
+            this.isStopProcessing = false;
 
             string streamingId = null;
 
@@ -539,6 +549,8 @@ namespace LiveSounds.Service
         {
             try
             {
+                this.isStopProcessing = true;
+
                 try
                 {
                     this.listener?.Stop();

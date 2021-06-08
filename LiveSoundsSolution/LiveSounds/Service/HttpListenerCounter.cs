@@ -15,7 +15,7 @@ namespace LiveSounds.Service
         /// <summary>
         /// Max threads.
         /// </summary>
-        private int maxThreads;
+        private readonly int maxThreads;
 
         /// <summary>
         /// Running threads.
