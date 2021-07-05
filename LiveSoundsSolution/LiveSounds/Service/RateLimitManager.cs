@@ -20,11 +20,6 @@ namespace LiveSounds.Service
         private class UserCounter
         {
             /// <summary>
-            /// Request counter.
-            /// </summary>
-            public int Counter { get; set; }
-
-            /// <summary>
             /// Elapsed timer.
             /// </summary>
             public Stopwatch ElapsedTimer { get; private set; }
@@ -34,7 +29,6 @@ namespace LiveSounds.Service
             /// </summary>
             public UserCounter()
             {
-                this.Counter      = 1;
                 this.ElapsedTimer = Stopwatch.StartNew();
             }
         }
@@ -223,36 +217,31 @@ namespace LiveSounds.Service
             }
 
             int result = 0;
-            
-            counter.Counter++;
 
-            if(counter.Counter > this.userLimit)
+            double thresholdSecs = 60.0f / this.userLimit;
+            double secs          = counter.ElapsedTimer.Elapsed.TotalSeconds;
+
+            if (secs > thresholdSecs)
             {
-                double secs = counter.ElapsedTimer.Elapsed.TotalSeconds;
+                counter.ElapsedTimer.Restart();
 
-                if (secs > 60.0d)
+                if (Log.IsDebugEnabled)
                 {
-                    counter.Counter = 1;
-                    counter.ElapsedTimer.Restart();
-
-                    if (Log.IsDebugEnabled)
-                    {
-                        Log.Debug("Global Counter restarted.");
-                    }
+                    Log.Debug("User Counter restarted.");
                 }
-                else
+            }
+            else
+            {
+                result = (int)(thresholdSecs - secs);
+
+                if (result < 1)
                 {
-                    result = (int)(60.0d - secs);
+                    result = 1;
+                }
 
-                    if (result < 1)
-                    {
-                        result = 1;
-                    }
-
-                    if (Log.IsDebugEnabled)
-                    {
-                        Log.Debug("User Counter: Retry-After={RetryAfter}", result);
-                    }
+                if (Log.IsDebugEnabled)
+                {
+                    Log.Debug("User Counter: Retry-After={RetryAfter}", result);
                 }
             }
 

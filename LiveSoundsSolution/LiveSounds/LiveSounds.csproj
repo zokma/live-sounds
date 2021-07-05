@@ -7,7 +7,7 @@
     <Authors>Zok MADAO</Authors>
     <Company>ZOKMA LABS.</Company>
     <Product>Live Sounds</Product>
-    <Version>0.4.0</Version>
+    <Version>0.9.1</Version>
     <ApplicationIcon>IconFiles\app.ico</ApplicationIcon>
 	<PublishSingleFile>true</PublishSingleFile>
 	<PublishReadyToRun>true</PublishReadyToRun>
