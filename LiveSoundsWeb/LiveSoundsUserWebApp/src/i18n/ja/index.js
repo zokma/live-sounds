@@ -22,8 +22,10 @@ export default {
   audioRenderRetryAfterDone: '再度リクエストできます。サーバーの負荷状況によっては、またエラーになる場合もあります。',
   prefixWaitForSeconds:      'あと ',
   postfixWaitForSeconds:     ' 秒',
+  howToUse:                  '使い方',
+  howToUseLink:              'https://channel.zokma.net/karakuri/how-to-use-livesounds-user-web/',
   notFoundMessage:           'おっと、ここには何もないよ。。。',
   goHomeButton:              'ホームに戻る',
   notFoundAppLink:           'https://karakuri.zokma.net/notfound/',
-  notFoundAppButton:         'お仕置きを受ける',
+  notFoundAppButton:         '未知なる領域に行く',
 }

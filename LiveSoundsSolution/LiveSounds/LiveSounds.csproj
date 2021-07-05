@@ -7,12 +7,24 @@
     <Authors>Zok MADAO</Authors>
     <Company>ZOKMA LABS.</Company>
     <Product>Live Sounds</Product>
-    <Version>0.4.0</Version>
+    <Version>0.9.1</Version>
     <ApplicationIcon>IconFiles\app.ico</ApplicationIcon>
+	<PublishSingleFile>true</PublishSingleFile>
+	<PublishReadyToRun>true</PublishReadyToRun>
+	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	<SelfContained>false</SelfContained>
+	<!--
+	<SelfContained>false</SelfContained>
+	-->
+	<!--
+	<SelfContained>true</SelfContained>
+	<PublishTrimmed>false</PublishTrimmed>
+	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+	-->
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>DEBUG;TRACE;LOCAL_TEST_ENV</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

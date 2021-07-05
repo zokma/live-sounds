@@ -258,6 +258,11 @@ namespace LiveSounds
         /// </summary>
         private double savedHeight;
 
+        /// <summary>
+        /// true if Window_Closing is processed.
+        /// </summary>
+        private bool isWindowClosingProcessed = false;
+
 
         public MainWindow()
         {
@@ -1063,18 +1068,56 @@ namespace LiveSounds
             ResetPlaybackMuteTextBlock();
         }
 
-        private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+
+        /// <summary>
+        /// Performs Window_Closing.
+        /// </summary>
+        private void PerformWindowClosing()
+        {
+            Task.Run(async () =>
+            {
+                try
+                {
+                    await this.serviceManager?.Stop();
+                    await DestroyAudioPlayer();
+                }
+                catch(Exception ex)
+                {
+                    Log.Error(ex, "Error on closing Window.");
+                }
+                finally
+                {
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        try
+                        {
+                            this.serviceManager?.Dispose();
+                        }
+                        finally
+                        {
+                            this.isWindowClosingProcessed = true;
+                            this.Close();
+                        }
+                    });
+                }
+            });
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             this.GridApplicationMain.IsEnabled = false;
 
             this.notification.ShowNotification(LocalizedInfo.MessageExitingApplication, NotificationLevel.Info);
 
-            await this.serviceManager?.Stop();
-            this.serviceManager?.Dispose();
-
-            await DestroyAudioPlayer();
-
-            Log.Information("Window Closing.");
+            if(!this.isWindowClosingProcessed)
+            {
+                e.Cancel = true;
+                PerformWindowClosing();
+            }
+            else
+            {
+                Log.Information("Window Closing.");
+            }
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -1222,30 +1265,44 @@ namespace LiveSounds
 
                     var info = await this.serviceManager.StartService(config);
 
+                    this.Activate();
+
                     if (info.IsRunning)
                     {
-                        this.notification.ShowNotification(
-                            String.Format(LocalizedInfo.MessagePatternServiceStarted, info.ValidityPeriod.TotalHours),
-                            NotificationLevel.Success);
+                        try
+                        {
+                            this.notification.ShowNotification(
+                                String.Format(LocalizedInfo.MessagePatternServiceStarted, info.ValidityPeriod.TotalHours),
+                                NotificationLevel.Success);
 
-                        ShowUserWebPageInfo();
+                            ShowUserWebPageInfo();
+                        }
+                        finally
+                        {
+                            this.TextBoxLocalPort.Text = info.TunnelInfo.ForwardingInfo.Port.ToString();
 
-                        this.ComboBoxAudioRenderDevices.IsEnabled     = false;
-                        this.ButtonReloadAudioRenderDevices.IsEnabled = false;
+                            this.ComboBoxAudioRenderDevices.IsEnabled     = false;
+                            this.ButtonReloadAudioRenderDevices.IsEnabled = false;
 
-                        this.ComboBoxDataPresets.IsEnabled     = false;
-                        this.ButtonReloadDataPresets.IsEnabled = false;
+                            this.ComboBoxDataPresets.IsEnabled     = false;
+                            this.ButtonReloadDataPresets.IsEnabled = false;
 
-                        this.ButtonStart.IsEnabled    = false;
-                        this.ButtonStop.IsEnabled     = true;
-                        this.ButtonTestPlay.IsEnabled = false;
+                            this.TextBoxLiveUrl.IsEnabled = false;
 
-                        this.ButtonUserWebPage.IsEnabled = true;
+                            this.ButtonStart.IsEnabled    = false;
+                            this.ButtonStop.IsEnabled     = true;
+                            this.ButtonTestPlay.IsEnabled = false;
 
-                        this.TextBoxLocalPort.Text = info.TunnelInfo.ForwardingInfo.Port.ToString();
+                            this.ButtonUserWebPage.IsEnabled  = true;
+
+                            this.ButtonInitialSetup.IsEnabled = false;
+                        }
                     }
                     else
                     {
+                        await this.serviceManager?.Stop();
+                        await DestroyAudioPlayer();
+
                         this.notification.ShowNotification(LocalizedInfo.MessageServiceStartFailed, NotificationLevel.Error, NOTIFICATION_DURATION_LONG);
                     }
                 }
@@ -1303,11 +1360,15 @@ namespace LiveSounds
             {
                 this.userWebInfoWindow?.Hide();
 
+                this.ButtonInitialSetup.IsEnabled = true;
+
                 this.ButtonUserWebPage.IsEnabled = false;
 
                 this.ButtonTestPlay.IsEnabled = true;
                 this.ButtonStop.IsEnabled     = false;
                 this.ButtonStart.IsEnabled    = true;
+
+                this.TextBoxLiveUrl.IsEnabled = true;
 
                 this.ButtonReloadDataPresets.IsEnabled = true;
                 this.ComboBoxDataPresets.IsEnabled     = true;
@@ -1365,25 +1426,30 @@ namespace LiveSounds
 
                 if(await InitAudioPlayer(audioDeviceItem))
                 {
-                    this.GridApplicationMain.IsEnabled = true;
+                    try
+                    {
+                        this.GridApplicationMain.IsEnabled = true;
 
-                    this.ComboBoxAudioRenderDevices.IsEnabled     = false;
-                    this.ButtonReloadAudioRenderDevices.IsEnabled = false;
+                        this.ComboBoxAudioRenderDevices.IsEnabled     = false;
+                        this.ButtonReloadAudioRenderDevices.IsEnabled = false;
 
-                    this.ButtonStart.IsEnabled    = false;
-                    this.ButtonTestPlay.IsEnabled = false;
+                        this.ButtonStart.IsEnabled    = false;
+                        this.ButtonTestPlay.IsEnabled = false;
 
-                    SetAudioPlayerMasterVolume(this.audioPlayer);
+                        SetAudioPlayerMasterVolume(this.audioPlayer);
 
-                    var audioItems = (this.ComboBoxDataPresets.SelectedItem as DataPresetItem)?.DataPreset?.AudioItems;
+                        var audioItems = (this.ComboBoxDataPresets.SelectedItem as DataPresetItem)?.DataPreset?.AudioItems;
 
-                    await Task.Run(
-                        async () =>
-                        {
-                            await StartTestPlay(audioItems);
-                        });
-
-                    await DestroyAudioPlayer();
+                        await Task.Run(
+                            async () =>
+                            {
+                                await StartTestPlay(audioItems);
+                            });
+                    }
+                    finally
+                    {
+                        await DestroyAudioPlayer();
+                    }
                 }
             }
             finally

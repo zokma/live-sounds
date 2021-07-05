@@ -1,6 +1,6 @@
 
-// const API_BASE = 'https://api.zokma.net';
-const API_BASE = 'http://localhost';
+const API_BASE = 'https://api.zokma.net';
+// const API_BASE = 'http://localhost';
 
 export default Object.freeze({
     API_GET_SOUND:                  (API_BASE + '/live/v1/sounds'),

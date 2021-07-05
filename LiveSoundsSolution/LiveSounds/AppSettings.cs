@@ -64,7 +64,7 @@ namespace LiveSounds
         /// <summary>
         /// Web app base URI.
         /// </summary>
-        private const string ZOKMA_WEB_APP_BASE_URI = "https://karakuri.zokma.net";
+        private const string ZOKMA_WEB_APP_BASE_URI = "https://z.zokma.net";
 
         /// <summary>
         /// URI Scheme.
